@@ -1,3 +1,5 @@
+--- START OF FILE Paste April 18, 2026 - 9:15PM ---
+
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -6,7 +8,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Master | v18.0 Intelligent Official</title>
+    <title>PILOT Cloud Master | v18.0 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -47,11 +49,9 @@
         td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
         
-        /* Stats Glow & Animation */
         .stat-number { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 10px currentColor; }
         .pulse-soft { animation: pulse 2.5s infinite ease-in-out; }
         @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(0.98); } }
-        .update-bar { height: 2px; background: linear-gradient(90deg, #2563eb, #10b981); width: 0%; transition: width 0.5s ease-in-out; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -63,8 +63,8 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
-            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v18.0</p>
+            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white text-center">PILOT CLOUD</h2>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em] text-center">Master Protocol v18.0</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -94,7 +94,7 @@
                         <p id="realDate" class="text-xs font-medium text-slate-400">--/--/----</p>
                     </div>
                     <div class="h-10 w-[1px] bg-white/10"></div>
-                    <h1 id="realTime" class="text-2xl md:text-4xl font-mono-corp font-bold text-white tracking-tighter">00:00:00</h1>
+                    <h1 id="realTime" class="text-2xl md:text-3xl lg:text-4xl font-mono-corp font-bold text-white tracking-tighter">00:00:00 AM</h1>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -105,6 +105,7 @@
         </header>
 
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- INPUT COLUMN -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
@@ -132,13 +133,14 @@
                             <select id="fuelType" class="input-field w-full text-sm"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
                         </div>
 
-                        <div><label class="label-corp">Butiran Laluan</label><textarea id="taskInput" rows="3" class="input-field w-full text-sm" placeholder="Masukkan perincian..."></textarea></div>
+                        <div><label class="label-corp">Butiran Tugasan</label><textarea id="taskInput" rows="3" class="input-field w-full text-sm" placeholder="Masukkan perincian..."></textarea></div>
                         <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20 text-sm">Sync ke Cloud ☁️</button>
                     </div>
                 </div>
                 <div class="glass-card p-6"><button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-3">📤 EKSPORT LAPORAN RASMI</button></div>
             </div>
 
+            <!-- TABLE COLUMN -->
             <div class="lg:col-span-8">
                 <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
                     <div class="p-6 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
@@ -158,11 +160,11 @@
             </div>
         </main>
 
-        <!-- FOOTER & REALTIME VISITOR STATS -->
+        <!-- FOOTER & VISITOR STATS -->
         <footer class="container mx-auto mt-12 pb-8">
             <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 items-start">
                 
-                <!-- Visitor Pulse Section -->
+                <!-- Stat Card -->
                 <div class="glass-card p-5 bg-white/5 border-none col-span-1 lg:col-span-1 space-y-4">
                     <div class="flex items-center gap-3">
                         <div class="h-2 w-2 bg-blue-500 rounded-full pulse-soft"></div>
@@ -187,7 +189,7 @@
                     </div>
                 </div>
 
-                <!-- JPV Address -->
+                <!-- Info JPV -->
                 <div class="lg:col-span-2 space-y-2 px-4 text-center lg:text-left">
                     <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR MALAYSIA</p>
                     <p class="text-[9px] text-slate-400 leading-relaxed font-medium">
@@ -204,10 +206,6 @@
                     <p class="text-[8px] text-slate-600 leading-tight">
                         Paparan terbaik: Mozilla Firefox, Chrome & Edge 11+.
                     </p>
-                    <div class="flex justify-center lg:justify-end gap-2">
-                        <span class="px-2 py-0.5 bg-blue-500/10 rounded text-[8px] text-blue-500 border border-blue-500/10 font-bold">MASTER CLOUD</span>
-                        <span class="px-2 py-0.5 bg-emerald-500/10 rounded text-[8px] text-emerald-500 border border-emerald-500/10 font-bold">ENCRYPTED</span>
-                    </div>
                 </div>
             </div>
         </footer>
@@ -217,13 +215,11 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // --- CORE CONFIG ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
         let currentUser = null, tasks = [];
 
-        // --- AUTH & INITIALIZATION ---
         auth.onAuthStateChanged(user => {
             if (user) { 
                 currentUser = user; 
@@ -242,16 +238,13 @@
         async function login() { try { await auth.signInWithPopup(provider); } catch (e) { auth.signInWithRedirect(provider); } }
         function logout() { auth.signOut(); }
 
-        // --- DATA SYNC & VISITOR ANALYTICS ---
         function syncData() {
             if(!currentUser) return;
-            // Personal Logs
             db.collection("users").doc(currentUser.uid).collection("logs").onSnapshot(snap => {
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
                 document.getElementById('lastUpdated').innerText = new Date().toLocaleTimeString('en-GB');
             });
-            // Global Stats Listener
             db.collection("system").doc("analytics").onSnapshot(doc => {
                 if(doc.exists) {
                     const d = doc.data();
@@ -266,20 +259,16 @@
             const todayKey = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
             const monthKey = todayKey.substring(3);
             const ref = db.collection("system").doc("analytics");
-            
             await db.runTransaction(async (transaction) => {
                 const doc = await transaction.get(ref);
-                if (!doc.exists) {
-                    transaction.set(ref, { today: 1, month: 1, total: 1, lastDate: todayKey, lastMonth: monthKey });
-                } else {
+                if (!doc.exists) transaction.set(ref, { today: 1, month: 1, total: 1, lastDate: todayKey, lastMonth: monthKey });
+                else {
                     let data = doc.data();
                     let updates = { total: (data.total || 0) + 1 };
                     if(data.lastDate !== todayKey) { updates.today = 1; updates.lastDate = todayKey; }
-                    else { updates.today = (data.today || 0) + 1; }
-                    
+                    else updates.today = (data.today || 0) + 1;
                     if(data.lastMonth !== monthKey) { updates.month = 1; updates.lastMonth = monthKey; }
-                    else { updates.month = (data.month || 0) + 1; }
-                    
+                    else updates.month = (data.month || 0) + 1;
                     transaction.update(ref, updates);
                 }
             });
@@ -290,27 +279,12 @@
             const start = parseInt(obj.innerText) || 0;
             if(start === value) return;
             let current = start;
-            const range = value - start;
-            const step = Math.ceil(range / 20);
+            const step = Math.ceil((value - start) / 20);
             const timer = setInterval(() => {
                 current += step;
-                if ((step > 0 && current >= value) || (step < 0 && current <= value)) {
-                    obj.innerText = value;
-                    clearInterval(timer);
-                } else { obj.innerText = current; }
+                if ((step > 0 && current >= value) || (step < 0 && current <= value)) { obj.innerText = value; clearInterval(timer); }
+                else obj.innerText = current;
             }, 50);
-        }
-
-        // --- CORE FUNCTIONS (SAVE, CALC, RENDER) ---
-        function calcPreview() {
-            const start = parseFloat(document.getElementById('odoStart').value) || 0;
-            const end = parseFloat(document.getElementById('odoEnd').value) || 0;
-            const dist = end > start ? (end - start) : 0;
-            document.getElementById('distPreview').innerText = `${dist} KM`;
-
-            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
-            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-            document.getElementById('fuelPreview').innerText = `RM ${(r1 + r2).toFixed(2)}`;
         }
 
         function parseDate(dateStr) {
@@ -324,7 +298,6 @@
             let sorted = [...tasks];
             const sortVal = document.getElementById('sortSelect').value;
             sorted.sort((a,b) => sortVal === 'dateDesc' ? (parseDate(b.date) - parseDate(a.date) || b.id - a.id) : (parseDate(a.date) - parseDate(b.date) || a.id - b.id));
-
             sorted.forEach(t => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5";
@@ -347,7 +320,6 @@
             if(!date || !tFrom) return Swal.fire('Ralat', 'Isi Tarikh & Masa.', 'error');
             const oStart = parseFloat(document.getElementById('odoStart').value) || 0, oEnd = parseFloat(document.getElementById('odoEnd').value) || 0;
             const r1 = parseFloat(document.getElementById('rmInitial').value) || 0, r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-
             const entry = {
                 id: Date.now(), type: window.currentType, date, day: getDayName(date),
                 monthYear: date.split('-')[1] + '-' + date.split('-')[2],
@@ -356,7 +328,7 @@
                 rmMinyak: r1 + r2, fuelType: document.getElementById('fuelType').value, note: document.getElementById('taskInput').value || '-'
             };
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            Swal.fire({ icon:'success', title:'Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
             ['odoStart','odoEnd','rmInitial','rmOffice','taskInput'].forEach(id => document.getElementById(id).value = '');
             calcPreview();
         }
@@ -366,42 +338,25 @@
             return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()];
         }
 
-        // --- EXPORTS & ANALYTICS ---
-        async function exportPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('p', 'mm', 'a4');
-            const logoJata = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png";
-            const logoDVS = "https://github.com/ttv4u1/KP/raw/main/DVS.svg";
-
-            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 45, 'F');
-            doc.setDrawColor(37, 99, 235); doc.setLineWidth(1); doc.line(0, 45, 210, 45);
-            try { doc.addImage(logoJata, 'PNG', 10, 8, 32, 26); doc.addImage(logoDVS, 'SVG', 170, 8, 28, 28); } catch(e) {}
-            doc.setTextColor(255, 255, 255);
-            doc.setFontSize(16); doc.text("LAPORAN LOG PILOT CLOUD", 50, 18);
-            doc.setFontSize(8); doc.text("KERAJAAN MALAYSIA | JABATAN PERKHIDMATAN VETERINAR", 50, 24);
-            doc.setFontSize(10); doc.setTextColor(96, 165, 250); doc.text(`PEMANDU: ${currentUser.displayName.toUpperCase()}`, 50, 34);
-            
-            doc.saveGraphicsState(); doc.setGState(new doc.GState({opacity: 0.04}));
-            doc.addImage(logoJata, 'PNG', 45, 80, 120, 100); doc.restoreGraphicsState();
-
-            const tableData = tasks.sort((a,b) => parseDate(a.date) - parseDate(b.date)).map(t => [
-                `${t.date}\n(${t.day})`, `${t.tFrom}-${t.tTo}`, t.note, `${t.dist} KM`, `RM ${t.rmMinyak.toFixed(2)}`
-            ]);
-            doc.autoTable({ head: [['TARIKH', 'MASA', 'TUGASAN / LALUAN', 'JARAK', 'KOS']], body: tableData, startY: 55, theme: 'grid', headStyles: { fillColor: [30, 41, 59] }, styles: { fontSize: 8 } });
-            doc.save(`PILOT_OFFICIAL_${Date.now()}.pdf`);
+        function calcPreview() {
+            const start = parseFloat(document.getElementById('odoStart').value) || 0;
+            const end = parseFloat(document.getElementById('odoEnd').value) || 0;
+            const dist = end > start ? (end - start) : 0;
+            document.getElementById('distPreview').innerText = `${dist} KM`;
+            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
+            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
+            document.getElementById('fuelPreview').innerText = `RM ${(r1 + r2).toFixed(2)}`;
         }
 
-        function showExportOptions() {
-            Swal.fire({
-                title: 'PUSAT EKSPORT DATA',
-                html: `<div class="grid grid-cols-2 gap-4 p-2">
-                    <button onclick="exportPDF()" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-red-400 font-bold text-xs">📄 PDF RASMI</button>
-                    <button onclick="exportExcel()" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-emerald-400 font-bold text-xs">📊 MS EXCEL</button>
-                    <button onclick="exportToNotes('ios')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-orange-400 font-bold text-xs">🍎 APPLE NOTES</button>
-                    <button onclick="exportToNotes('android')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-green-400 font-bold text-xs">🤖 KEEP NOTES</button>
-                </div>`,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
-            });
+        function setType(type) {
+            window.currentType = type;
+            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
+            document.getElementById('odoFields').classList.add('hidden');
+            document.getElementById('fuelFields').classList.add('hidden');
+            const activeBtn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
+            activeBtn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type === 'tugas' ? 'bg-blue-600 text-white' : type === 'log' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`;
+            if(type === 'log') document.getElementById('odoFields').classList.remove('hidden');
+            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
         }
 
         function showFullAnalytics() {
@@ -412,14 +367,14 @@
             const grandKM = tasks.reduce((s,t) => s + (t.dist || 0), 0);
             const grandRM = tasks.reduce((s,t) => s + (t.rmMinyak || 0), 0);
             let html = `<div class="mb-4 grid grid-cols-2 gap-3">
-                <div class="bg-blue-600/20 p-3 rounded-xl border border-blue-500/20"><p class="text-[9px] text-slate-400 font-bold uppercase mb-1 text-left">Total Jarak</p><p class="text-xl font-mono-corp font-bold text-emerald-400 text-left">${grandKM} KM</p></div>
-                <div class="bg-red-600/20 p-3 rounded-xl border border-red-500/20"><p class="text-[9px] text-slate-400 font-bold uppercase mb-1 text-left">Total Kos</p><p class="text-xl font-mono-corp font-bold text-red-400 text-left">RM ${grandRM.toFixed(2)}</p></div>
+                <div class="bg-blue-600/20 p-3 rounded-xl border border-blue-500/20 text-left"><p class="text-[9px] text-slate-400 font-bold uppercase mb-1">Total Jarak</p><p class="text-xl font-mono-corp font-bold text-emerald-400">${grandKM} KM</p></div>
+                <div class="bg-red-600/20 p-3 rounded-xl border border-red-500/20 text-left"><p class="text-[9px] text-slate-400 font-bold uppercase mb-1">Total Kos</p><p class="text-xl font-mono-corp font-bold text-red-400">RM ${grandRM.toFixed(2)}</p></div>
             </div><div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll text-left">`;
             months.forEach(my => {
                 const mData = tasks.filter(t => t.monthYear === my).sort((a,b) => parseDate(b.date) - parseDate(a.date));
                 const mKM = mData.reduce((s,t) => s + (t.dist || 0), 0);
                 const mRM = mData.reduce((s,t) => s + (t.rmMinyak || 0), 0);
-                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4><span class="text-[10px] font-mono-corp text-white">${mKM} KM | RM ${mRM.toFixed(2)}</span></div><div class="space-y-2">`;
+                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3 text-left"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4><span class="text-[10px] font-mono-corp text-white">${mKM} KM | RM ${mRM.toFixed(2)}</span></div><div class="space-y-2">`;
                 mData.forEach(item => {
                     const color = item.type === 'tugas' ? 'blue' : item.type === 'log' ? 'emerald' : 'red';
                     html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-${color}-600"><div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.date}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div><div class="text-right text-[9px] font-mono-corp text-white">${item.dist > 0 ? item.dist+'K' : ''} ${item.rmMinyak > 0 ? 'RM'+item.rmMinyak : ''}</div></div>`;
@@ -454,15 +409,38 @@
             });
         }
 
-        function setType(type) {
-            window.currentType = type;
-            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
-            document.getElementById('odoFields').classList.add('hidden');
-            document.getElementById('fuelFields').classList.add('hidden');
-            const activeBtn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
-            activeBtn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type === 'tugas' ? 'bg-blue-600 text-white' : type === 'log' ? 'bg-emerald-600 text-white' : 'bg-red-600 text-white'}`;
-            if(type === 'log') document.getElementById('odoFields').classList.remove('hidden');
-            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('p', 'mm', 'a4');
+            const logoJata = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png";
+            const logoDVS = "https://github.com/ttv4u1/KP/raw/main/DVS.svg";
+            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 210, 45, 'F');
+            doc.setDrawColor(37, 99, 235); doc.setLineWidth(1); doc.line(0, 45, 210, 45);
+            try { doc.addImage(logoJata, 'PNG', 10, 8, 32, 26); doc.addImage(logoDVS, 'SVG', 170, 8, 28, 28); } catch(e) {}
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(16); doc.text("LAPORAN LOG PILOT CLOUD", 50, 18);
+            doc.setFontSize(8); doc.text("KERAJAAN MALAYSIA | JABATAN PERKHIDMATAN VETERINAR", 50, 24);
+            doc.setFontSize(10); doc.setTextColor(96, 165, 250); doc.text(`PEMANDU: ${currentUser.displayName.toUpperCase()}`, 50, 34);
+            doc.saveGraphicsState(); doc.setGState(new doc.GState({opacity: 0.04}));
+            doc.addImage(logoJata, 'PNG', 45, 80, 120, 100); doc.restoreGraphicsState();
+            const tableData = tasks.sort((a,b) => parseDate(a.date) - parseDate(b.date)).map(t => [
+                `${t.date}\n(${t.day})`, `${t.tFrom}-${t.tTo}`, t.note, `${t.dist} KM`, `RM ${t.rmMinyak.toFixed(2)}`
+            ]);
+            doc.autoTable({ head: [['TARIKH', 'MASA', 'TUGASAN / LALUAN', 'JARAK', 'KOS']], body: tableData, startY: 55, theme: 'grid', headStyles: { fillColor: [30, 41, 59] }, styles: { fontSize: 8 } });
+            doc.save(`PILOT_OFFICIAL_${Date.now()}.pdf`);
+        }
+
+        function showExportOptions() {
+            Swal.fire({
+                title: 'PUSAT EKSPORT DATA',
+                html: `<div class="grid grid-cols-2 gap-4 p-2">
+                    <button onclick="exportPDF()" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-red-400 font-bold text-xs uppercase">📄 PDF RASMI</button>
+                    <button onclick="exportExcel()" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-emerald-400 font-bold text-xs uppercase">📊 MS EXCEL</button>
+                    <button onclick="exportToNotes('ios')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-orange-400 font-bold text-xs uppercase">🍎 APPLE NOTES</button>
+                    <button onclick="exportToNotes('android')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-green-400 font-bold text-xs uppercase">🤖 KEEP NOTES</button>
+                </div>`,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
+            });
         }
 
         async function deleteEntry(id) {
@@ -470,15 +448,23 @@
             if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).delete();
         }
 
+        // --- REALTIME CLOCK 12H ---
         setInterval(() => {
             const n = new Date();
-            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-GB', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:false });
+            const timeStr = n.toLocaleTimeString('en-US', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit', 
+                hour12: true 
+            }).toUpperCase();
+            
+            document.getElementById('realTime').textContent = timeStr;
             document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
             document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"][n.getDay()];
         }, 1000);
 
         flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
-        ['#timeFrom','#timeSemasa','#timeTo'].forEach(id => flatpickr(id, { enableTime:true, noCalendar:true, dateFormat: "H:i" }));
+        ['#timeFrom','#timeSemasa','#timeTo'].forEach(id => flatpickr(id, { enableTime:true, noCalendar:true, dateFormat: "h:i K" }));
         setType('tugas');
     </script>
 </body>
