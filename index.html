@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Pilot v22.0</title>
+    <title>Intelligent Pilot v23.0</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -67,7 +67,7 @@
         <div class="relative w-64 h-64 border-2 border-blue-500 rounded-lg overflow-hidden">
             <div class="scanner-line"></div>
         </div>
-        <p class="mt-4 font-mono-corp text-blue-400 animate-pulse">MENGANALISIS ODOMETER SAHAJA...</p>
+        <p class="mt-4 font-mono-corp text-blue-400 animate-pulse text-center px-4">AI SEDANG MENGANALISIS ODOMETER...<br><span class="text-[10px] text-slate-400">Pastikan gambar jelas & tiada silauan cahaya</span></p>
     </div>
 
     <!-- LOGIN SCREEN -->
@@ -151,12 +151,21 @@
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
                                 <label class="label-corp text-blue-400">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-bold">📸 SCAN ODO</button>
+                                <!-- Butang yang akan buka Camera/Album -->
+                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold transition-all flex items-center gap-2">
+                                    <span>📸 SCAN ODO</span>
+                                </button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
-                                <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
+                                <div>
+                                    <span class="text-[8px] text-slate-500 block mb-1">MULA (KM)</span>
+                                    <input type="number" id="odoStart" oninput="calcPreview()" class="input-field w-full" placeholder="0">
+                                </div>
+                                <div>
+                                    <span class="text-[8px] text-slate-500 block mb-1">AKHIR (KM)</span>
+                                    <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field w-full" placeholder="0">
+                                </div>
                             </div>
                             <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest">0 KM</div>
                         </div>
@@ -215,6 +224,7 @@
         </footer>
     </div>
 
+    <!-- Hidden Canvas for Image Processing -->
     <canvas id="procCanvas" class="hidden"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
@@ -268,7 +278,6 @@
             const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
             btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
             
-            // Show date end and time end for both Tugas and Log
             const endDateCont = document.getElementById('endDateContainer');
             const timeToCont = document.getElementById('timeToContainer');
 
@@ -292,40 +301,77 @@
             document.getElementById('cameraInput').click();
         }
 
+        /**
+         * FUNGSI SCANNER ODOMETER DIPERTINGKATKAN
+         */
         async function processOdoImage(input) {
             if (!input.files || !input.files[0]) return;
             const overlay = document.getElementById('scanOverlay');
             overlay.style.display = 'flex';
             
             try {
-                const img = new Image();
-                img.src = URL.createObjectURL(input.files[0]);
-                await new Promise(r => img.onload = r);
+                const file = input.files[0];
+                const imageBitmap = await createImageBitmap(file);
                 
-                const canvas = document.createElement('canvas');
+                const canvas = document.getElementById('procCanvas');
                 const ctx = canvas.getContext('2d');
-                canvas.width = img.width;
-                canvas.height = img.height;
-                ctx.drawImage(img, 0, 0);
                 
-                const result = await Tesseract.recognize(canvas, 'eng', { 
-                    logger: m => console.log(m.status),
-                    tessedit_char_whitelist: '0123456789'
+                // Pra-pemprosesan: Tingkatkan Kontras & Grayscale
+                canvas.width = imageBitmap.width;
+                canvas.height = imageBitmap.height;
+                ctx.filter = 'grayscale(100%) contrast(150%) brightness(110%)';
+                ctx.drawImage(imageBitmap, 0, 0);
+                
+                // Konfigurasi Tesseract yang lebih spesifik
+                const worker = await Tesseract.createWorker('eng');
+                await worker.setParameters({
+                    tessedit_char_whitelist: '0123456789', // Hanya ambil nombor
+                    tessjs_create_hocr: '0',
+                    tessjs_create_tsv: '0',
                 });
+
+                const { data } = await worker.recognize(canvas);
+                await worker.terminate();
+
+                const text = data.text;
+                console.log("Raw OCR Result:", text);
+
+                // LOGIK PENAPISAN ODOMETER:
+                // 1. Odometer kereta biasanya 5 hingga 7 digit.
+                // 2. Kami abaikan nombor yang ada tanda ':' (masa/jam).
+                // 3. Kami ambil nombor paling panjang yang ditemui (kerana jam biasanya 4 digit).
                 
-                const text = result.data.text;
-                // Penambahbaikan Regex: Cari nombor 5-7 digit sahaja (mengelak masa 1230, 0900 dll)
-                const matches = text.match(/\b\d{5,7}\b/g); 
-                
-                if (matches && matches.length > 0) {
-                    const bestMatch = matches.sort((a, b) => b.length - a.length)[0];
+                // Pecahkan teks mengikut baris/ruang dan tapis
+                const rawNumbers = text.split(/\s+/);
+                const candidates = rawNumbers
+                    .map(s => s.replace(/[^0-9]/g, '')) // Ambil digit sahaja
+                    .filter(s => s.length >= 5 && s.length <= 7); // Odo biasanya 5-7 digit (e.g 125000)
+
+                if (candidates.length > 0) {
+                    // Ambil yang paling tinggi nilainya atau paling panjang untuk elakkan "noise"
+                    const bestMatch = candidates.sort((a, b) => b.length - a.length || b - a)[0];
+                    
                     document.getElementById('odoEnd').value = bestMatch;
                     calcPreview();
-                    Swal.fire({ icon:'success', title:'Odo Dikesan', text: `Odometer: ${bestMatch} KM`, timer:2000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+                    
+                    Swal.fire({ 
+                        icon:'success', 
+                        title:'Odo Dikesan', 
+                        text: `Nilai: ${bestMatch} KM`, 
+                        timer:2500, 
+                        showConfirmButton:false, 
+                        customClass:{popup:'swal-corp'} 
+                    });
                 } else {
-                    Swal.fire({ icon:'warning', title:'Gagal', text:'Sila pastikan gambar odometer (5-7 digit) jelas.', customClass:{popup:'swal-corp'} });
+                    Swal.fire({ 
+                        icon:'warning', 
+                        title:'Gagal Mengecam', 
+                        text:'AI tidak menjumpai nombor odometer yang sah (5-7 digit). Sila masukkan secara manual atau cuba gambar lebih dekat.', 
+                        customClass:{popup:'swal-corp'} 
+                    });
                 }
             } catch (e) {
+                console.error(e);
                 Swal.fire('Ralat AI', 'Gagal memproses imej.', 'error');
             } finally {
                 overlay.style.display = 'none';
@@ -482,7 +528,6 @@
             Swal.fire({ title: `<span class="text-md font-bold text-blue-500 uppercase">${t.type}</span>`, html: detailHtml, confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'} });
         }
 
-        // --- EXPORTS ---
         function showExportOptions() {
             Swal.fire({
                 title: 'PUSAT EKSPORT DATA',
@@ -518,7 +563,6 @@
         }
 
         function exportAccessDB() {
-            // Generate CSV specifically formatted for Microsoft Access Import
             let csvContent = "ID,StartDate,EndDate,StartTime,EndTime,Type,OdoStart,OdoEnd,Distance,FuelRM,Location,Notes\n";
             tasks.forEach(t => {
                 csvContent += `"${t.id}","${t.date}","${t.dateEnd}","${t.tFrom}","${t.tTo}","${t.type}",${t.odoStart},${t.odoEnd},${t.dist},${t.rmMinyak},"${t.location}","${t.note}"\n`;
@@ -565,7 +609,6 @@
             }
         }
 
-        // --- UTILS ---
         function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
         function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
         
