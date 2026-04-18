@@ -1,3 +1,4 @@
+<!-- START OF FILE Updated April 19, 2026 -->
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -5,7 +6,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v20 Official</title>
+    <title>PILOT Intelligent | v21 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -56,9 +57,11 @@
         .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
 
         /* AI Assistant Style */
-        .ai-chat-box { height: 200px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 0.75rem; padding: 10px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.05); }
-        .ai-bubble { background: #1e293b; padding: 8px 12px; border-radius: 15px 15px 15px 0; margin-bottom: 8px; border: 1px solid rgba(37,99,235,0.2); }
-        .user-bubble { background: #2563eb; padding: 8px 12px; border-radius: 15px 15px 0 15px; margin-bottom: 8px; text-align: right; margin-left: 20%; }
+        #aiAssistant { position: fixed; bottom: 20px; right: 20px; z-index: 999; }
+        .ai-chat-box { width: 320px; height: 400px; display: none; flex-direction: column; }
+        .chat-msg { margin-bottom: 8px; padding: 8px 12px; border-radius: 10px; font-size: 0.8rem; max-width: 85%; }
+        .msg-ai { background: #1e293b; color: #3b82f6; align-self: flex-start; border: 1px solid #3b82f633; }
+        .msg-user { background: #2563eb; color: white; align-self: flex-end; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -71,7 +74,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v20</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v21</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -114,6 +117,20 @@
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
             <!-- INPUT COLUMN -->
             <div class="lg:col-span-4 space-y-6">
+                
+                <!-- SALARY CALCULATOR -->
+                <div class="glass-card p-5 border-l-4 border-emerald-500 shadow-xl">
+                    <label class="label-corp text-emerald-400">Kalkulator Gaji Sejam (Auto)</label>
+                    <div class="space-y-3">
+                        <input type="number" id="basicSalary" oninput="calculateHourlyRate()" class="input-field w-full" placeholder="Masukkan Gaji Basic (RM)">
+                        <div class="bg-black/30 p-3 rounded-lg text-center">
+                            <p class="text-[10px] text-slate-400 uppercase font-bold">Kadar Sejam</p>
+                            <p id="hourlyResult" class="text-xl font-mono-corp text-emerald-400 font-bold">RM 0.00</p>
+                            <p class="text-[8px] text-slate-500 mt-1">(Gaji Basic * 12) / 2504</p>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
                         <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGAS</button>
@@ -122,27 +139,20 @@
                     </div>
 
                     <div class="space-y-4">
-                        <!-- TARIKH & HARI MULA -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="label-corp">📅 Tarikh Mula</label>
-                                <input type="text" id="startDate" class="input-field w-full" onchange="updateDays()">
-                            </div>
-                            <div>
-                                <label class="label-corp">📅 Tarikh Akhir</label>
-                                <input type="text" id="endDate" class="input-field w-full" onchange="updateDays()">
+                        <!-- UPDATED DATE & TIME FIELDS -->
+                        <div>
+                            <label class="label-corp">Tempoh Mula (Tarikh & Masa)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="dateStart" class="input-field w-full" placeholder="Tarikh Mula">
+                                <input type="text" id="timeStart" class="input-field w-full font-mono-corp text-center" placeholder="Masa Mula">
                             </div>
                         </div>
 
-                        <!-- MASA MULA & AKHIR -->
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="label-corp">🕒 Masa Mula</label>
-                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
-                            </div>
-                            <div>
-                                <label class="label-corp">🕒 Masa Akhir</label>
-                                <input type="text" id="timeTo" class="input-field w-full font-mono-corp text-center">
+                        <div>
+                            <label class="label-corp">Tempoh Akhir (Tarikh & Masa)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="dateEnd" class="input-field w-full" placeholder="Tarikh Akhir">
+                                <input type="text" id="timeEnd" class="input-field w-full font-mono-corp text-center" placeholder="Masa Akhir">
                             </div>
                         </div>
 
@@ -180,32 +190,6 @@
                         <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
-
-                <!-- KALKULATOR GAJI SEJAM -->
-                <div class="glass-card p-5 border-l-4 border-emerald-500">
-                    <label class="label-corp text-emerald-400 font-bold">Kalkulator Gaji Sejam (H) 🧮</label>
-                    <div class="flex gap-2">
-                        <input type="number" id="basicSalary" class="input-field flex-1" placeholder="Gaji Asas RM">
-                        <button onclick="calculateHourlyRate()" class="bg-emerald-600 px-4 rounded-lg font-bold text-xs uppercase">Kira</button>
-                    </div>
-                    <div id="salaryResult" class="mt-3 text-center hidden">
-                        <p class="text-[10px] text-slate-400 uppercase">Kadar Gaji Sejam:</p>
-                        <p class="text-xl font-mono-corp text-emerald-400 font-bold">RM 0.00</p>
-                    </div>
-                </div>
-
-                <!-- AI ASSISTANT SECTION -->
-                <div class="glass-card p-5 border-l-4 border-blue-400">
-                    <label class="label-corp text-blue-400 font-bold">Pilot AI Assistant 🤖</label>
-                    <div id="aiChat" class="ai-chat-box mb-3">
-                        <div class="ai-bubble">Selamat sejahtera. Saya adalah Asisten AI PILOT. Bagaimanakah saya boleh membantu urusan rasmi anda hari ini?</div>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="aiInput" class="input-field flex-1 text-xs" placeholder="Tanya sesuatu...">
-                        <button onclick="askAI()" class="bg-blue-600 px-4 rounded-lg">🚀</button>
-                    </div>
-                </div>
-                
                 <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
             </div>
 
@@ -218,7 +202,7 @@
                     </div>
                     <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
                         <table>
-                            <thead><tr><th>Masa & Tempoh</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
+                            <thead><tr><th>Tempoh (Mula-Akhir)</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
                             <tbody id="activeBody"></tbody>
                         </table>
                     </div>
@@ -226,6 +210,7 @@
             </div>
         </main>
 
+        <!-- FOOTER -->
         <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="glass-card p-5 bg-white/5 border-none space-y-4">
@@ -253,13 +238,31 @@
                 </div>
                 <div class="lg:col-span-2 space-y-3 px-2">
                     <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
-                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">
-                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
-                        Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya
-                    </p>
+                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">Kementerian Pertanian Dan Keterjaminan Makanan,<br>Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya</p>
+                </div>
+                <div class="text-center md:text-right space-y-3">
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent Veterinar Malaysia</p>
                 </div>
             </div>
         </footer>
+    </div>
+
+    <!-- AI ASSISTANT UI -->
+    <div id="aiAssistant">
+        <div id="chatWindow" class="ai-chat-box glass-card shadow-2xl overflow-hidden mb-4 border-blue-500/50">
+            <div class="bg-blue-600 p-3 text-[10px] font-bold flex justify-between items-center">
+                <span>PILOT AI ASSISTANT</span>
+                <button onclick="toggleChat()">✖</button>
+            </div>
+            <div id="chatContent" class="flex-1 p-4 overflow-y-auto flex flex-col custom-scroll">
+                <div class="chat-msg msg-ai font-medium">Selamat sejahtera. Saya Pilot AI. Bagaimanakah saya dapat membantu urusan pendokumentasian anda hari ini dengan format korporat yang tepat?</div>
+            </div>
+            <div class="p-2 border-t border-white/10 flex gap-2">
+                <input type="text" id="aiInput" class="input-field flex-1 text-xs" placeholder="Tanya sesuatu...">
+                <button onclick="askAI()" class="bg-blue-600 px-3 rounded-lg text-xs">Send</button>
+            </div>
+        </div>
+        <button onclick="toggleChat()" class="h-14 w-14 bg-blue-600 rounded-full shadow-2xl flex items-center justify-center text-2xl hover:scale-110 transition-all border-4 border-white/10">🤖</button>
     </div>
 
     <canvas id="procCanvas" class="hidden"></canvas>
@@ -304,55 +307,64 @@
             });
         }
 
-        // --- NEW: AI ASSISTANT LOGIC ---
+        // --- SALARY CALCULATOR LOGIC ---
+        function calculateHourlyRate() {
+            const basic = parseFloat(document.getElementById('basicSalary').value) || 0;
+            const rate = (basic * 12) / 2504;
+            document.getElementById('hourlyResult').innerText = `RM ${rate.toFixed(2)}`;
+        }
+
+        // --- AI ASSISTANT LOGIC ---
+        function toggleChat() {
+            const win = document.getElementById('chatWindow');
+            win.style.display = win.style.display === 'flex' ? 'none' : 'flex';
+        }
+
         function askAI() {
-            const input = document.getElementById('aiInput').value;
-            if(!input) return;
-            appendChat(input, 'user');
-            document.getElementById('aiInput').value = '';
+            const input = document.getElementById('aiInput');
+            const msg = input.value.trim();
+            if(!msg) return;
+
+            addChatMessage(msg, 'user');
+            input.value = '';
 
             setTimeout(() => {
-                let response = "Mohon maaf, saya kurang memahami pertanyaan tersebut. Sila nyatakan sama ada anda ingin bantuan pengisian data, pengiraan gaji, atau laporan.";
-                const q = input.toLowerCase();
-                if(q.includes('isi data')) response = "Untuk pengisian data yang tepat, pastikan anda memilih kategori (Tugas/Gerak/Minyak). Masukkan tarikh mula dan masa dengan tepat bagi memudahkan sistem menjana laporan rasmi.";
-                if(q.includes('gaji')) response = "Kadar gaji sejam dikira menggunakan formula rasmi: (Gaji Pokok * 12 Bulan) dibahagi 2504 jam bekerja setahun. Anda boleh menggunakan kalkulator di atas.";
-                if(q.includes('tugas')) response = "Dalam ruangan 'Butiran Perincian', sila nyatakan tugasan anda secara formal, contohnya: 'Menjalankan pemeriksaan kesihatan ternakan di ladang zon A'.";
-                
-                appendChat(response, 'ai');
-            }, 800);
+                let response = "Mohon maaf, saya memerlukan input yang lebih spesifik berkaitan urusan korporat anda.";
+                const lowerMsg = msg.toLowerCase();
+
+                if(lowerMsg.includes("isi data")) response = "Untuk pengisian data yang tepat, sila pastikan format tarikh mengikut standard DD-MM-YYYY dan sertakan butiran tugasan secara rasmi (Contoh: Menjalankan pemantauan biosekuriti di zon A).";
+                else if(lowerMsg.includes("gaji")) response = "Pengiraan gaji sejam dihitung berdasarkan formula: (Gaji Pokok x 12 bulan) dibahagikan dengan 2504 jam bekerja setahun mengikut pekeliling perkhidmatan.";
+                else if(lowerMsg.includes("hi") || lowerMsg.includes("hello")) response = "Selamat sejahtera. Saya sedia membantu anda dalam urusan dokumentasi log PILOT Cloud.";
+                else if(lowerMsg.includes("terima kasih")) response = "Sama-sama. Adakah terdapat perkara lain berkaitan sistem yang memerlukan bantuan saya?";
+
+                addChatMessage(response, 'ai');
+            }, 600);
         }
 
-        function appendChat(text, sender) {
-            const chat = document.getElementById('aiChat');
+        function addChatMessage(text, sender) {
+            const content = document.getElementById('chatContent');
             const div = document.createElement('div');
-            div.className = sender === 'ai' ? 'ai-bubble' : 'user-bubble';
+            div.className = `chat-msg ${sender === 'ai' ? 'msg-ai' : 'msg-user'}`;
             div.innerText = text;
-            chat.appendChild(div);
-            chat.scrollTop = chat.scrollHeight;
+            content.appendChild(div);
+            content.scrollTop = content.scrollHeight;
         }
 
-        // --- NEW: SALARY CALCULATOR ---
-        function calculateHourlyRate() {
-            const basic = parseFloat(document.getElementById('basicSalary').value);
-            if(!basic) return;
-            const rate = (basic * 12) / 2504;
-            const resDiv = document.getElementById('salaryResult');
-            resDiv.classList.remove('hidden');
-            resDiv.querySelector('.text-xl').innerText = `RM ${rate.toFixed(2)}`;
-        }
-
-        // --- UPDATED ODO AI ---
+        // --- PREVIOUS ENGINE (OCR, GPS, ETC) ---
         function triggerCamera() { document.getElementById('cameraInput').click(); }
         async function processOdoImage(input) {
             if (!input.files[0]) return;
+            const file = input.files[0];
             Swal.fire({ title: 'AI Scanning...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            const processedImage = await enhanceImage(input.files[0]);
+            const processedImage = await enhanceImage(file);
             try {
                 const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789' });
                 const rawNumbers = text.match(/\d+/g);
                 if (rawNumbers) {
-                    const finalOdo = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length)[0];
-                    if (finalOdo) { document.getElementById('odoEnd').value = finalOdo; calcPreview(); Swal.fire('Berjaya', `Odometer: ${finalOdo}`, 'success'); }
+                    const finalOdo = rawNumbers.sort((a,b)=>b.length-a.length)[0];
+                    document.getElementById('odoEnd').value = finalOdo;
+                    calcPreview();
+                    Swal.fire({ icon: 'success', title: 'Imbasan Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
                 }
             } catch (e) { Swal.fire('Ralat AI', 'Gagal memproses gambar.', 'error'); }
         }
@@ -365,13 +377,28 @@
                     img.onload = () => {
                         const canvas = document.getElementById('procCanvas');
                         const ctx = canvas.getContext('2d');
-                        canvas.width = 1200; canvas.height = (1200/img.width)*img.height;
-                        ctx.filter = 'grayscale(100%) contrast(300%)';
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg'));
-                    }; img.src = e.target.result;
-                }; reader.readAsDataURL(file);
+                        canvas.width = img.width; canvas.height = img.height;
+                        ctx.filter = 'grayscale(100%) contrast(250%)';
+                        ctx.drawImage(img, 0, 0);
+                        resolve(canvas.toDataURL());
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             });
+        }
+
+        function detectLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                        const data = await res.json();
+                        document.getElementById('locationInput').value = data.address.suburb || data.address.city || data.display_name;
+                    } catch (e) { document.getElementById('locationInput').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`; }
+                });
+            }
         }
 
         function setType(type) {
@@ -384,19 +411,6 @@
             if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
         }
 
-        function detectLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    const { latitude, longitude } = pos.coords;
-                    try {
-                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                        const data = await res.json();
-                        document.getElementById('locationInput').value = data.display_name;
-                    } catch (e) { document.getElementById('locationInput').value = `${latitude}, ${longitude}`; }
-                });
-            }
-        }
-
         function calcPreview() {
             const s = parseFloat(document.getElementById('odoStart').value) || 0;
             const e = parseFloat(document.getElementById('odoEnd').value) || 0;
@@ -406,20 +420,17 @@
             document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
         }
 
-        // --- UPDATED SAVE ENTRY ---
         async function saveEntry() {
-            const dateS = document.getElementById('startDate').value, 
-                  dateE = document.getElementById('endDate').value,
-                  tFrom = document.getElementById('timeFrom').value,
-                  tTo = document.getElementById('timeTo').value;
-
-            if(!dateS || !tFrom) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            const ds = document.getElementById('dateStart').value, ts = document.getElementById('timeStart').value;
+            const de = document.getElementById('dateEnd').value, te = document.getElementById('timeEnd').value;
+            if(!ds || !ts) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
             
             const entry = {
                 id: Date.now(), type: window.currentType, 
-                dateS, dateE, tFrom, tTo,
-                dayS: getDayName(dateS), dayE: dateE ? getDayName(dateE) : '-',
-                monthYear: dateS.split('-')[1] + '-' + dateS.split('-')[2],
+                dateStart: ds, timeStart: ts,
+                dateEnd: de || ds, timeEnd: te || ts,
+                dayStart: getDayName(ds), dayEnd: de ? getDayName(de) : getDayName(ds),
+                monthYear: ds.split('-')[1] + '-' + ds.split('-')[2],
                 odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
                 odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
@@ -429,107 +440,105 @@
             };
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
             Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','timeTo'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','dateStart','dateEnd','timeStart','timeEnd'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
         }
 
         function renderUI() {
             const body = document.getElementById('activeBody'); body.innerHTML = '';
-            let sorted = [...tasks].sort((a,b) => parseDate(b.dateS) - parseDate(a.dateS) || b.id - a.id);
+            let sorted = [...tasks].sort((a,b) => parseDate(b.dateStart) - parseDate(a.dateStart) || b.id - a.id);
             sorted.forEach(t => {
                 const tr = document.createElement('tr');
                 tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5";
                 tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
-                    <td>
-                        <div class="font-bold text-xs text-white">${t.dateS} <span class="text-blue-500">→</span> ${t.dateE || t.dateS}</div>
-                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.tFrom} - ${t.tTo || 'N/A'}</div>
-                    </td>
-                    <td><div class="text-xs text-slate-200 line-clamp-1">${t.note}</div><div class="text-[9px] text-slate-500">📍 ${t.location}</div></td>
+                    <td><div class="font-bold text-[10px] text-white">${t.dateStart} (${t.timeStart}) ➔</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.dateEnd} (${t.timeEnd})</div></td>
+                    <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] mt-1 text-slate-500 flex gap-2"><span>🛣️ ${t.dist} KM</span> <span>📍 ${t.location}</span></div></td>
                     <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
                 body.appendChild(tr);
             });
         }
 
         async function deleteEntry(id) {
-            const res = await Swal.fire({ title: 'Padam?', text: "Data akan dibuang selamanya.", icon: 'warning', showCancelButton: true });
+            const res = await Swal.fire({ title: 'Padam Data?', showCancelButton: true, confirmButtonColor: '#ef4444' });
             if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).delete();
         }
 
-        // --- UNIVERSAL EXPORT ---
-        function showExportOptions() {
-            Swal.fire({
-                title: 'EKSPORT DATA UNIVERSAL',
-                html: `<div class="p-2 export-btn-grid">
-                    <button onclick="exportPDF()" class="text-red-400">📄<span>PDF</span></button>
-                    <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
-                    <button onclick="exportWord()" class="text-blue-400">📝<span>Word</span></button>
-                </div>`,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
-            });
-        }
-
-        async function exportPDF() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
-            doc.text("LAPORAN RASMI PILOT CLOUD", 15, 15);
-            const data = tasks.map(t => [t.dateS, t.dateE, t.tFrom, t.tTo, t.dist + " KM", t.location, t.note]);
-            doc.autoTable({ head: [['MULA', 'AKHIR', 'JAM MULA', 'JAM AKHIR', 'JARAK', 'LOKASI', 'BUTIRAN']], body: data, startY: 25 });
-            doc.save(`PILOT_REPORT.pdf`);
-        }
-
-        function exportExcel() {
-            const ws = XLSX.utils.json_to_sheet(tasks); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Logs"); XLSX.writeFile(wb, "PILOT_Data.xlsx");
-        }
-
-        // --- UTILS ---
         function getDayName(dateStr) { 
-            if(!dateStr) return '-';
             const p = dateStr.split('-'); 
-            return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; 
+            const d = new Date(p[2], p[1]-1, p[0]);
+            return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][d.getDay()]; 
         }
         function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
         
         async function incrementVisitors() {
             const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
             const ref = db.collection("system").doc("analytics");
-            const doc = await ref.get();
-            if(!doc.exists) await ref.set({today:1, total:1, lastDate:today});
-            else {
-                let d = doc.data();
-                await ref.update({ total: d.total + 1, today: d.lastDate === today ? d.today + 1 : 1, lastDate: today });
-            }
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(ref);
+                if (!doc.exists) t.set(ref, { today: 1, month: 1, total: 1, lastDate: today });
+                else {
+                    let d = doc.data(); let u = { total: (d.total || 0) + 1 };
+                    if(d.lastDate !== today) { u.today = 1; u.lastDate = today; } else u.today = (d.today || 0) + 1;
+                    t.update(ref, u);
+                }
+            });
         }
 
         function animateValue(id, val) {
-            const obj = document.getElementById(id); let curr = 0;
+            const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
             const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
         }
 
         function showDetails(t) {
             Swal.fire({
-                title: `<span class="text-blue-500 uppercase">${t.dateS}</span>`,
-                html: `<div class="text-left text-xs space-y-2">
-                    <p><b>Tempoh:</b> ${t.dayS} (${t.tFrom}) hingga ${t.dayE} (${t.tTo})</p>
-                    <p><b>Lokasi:</b> ${t.location}</p>
-                    <p><b>Jarak:</b> ${t.dist} KM</p>
-                    <hr class="border-white/10">
-                    <p><b>Butiran:</b> ${t.note}</p>
+                title: `<span class="text-sm font-bold text-blue-500 uppercase">${t.dayStart} | ${t.dateStart}</span>`,
+                html: `<div class="text-left space-y-3 py-2 text-[11px]">
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-slate-500 font-bold uppercase mb-1">Mula: ${t.dayStart} ${t.dateStart} @ ${t.timeStart}</p>
+                        <p class="text-slate-500 font-bold uppercase mb-1">Akhir: ${t.dayEnd} ${t.dateEnd} @ ${t.timeEnd}</p>
+                        <hr class="my-2 border-white/10">
+                        <p class="text-blue-400 font-bold mb-1">📍 ${t.location}</p>
+                        <p class="text-slate-200 leading-relaxed">${t.note}</p>
+                    </div>
                 </div>`,
-                customClass:{popup:'swal-corp'}
+                confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
             });
+        }
+
+        function showExportOptions() {
+            Swal.fire({
+                title: 'EXPORT DATA',
+                html: `<div class="p-2 export-btn-grid">
+                    <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
+                    <button onclick="exportToNotes()" class="text-orange-400">📋<span>Copy Log</span></button>
+                </div>`,
+                showConfirmButton: false, customClass: { popup: 'swal-corp' }
+            });
+        }
+
+        function exportExcel() {
+            const rows = tasks.map(t => ({ "MULA": t.dateStart + ' ' + t.timeStart, "AKHIR": t.dateEnd + ' ' + t.timeEnd, "LOKASI": t.location, "JARAK": t.dist, "BUTIRAN": t.note }));
+            const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "DataLog"); XLSX.writeFile(wb, `PILOT_v28_Export.xlsx`);
+        }
+
+        function exportToNotes() {
+            let txt = "📋 LOG PILOT CLOUD\n\n";
+            tasks.forEach(t => txt += `[${t.dateStart}] ${t.timeStart} -> ${t.timeEnd}\nLokasi: ${t.location}\nNota: ${t.note}\n---\n`);
+            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', 'Data sedia untuk di-paste.', 'success'));
         }
 
         setInterval(() => {
             const n = new Date();
-            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-GB');
-            document.getElementById('realDate').textContent = n.toLocaleDateString('en-GB');
-            document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"][n.getDay()].toUpperCase();
+            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
+            document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
+            document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
 
-        flatpickr("#startDate", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#endDate", { dateFormat: "d-m-Y" });
-        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-        flatpickr("#timeTo", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        flatpickr("#dateStart, #dateEnd", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#timeStart, #timeEnd", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
         setType('tugas');
     </script>
 </body>
