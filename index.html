@@ -5,16 +5,16 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v36 Rasmi</title>
+    <title>PILOT Cloud Intelligent | v20 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
-    <!-- Fon Rasmi -->
+    <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&family=Zeyada&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    <!-- Rangka Kerja & Pustaka -->
+    <!-- Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -24,14 +24,14 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    <!-- Pustaka AI & Eksport -->
+    <!-- Export & AI Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); --anime-pink: #ff85a2; }
+        :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
         body { font-family: 'Inter', sans-serif; background: #0f172a; background-image: radial-gradient(circle at top right, #1e293b, #0f172a); color: #f8fafc; min-height: 100vh; }
         h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
         .font-mono-corp { font-family: 'Share Tech Mono', monospace; }
@@ -41,34 +41,29 @@
         .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
         .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.025em; }
         #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
-        
-        /* AI ANIME STYLING */
-        .ai-fab { position: fixed; bottom: 30px; right: 30px; width: 80px; height: 80px; border-radius: 50%; background: white; border: 4px solid var(--anime-pink); overflow: hidden; cursor: pointer; z-index: 999; transition: 0.3s; box-shadow: 0 10px 25px rgba(255, 133, 162, 0.5); }
-        .ai-fab img { width: 100%; height: 100%; object-fit: cover; }
-        .ai-fab:hover { transform: scale(1.1) rotate(5deg); }
-        .ai-badge { position: absolute; top: 0; right: 0; background: #10b981; color: white; font-size: 8px; padding: 2px 6px; border-radius: 10px; font-weight: 800; border: 2px solid white; }
-
-        .chat-container { height: 400px; overflow-y: auto; padding: 15px; display: flex; flex-direction: column; gap: 12px; background: rgba(15, 23, 42, 0.8); border-radius: 15px; margin-bottom: 10px; border: 1px solid rgba(255, 133, 162, 0.3); }
-        .chat-bubble { max-width: 85%; padding: 12px 16px; border-radius: 18px; font-size: 12px; line-height: 1.6; position: relative; }
-        .bubble-ai { background: white; color: #1e293b; align-self: flex-start; border-bottom-left-radius: 2px; box-shadow: 4px 4px 0px var(--anime-pink); }
-        .bubble-user { background: var(--primary); color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
-        .ai-name { font-size: 9px; font-weight: 800; color: var(--anime-pink); margin-bottom: 4px; display: block; }
-        
         .table-container { overflow-x: auto; border-radius: 1rem; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
         th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; text-transform: uppercase; color: #64748b; text-align: left; }
         td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; border: 1px solid rgba(255, 133, 162, 0.5) !important; }
+        .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
+        .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
+        .pulse-stat { animation: pulse-glow 2s infinite ease-in-out; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+        
+        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+        .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; gap: 6px; }
+        .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+        .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
+
+        /* AI Assistant Style */
+        .ai-chat-box { height: 200px; overflow-y: auto; background: rgba(0,0,0,0.3); border-radius: 0.75rem; padding: 10px; font-size: 0.75rem; border: 1px solid rgba(255,255,255,0.05); }
+        .ai-bubble { background: #1e293b; padding: 8px 12px; border-radius: 15px 15px 15px 0; margin-bottom: 8px; border: 1px solid rgba(37,99,235,0.2); }
+        .user-bubble { background: #2563eb; padding: 8px 12px; border-radius: 15px 15px 0 15px; margin-bottom: 8px; text-align: right; margin-left: 20%; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- AI ANIME FAB -->
-    <div class="ai-fab" onclick="openAIHelper()">
-        <img src="https://i.pinimg.com/originals/10/91/94/1091948c66d7da3072064e2679269460.jpg" alt="Aina AI">
-        <div class="ai-badge">ONLINE</div>
-    </div>
-
+    <!-- LOGIN SCREEN -->
     <div id="loginScreen">
         <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
             <div class="flex justify-center gap-6 mb-8">
@@ -76,14 +71,15 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Protokol Induk v36</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v20</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
-                <span>PENGESAHAN AKAUN GOOGLE</span>
+                <span>PENGESAHAN GOOGLE</span>
             </button>
         </div>
     </div>
 
+    <!-- MAIN APP -->
     <div id="mainApp" class="hidden">
         <header class="container mx-auto mb-8">
             <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-6">
@@ -91,7 +87,7 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
                     <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">Sistem Data PILOT ©FiR</h1>
+                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud by ©FiR</h1>
                         <div class="flex items-center gap-2">
                             <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
                             <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">---</span>
@@ -115,93 +111,153 @@
             </div>
         </header>
 
-        <!-- (Main Content Grid - Kekalkan kod asal anda untuk borang input dan jadual) -->
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+            <!-- INPUT COLUMN -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
-                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGASAN</button>
-                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">PERGERAKAN</button>
-                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">PETROL</button>
+                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGAS</button>
+                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">GERAK</button>
+                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">MINYAK</button>
                     </div>
 
                     <div class="space-y-4">
-                        <div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="label-corp">Tarikh Mula</label><input type="text" id="startDate" class="input-field w-full"></div>
-                                <div><label class="label-corp">Masa Mula</label><input type="text" id="startTime" class="input-field w-full font-mono-corp text-center"></div>
+                        <!-- TARIKH & HARI MULA -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="label-corp">📅 Tarikh Mula</label>
+                                <input type="text" id="startDate" class="input-field w-full" onchange="updateDays()">
+                            </div>
+                            <div>
+                                <label class="label-corp">📅 Tarikh Akhir</label>
+                                <input type="text" id="endDate" class="input-field w-full" onchange="updateDays()">
                             </div>
                         </div>
-                        <div>
-                            <div class="grid grid-cols-2 gap-4">
-                                <div><label class="label-corp">Tarikh Tamat</label><input type="text" id="endDate" class="input-field w-full"></div>
-                                <div><label class="label-corp">Masa Tamat</label><input type="text" id="endTime" class="input-field w-full font-mono-corp text-center"></div>
+
+                        <!-- MASA MULA & AKHIR -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="label-corp">🕒 Masa Mula</label>
+                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
+                            </div>
+                            <div>
+                                <label class="label-corp">🕒 Masa Akhir</label>
+                                <input type="text" id="timeTo" class="input-field w-full font-mono-corp text-center">
                             </div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400 font-bold uppercase">Imbasan Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">📸 SCAN</button>
+                                <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
+                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">
+                                    <span>📸</span> SCAN ODO
+                                </button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
                                 <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
                             </div>
-                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">JARAK: 0 KM</div>
+                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">AUTO-CALC: 0 KM</div>
                         </div>
 
                         <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                            <label class="label-corp text-red-400">Pengisian Petrol (RM)</label>
+                            <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
-                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain-lain">
+                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain">
                             </div>
                             <select id="fuelType" class="input-field w-full"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
-                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Jumlah: RM 0.00</p>
+                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
                         </div>
 
-                        <div id="locationField" class="hidden"><label class="label-corp">📍 Koordinat GPS</label><input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak lokasi semasa..."></div>
-                        <div><label class="label-corp">Perincian Tugasan Rasmi</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Sila masukkan butiran laporan tugasan..."></textarea></div>
-                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sela Masa Data Awan ☁️</button>
+                        <div id="locationField" class="hidden">
+                            <label class="label-corp">📍 Geolocation GPS</label>
+                            <input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi...">
+                        </div>
+
+                        <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
+                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
+
+                <!-- KALKULATOR GAJI SEJAM -->
+                <div class="glass-card p-5 border-l-4 border-emerald-500">
+                    <label class="label-corp text-emerald-400 font-bold">Kalkulator Gaji Sejam (H) 🧮</label>
+                    <div class="flex gap-2">
+                        <input type="number" id="basicSalary" class="input-field flex-1" placeholder="Gaji Asas RM">
+                        <button onclick="calculateHourlyRate()" class="bg-emerald-600 px-4 rounded-lg font-bold text-xs uppercase">Kira</button>
+                    </div>
+                    <div id="salaryResult" class="mt-3 text-center hidden">
+                        <p class="text-[10px] text-slate-400 uppercase">Kadar Gaji Sejam:</p>
+                        <p class="text-xl font-mono-corp text-emerald-400 font-bold">RM 0.00</p>
+                    </div>
+                </div>
+
+                <!-- AI ASSISTANT SECTION -->
+                <div class="glass-card p-5 border-l-4 border-blue-400">
+                    <label class="label-corp text-blue-400 font-bold">Pilot AI Assistant 🤖</label>
+                    <div id="aiChat" class="ai-chat-box mb-3">
+                        <div class="ai-bubble">Selamat sejahtera. Saya adalah Asisten AI PILOT. Bagaimanakah saya boleh membantu urusan rasmi anda hari ini?</div>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="aiInput" class="input-field flex-1 text-xs" placeholder="Tanya sesuatu...">
+                        <button onclick="askAI()" class="bg-blue-600 px-4 rounded-lg">🚀</button>
+                    </div>
+                </div>
+                
+                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
             </div>
 
+            <!-- TABLE SIDE -->
             <div class="lg:col-span-8">
                 <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
                     <div class="p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
-                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Pangkalan Data Real-Time</h3>
-                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analisis Sejarah 📊</button>
+                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
+                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
                     </div>
                     <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
                         <table>
-                            <thead><tr><th>Tarikh & Masa</th><th>Butiran & Lokasi</th><th class="text-right">Tindakan</th></tr></thead>
+                            <thead><tr><th>Masa & Tempoh</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
                             <tbody id="activeBody"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
-        
-        <!-- Footer Rasmi -->
+
         <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="glass-card p-5 bg-white/5 border-none space-y-4">
-                    <div class="flex items-center gap-2"><span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span><p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Status Sistem</p></div>
+                    <div class="flex items-center gap-2">
+                        <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p>
+                    </div>
                     <div class="grid grid-cols-3 gap-2 text-center">
-                        <div><p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p><p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p></div>
-                        <div class="border-x border-white/10"><p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p><p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p></div>
-                        <div><p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p><p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p></div>
+                        <div>
+                            <p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p>
+                            <p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p>
+                        </div>
+                        <div class="border-x border-white/10">
+                            <p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p>
+                            <p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p>
+                        </div>
+                        <div>
+                            <p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p>
+                            <p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p>
+                        </div>
                     </div>
                 </div>
                 <div class="lg:col-span-2 space-y-3 px-2">
                     <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
-                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">Kementerian Pertanian Dan Keterjaminan Makanan, Blok Podium, Lot 4G1, Presint 4, 62624 Putrajaya</p>
-                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase"><p>Tel: (603) 8870 2000</p><p>Emel: pro[at]dvs.gov.my</p></div>
+                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">
+                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
+                        Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya
+                    </p>
                 </div>
-                <div class="text-center md:text-right space-y-3"><p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Hak Cipta Terpelihara © 2026<br>Portal Rasmi PILOT Cloud Intelligent</p></div>
             </div>
         </footer>
     </div>
@@ -212,6 +268,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // --- CONFIG & FIREBASE ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
@@ -223,7 +280,7 @@
                 document.getElementById('mainApp').classList.remove('hidden'); 
                 document.getElementById('userName').innerText = user.displayName; 
                 document.getElementById('userAvatar').src = user.photoURL; 
-                syncData(); 
+                incrementVisitors(); syncData(); 
             } else { 
                 document.getElementById('loginScreen').style.display = 'flex'; 
                 document.getElementById('mainApp').classList.add('hidden'); 
@@ -239,130 +296,240 @@
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
             });
+            db.collection("system").doc("analytics").onSnapshot(doc => {
+                if(doc.exists) {
+                    const d = doc.data(); animateValue("statToday", d.today || 0);
+                    animateValue("statMonth", d.month || 0); animateValue("statTotal", d.total || 0);
+                }
+            });
         }
 
-        // --- NEW ENHANCED AI ANIME GIRL LOGIC ---
-        function openAIHelper() {
-            Swal.fire({
-                title: '<span style="color:#ff85a2; font-family:Montserrat;">AINA - PEMBANTU MAYA</span>',
-                html: `
-                    <div id="aiChatBox" class="chat-container text-left custom-scroll">
-                        <div class="chat-bubble bubble-ai">
-                            <span class="ai-name">AINA (v35 AI)</span>
-                            Selamat sejahtera, Tuan/Puan. Saya <b>Aina</b>, pembantu peribadi anda. Sila ajukan sebarang soalan berkaitan tugasan atau maklumat am, saya akan cuba mencarinya untuk anda. ✨
-                        </div>
-                    </div>
-                    <div class="flex gap-2">
-                        <input type="text" id="aiInput" class="input-field flex-1 text-[12px]" placeholder="Tanya saya apa sahaja...">
-                        <button onclick="processAIChat()" class="bg-blue-600 px-5 rounded-xl text-white">HANTAR</button>
-                    </div>
-                `,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
-            });
+        // --- NEW: AI ASSISTANT LOGIC ---
+        function askAI() {
+            const input = document.getElementById('aiInput').value;
+            if(!input) return;
+            appendChat(input, 'user');
+            document.getElementById('aiInput').value = '';
 
             setTimeout(() => {
-                document.getElementById('aiInput').focus();
-                document.getElementById('aiInput').addEventListener('keypress', (e) => { if (e.key === 'Enter') processAIChat(); });
-            }, 500);
+                let response = "Mohon maaf, saya kurang memahami pertanyaan tersebut. Sila nyatakan sama ada anda ingin bantuan pengisian data, pengiraan gaji, atau laporan.";
+                const q = input.toLowerCase();
+                if(q.includes('isi data')) response = "Untuk pengisian data yang tepat, pastikan anda memilih kategori (Tugas/Gerak/Minyak). Masukkan tarikh mula dan masa dengan tepat bagi memudahkan sistem menjana laporan rasmi.";
+                if(q.includes('gaji')) response = "Kadar gaji sejam dikira menggunakan formula rasmi: (Gaji Pokok * 12 Bulan) dibahagi 2504 jam bekerja setahun. Anda boleh menggunakan kalkulator di atas.";
+                if(q.includes('tugas')) response = "Dalam ruangan 'Butiran Perincian', sila nyatakan tugasan anda secara formal, contohnya: 'Menjalankan pemeriksaan kesihatan ternakan di ladang zon A'.";
+                
+                appendChat(response, 'ai');
+            }, 800);
         }
 
-        async function processAIChat() {
-            const input = document.getElementById('aiInput');
-            const chatBox = document.getElementById('aiChatBox');
-            const query = input.value.trim();
-            if (!query) return;
+        function appendChat(text, sender) {
+            const chat = document.getElementById('aiChat');
+            const div = document.createElement('div');
+            div.className = sender === 'ai' ? 'ai-bubble' : 'user-bubble';
+            div.innerText = text;
+            chat.appendChild(div);
+            chat.scrollTop = chat.scrollHeight;
+        }
 
-            // 1. Filter 18SX Content
-            const restrictedWords = ['lucah', 'porn', 'seks', 'sex', '18sx', 'bogel', 'naked', 'xxx'];
-            const isRestricted = restrictedWords.some(word => query.toLowerCase().includes(word));
+        // --- NEW: SALARY CALCULATOR ---
+        function calculateHourlyRate() {
+            const basic = parseFloat(document.getElementById('basicSalary').value);
+            if(!basic) return;
+            const rate = (basic * 12) / 2504;
+            const resDiv = document.getElementById('salaryResult');
+            resDiv.classList.remove('hidden');
+            resDiv.querySelector('.text-xl').innerText = `RM ${rate.toFixed(2)}`;
+        }
 
-            chatBox.innerHTML += `<div class="chat-bubble bubble-user">${query}</div>`;
-            input.value = '';
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            if (isRestricted) {
-                setTimeout(() => {
-                    chatBox.innerHTML += `
-                        <div class="chat-bubble bubble-ai">
-                            <span class="ai-name">AINA</span>
-                            Mohon maaf, Tuan/Puan. Saya tidak dibenarkan untuk membincangkan atau mencari kandungan yang tidak bersesuaian dengan etika korporat jabatan. Harap maklum. 🙇‍♀️
-                        </div>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 800);
-                return;
-            }
-
-            // 2. Loading State
-            const loadingId = 'ai-loading-' + Date.now();
-            chatBox.innerHTML += `<div id="${loadingId}" class="chat-bubble bubble-ai animate-pulse"><span class="ai-name">AINA</span>Sedang mencari sumber dipercayai...</div>`;
-            chatBox.scrollTop = chatBox.scrollHeight;
-
-            // 3. Simulated Global Search API Logic
-            // In a real scenario, you'd use Google Custom Search API or Gemini API here.
+        // --- UPDATED ODO AI ---
+        function triggerCamera() { document.getElementById('cameraInput').click(); }
+        async function processOdoImage(input) {
+            if (!input.files[0]) return;
+            Swal.fire({ title: 'AI Scanning...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const processedImage = await enhanceImage(input.files[0]);
             try {
-                // Simulasi tindak balas carian dalam BM Korporat
-                setTimeout(() => {
-                    document.getElementById(loadingId).remove();
-                    let response = "";
-                    
-                    if(query.toLowerCase().includes("siapa") || query.toLowerCase().includes("apa")) {
-                        response = `Berdasarkan maklumat daripada pangkalan data dan sumber rasmi, perkara tersebut merujuk kepada entiti atau maklumat yang berkaitan dengan protokol jabatan. Adakah Tuan/Puan memerlukan perincian lanjut dalam bentuk dokumen PDF?`;
-                    } else if(query.toLowerCase().includes("cuaca")) {
-                        response = `Status cuaca semasa menunjukkan keadaan yang stabil di kawasan Putrajaya. Walau bagaimanapun, Tuan/Puan dinasihatkan untuk sentiasa merujuk aplikasi MyCuaca bagi perancangan tugasan luar.`;
-                    } else {
-                        response = `Terima kasih atas pertanyaan tersebut. Mengikut rujukan global, maklumat mengenai "<b>${query}</b>" memerlukan pengesahan lanjut daripada bahagian teknikal. Saya mencadangkan Tuan/Puan untuk menyemak portal rasmi kementerian bagi data yang lebih tepat.`;
-                    }
-
-                    chatBox.innerHTML += `
-                        <div class="chat-bubble bubble-ai">
-                            <span class="ai-name">AINA</span>
-                            ${response}
-                        </div>`;
-                    chatBox.scrollTop = chatBox.scrollHeight;
-                }, 1500);
-
-            } catch (err) {
-                document.getElementById(loadingId).innerText = "Maaf, ralat rangkaian berlaku.";
-            }
+                const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789' });
+                const rawNumbers = text.match(/\d+/g);
+                if (rawNumbers) {
+                    const finalOdo = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length)[0];
+                    if (finalOdo) { document.getElementById('odoEnd').value = finalOdo; calcPreview(); Swal.fire('Berjaya', `Odometer: ${finalOdo}`, 'success'); }
+                }
+            } catch (e) { Swal.fire('Ralat AI', 'Gagal memproses gambar.', 'error'); }
         }
 
-        // --- ORIGINAL FUNCTIONS (KEKALKAN) ---
+        function enhanceImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.getElementById('procCanvas');
+                        const ctx = canvas.getContext('2d');
+                        canvas.width = 1200; canvas.height = (1200/img.width)*img.height;
+                        ctx.filter = 'grayscale(100%) contrast(300%)';
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg'));
+                    }; img.src = e.target.result;
+                }; reader.readAsDataURL(file);
+            });
+        }
+
         function setType(type) {
             window.currentType = type;
             ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
             ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
             const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
             btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
-            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); }
+            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); detectLocation(); }
             if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
+        }
+
+        function detectLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                        const data = await res.json();
+                        document.getElementById('locationInput').value = data.display_name;
+                    } catch (e) { document.getElementById('locationInput').value = `${latitude}, ${longitude}`; }
+                });
+            }
+        }
+
+        function calcPreview() {
+            const s = parseFloat(document.getElementById('odoStart').value) || 0;
+            const e = parseFloat(document.getElementById('odoEnd').value) || 0;
+            document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
+            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
+            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
+            document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+        }
+
+        // --- UPDATED SAVE ENTRY ---
+        async function saveEntry() {
+            const dateS = document.getElementById('startDate').value, 
+                  dateE = document.getElementById('endDate').value,
+                  tFrom = document.getElementById('timeFrom').value,
+                  tTo = document.getElementById('timeTo').value;
+
+            if(!dateS || !tFrom) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            
+            const entry = {
+                id: Date.now(), type: window.currentType, 
+                dateS, dateE, tFrom, tTo,
+                dayS: getDayName(dateS), dayE: dateE ? getDayName(dateE) : '-',
+                monthYear: dateS.split('-')[1] + '-' + dateS.split('-')[2],
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
+                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
+                location: document.getElementById('locationInput')?.value || '-',
+                note: document.getElementById('taskInput').value || '-'
+            };
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','timeTo'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
         }
 
         function renderUI() {
             const body = document.getElementById('activeBody'); body.innerHTML = '';
-            tasks.forEach(t => {
+            let sorted = [...tasks].sort((a,b) => parseDate(b.dateS) - parseDate(a.dateS) || b.id - a.id);
+            sorted.forEach(t => {
                 const tr = document.createElement('tr');
-                tr.className = "hover:bg-white/5 border-b border-white/5";
+                tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5";
+                tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
-                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
-                    <td><div class="text-xs font-medium text-slate-200">${t.note}</div><div class="text-[9px] mt-1 text-slate-500">📍 ${t.location}</div></td>
-                    <td class="text-right"><button onclick="deleteEntry('${t.docId}')" class="text-red-500">🗑️</button></td>`;
+                    <td>
+                        <div class="font-bold text-xs text-white">${t.dateS} <span class="text-blue-500">→</span> ${t.dateE || t.dateS}</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.tFrom} - ${t.tTo || 'N/A'}</div>
+                    </td>
+                    <td><div class="text-xs text-slate-200 line-clamp-1">${t.note}</div><div class="text-[9px] text-slate-500">📍 ${t.location}</div></td>
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
                 body.appendChild(tr);
             });
         }
 
-        // Masa Real-Time
+        async function deleteEntry(id) {
+            const res = await Swal.fire({ title: 'Padam?', text: "Data akan dibuang selamanya.", icon: 'warning', showCancelButton: true });
+            if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).delete();
+        }
+
+        // --- UNIVERSAL EXPORT ---
+        function showExportOptions() {
+            Swal.fire({
+                title: 'EKSPORT DATA UNIVERSAL',
+                html: `<div class="p-2 export-btn-grid">
+                    <button onclick="exportPDF()" class="text-red-400">📄<span>PDF</span></button>
+                    <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
+                    <button onclick="exportWord()" class="text-blue-400">📝<span>Word</span></button>
+                </div>`,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
+            });
+        }
+
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
+            doc.text("LAPORAN RASMI PILOT CLOUD", 15, 15);
+            const data = tasks.map(t => [t.dateS, t.dateE, t.tFrom, t.tTo, t.dist + " KM", t.location, t.note]);
+            doc.autoTable({ head: [['MULA', 'AKHIR', 'JAM MULA', 'JAM AKHIR', 'JARAK', 'LOKASI', 'BUTIRAN']], body: data, startY: 25 });
+            doc.save(`PILOT_REPORT.pdf`);
+        }
+
+        function exportExcel() {
+            const ws = XLSX.utils.json_to_sheet(tasks); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Logs"); XLSX.writeFile(wb, "PILOT_Data.xlsx");
+        }
+
+        // --- UTILS ---
+        function getDayName(dateStr) { 
+            if(!dateStr) return '-';
+            const p = dateStr.split('-'); 
+            return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; 
+        }
+        function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
+        
+        async function incrementVisitors() {
+            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            const ref = db.collection("system").doc("analytics");
+            const doc = await ref.get();
+            if(!doc.exists) await ref.set({today:1, total:1, lastDate:today});
+            else {
+                let d = doc.data();
+                await ref.update({ total: d.total + 1, today: d.lastDate === today ? d.today + 1 : 1, lastDate: today });
+            }
+        }
+
+        function animateValue(id, val) {
+            const obj = document.getElementById(id); let curr = 0;
+            const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
+        }
+
+        function showDetails(t) {
+            Swal.fire({
+                title: `<span class="text-blue-500 uppercase">${t.dateS}</span>`,
+                html: `<div class="text-left text-xs space-y-2">
+                    <p><b>Tempoh:</b> ${t.dayS} (${t.tFrom}) hingga ${t.dayE} (${t.tTo})</p>
+                    <p><b>Lokasi:</b> ${t.location}</p>
+                    <p><b>Jarak:</b> ${t.dist} KM</p>
+                    <hr class="border-white/10">
+                    <p><b>Butiran:</b> ${t.note}</p>
+                </div>`,
+                customClass:{popup:'swal-corp'}
+            });
+        }
+
         setInterval(() => {
             const n = new Date();
-            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
-            document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
-            document.getElementById('realDay').textContent = ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][n.getDay()];
+            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-GB');
+            document.getElementById('realDate').textContent = n.toLocaleDateString('en-GB');
+            document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"][n.getDay()].toUpperCase();
         }, 1000);
 
         flatpickr("#startDate", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#endDate", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#startTime", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-        flatpickr("#endTime", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-
+        flatpickr("#endDate", { dateFormat: "d-m-Y" });
+        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        flatpickr("#timeTo", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
         setType('tugas');
     </script>
 </body>
