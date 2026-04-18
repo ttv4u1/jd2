@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v29 Official</title>
+    <title>PILOT Cloud Intelligent | v30 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -66,7 +66,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v29</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v30</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -117,21 +117,11 @@
                     </div>
 
                     <div class="space-y-4">
-                        <!-- MULA SECTION -->
                         <div>
-                            <label class="label-corp">Mula (Tarikh & Masa)</label>
+                            <label class="label-corp">Tarikh & Masa</label>
                             <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="datePicker" class="input-field w-full" placeholder="Tarikh Mula">
-                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center" placeholder="Masa Mula">
-                            </div>
-                        </div>
-
-                        <!-- AKHIR SECTION -->
-                        <div>
-                            <label class="label-corp">Akhir (Tarikh & Masa)</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="datePickerEnd" class="input-field w-full" placeholder="Tarikh Akhir">
-                                <input type="text" id="timeTo" class="input-field w-full font-mono-corp text-center" placeholder="Masa Akhir">
+                                <input type="text" id="datePicker" class="input-field w-full">
+                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
                             </div>
                         </div>
 
@@ -284,6 +274,30 @@
             });
         }
 
+        // --- FIX DELETE FUNCTION ---
+        async function deleteEntry(docId) {
+            const result = await Swal.fire({
+                title: 'Padam Data?',
+                text: "Rekod ini akan dibuang secara kekal!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                cancelButtonColor: '#3b82f6',
+                confirmButtonText: 'YA, PADAM',
+                cancelButtonText: 'BATAL',
+                customClass: { popup: 'swal-corp' }
+            });
+
+            if (result.isConfirmed) {
+                try {
+                    await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
+                    Swal.fire({ icon:'success', title:'Dihapuskan', timer:800, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+                } catch (e) {
+                    Swal.fire('Ralat', 'Gagal memadam data dari pelayan Cloud.', 'error');
+                }
+            }
+        }
+
         // --- IMPROVED AI SCANNER ENGINE (ODO ONLY) ---
         function triggerCamera() { document.getElementById('cameraInput').click(); }
 
@@ -308,8 +322,8 @@
                 const rawNumbers = text.match(/\d+/g);
                 if (rawNumbers) {
                     const odometerOnly = rawNumbers
-                        .filter(n => n.length >= 4 && n.length <= 7) 
-                        .sort((a, b) => b.length - a.length); 
+                        .filter(n => n.length >= 4 && n.length <= 7)
+                        .sort((a, b) => b.length - a.length);
 
                     if (odometerOnly.length > 0) {
                         const finalOdo = odometerOnly[0];
@@ -381,24 +395,12 @@
         }
 
         async function saveEntry() {
-            const date = document.getElementById('datePicker').value;
-            const dateEnd = document.getElementById('datePickerEnd').value;
-            const time = document.getElementById('timeFrom').value;
-            const timeEnd = document.getElementById('timeTo').value;
-
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
-            
+            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
+            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
             const entry = {
-                id: Date.now(), 
-                type: window.currentType, 
-                date, 
-                dateEnd: dateEnd || date,
-                day: getDayName(date),
-                dayEnd: dateEnd ? getDayName(dateEnd) : getDayName(date),
+                id: Date.now(), type: window.currentType, date, day: getDayName(date),
                 monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time,
-                tTo: timeEnd || '-',
-                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
                 odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
                 rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
@@ -407,7 +409,7 @@
             };
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
             Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','datePickerEnd','timeTo'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
             calcPreview();
         }
 
@@ -419,22 +421,18 @@
                 tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
                 tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
-                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom} - ${t.tTo}</div></td>
+                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
                     <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
                         <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
                             ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
                             <span class="truncate max-w-[120px]">📍 ${t.location}</span>
                         </div></td>
-                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition-transform">🗑️</button></td>`;
                 body.appendChild(tr);
             });
         }
 
-        async function deleteEntry(docId) {
-            const res = await Swal.fire({ title: 'Hapus?', text: "Data akan dipadam dari cloud.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
-            if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
-        }
-
+        // --- UNIVERSAL EXPORT ---
         function showExportOptions() {
             Swal.fire({
                 title: 'PUSAT EKSPORT DATA UNIVERSAL',
@@ -459,25 +457,43 @@
             try {
                 const { jsPDF } = window.jspdf;
                 const doc = new jsPDF('l', 'mm', 'a4');
-                doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F');
-                doc.setTextColor(255, 255, 255); doc.setFontSize(18); doc.text("LAPORAN RASMI PILOT CLOUD MASTER v28", 15, 18);
-                doc.setFontSize(10); const userName = currentUser ? currentUser.displayName.toUpperCase() : 'PEMANDU';
+                doc.setFillColor(15, 23, 42);
+                doc.rect(0, 0, 297, 40, 'F');
+                doc.setTextColor(255, 255, 255);
+                doc.setFontSize(18);
+                doc.text("LAPORAN RASMI PILOT CLOUD MASTER v18.8", 15, 18);
+                doc.setFontSize(10);
+                const userName = currentUser ? currentUser.displayName.toUpperCase() : 'PEMANDU';
                 doc.text(`PEMANDU: ${userName} | JABATAN PERKHIDMATAN VETERINAR (JPV)`, 15, 28);
-                const data = tasks.sort((a, b) => parseDate(a.date) - parseDate(b.date)).map(t => [t.date, t.day, `${t.tFrom}-${t.tTo}`, t.location, (t.dist || 0) + " KM", "RM " + (t.rmMinyak || 0).toFixed(2), t.note]);
-                doc.autoTable({ head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'KOS', 'BUTIRAN']], body: data, startY: 45, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [37, 99, 235] } });
+                const data = tasks
+                    .sort((a, b) => parseDate(a.date) - parseDate(b.date))
+                    .map(t => [t.date || '-', t.day || '-', t.tFrom || '-', t.location || '-', (t.dist || 0) + " KM", "RM " + (t.rmMinyak || 0).toFixed(2), t.note || '-']);
+                doc.autoTable({
+                    head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'KOS', 'BUTIRAN']],
+                    body: data,
+                    startY: 45,
+                    theme: 'grid',
+                    styles: { fontSize: 8, cellPadding: 3 },
+                    headStyles: { fillColor: [37, 99, 235], textColor: 255, fontStyle: 'bold' },
+                    alternateRowStyles: { fillColor: [245, 247, 250] },
+                    margin: { left: 15, right: 15 }
+                });
                 doc.save(`PILOT_RASMI_${new Date().getTime()}.pdf`);
-            } catch (error) { Swal.fire('Ralat PDF', 'Gagal menjana PDF.', 'error'); }
+                Swal.fire({ icon: 'success', title: 'PDF Berjaya Dijana', timer: 1500, showConfirmButton: false });
+            } catch (error) {
+                Swal.fire('Ralat PDF', 'Gagal menjana PDF.', 'error');
+            }
         }
 
         function exportExcel() {
-            const rows = tasks.map(t => ({ "TARIKH MULA": t.date, "HARI MULA": t.day, "TARIKH AKHIR": t.dateEnd, "HARI AKHIR": t.dayEnd, "MASA MULA": t.tFrom, "MASA AKHIR": t.tTo, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
+            const rows = tasks.map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
             const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
         }
 
         function exportWord() {
-            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh Mula</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
-            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.tFrom} - ${t.tTo}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
+            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
+            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
             html += "</table></body></html>";
             const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
@@ -485,7 +501,7 @@
 
         function exportNotepad() {
             let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
-            tasks.forEach(t => txt += `[${t.date}] ${t.tFrom}-${t.tTo} | ${t.location} | ${t.note}\n`);
+            tasks.forEach(t => txt += `[${t.date}] ${t.tFrom} | ${t.location} | ${t.note}\n`);
             const blob = new Blob([txt], { type: 'text/plain' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Log.txt`; link.click();
         }
@@ -493,14 +509,14 @@
         function exportToNotes(p) {
             let txt = `📋 LOG PILOT CLOUD\n`;
             tasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
-                txt += `📅 ${t.date} (${t.day}) -> ${t.dateEnd} (${t.dayEnd})\n📍 ${t.location}\n⏰ ${t.tFrom} - ${t.tTo} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
+                txt += `📅 ${t.date}\n📍 ${t.location}\n⏰ ${t.tFrom} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
             });
             navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
         }
 
+        // --- UTILS ---
         function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
         function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
-        
         async function incrementVisitors() {
             const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
             const ref = db.collection("system").doc("analytics");
@@ -514,12 +530,10 @@
                 }
             });
         }
-
         function animateValue(id, val) {
             const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
             const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
         }
-
         function showFullAnalytics() {
             const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
                 const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
@@ -540,19 +554,12 @@
             html += `</div>`;
             Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
         }
-
         window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
-
         function showDetails(t) {
             Swal.fire({
-                title: `<span class="text-md font-bold text-blue-500 uppercase">INFO DATA</span>`,
+                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
                 html: `<div class="text-left space-y-3 py-2">
                     <div class="p-3 bg-white/5 rounded-xl border border-white/5">
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Mula</p>
-                        <p class="text-[10px] text-white mb-2">${t.day}, ${t.date} @ ${t.tFrom}</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Akhir</p>
-                        <p class="text-[10px] text-white mb-2">${t.dayEnd}, ${t.dateEnd} @ ${t.tTo}</p>
-                        <hr class="border-white/10 my-2">
                         <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
                         <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
                         <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
@@ -566,19 +573,14 @@
                 confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
             });
         }
-
         setInterval(() => {
             const n = new Date();
             document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
             document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
             document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
-
         flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#datePickerEnd", { dateFormat: "d-m-Y", defaultDate: "today" });
         flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-        flatpickr("#timeTo", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-        
         setType('tugas');
     </script>
 </body>
