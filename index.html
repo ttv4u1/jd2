@@ -1,0 +1,574 @@
+--- START OF FILE Paste April 18, 2026 - 5:50PM ---
+
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5395525176253885"
+     crossorigin="anonymous"></script>
+    <meta name="google-adsense-account" content="ca-pub-5395525176253885">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PILOT Cloud Master | v17.1 Official</title>
+    
+    <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
+
+    <!-- Frameworks -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Orbitron:wght@500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- Export Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
+
+    <style>
+        :root {
+            --glass: rgba(255, 255, 255, 0.03);
+            --neon-blue: #3b82f6;
+            --neon-green: #22c55e;
+            --neon-red: #ef4444;
+            --neon-gold: #f59e0b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: radial-gradient(circle at center, #1e293b, #0f172a, #000);
+            background-attachment: fixed;
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .font-digital { font-family: 'Orbitron', sans-serif; }
+
+        .glass {
+            background: var(--glass);
+            backdrop-filter: blur(25px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+        }
+
+        .btn-3d {
+            background: linear-gradient(145deg, #0ea5e9, #2563eb);
+            box-shadow: 0 4px 0 #1e40af, 0 8px 15px rgba(0,0,0,0.4);
+            transition: 0.1s;
+            cursor: pointer;
+        }
+        .btn-3d:active { transform: translateY(2px); box-shadow: 0 1px 0 #1e40af; }
+
+        .input-field {
+            background: rgba(0, 0, 0, 0.7) !important;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 12px;
+            padding: 10px;
+            color: #ffffff !important;
+            font-size: 0.85rem;
+            width: 100%;
+            outline: none;
+        }
+
+        .label-pro {
+            font-size: 10px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: rgba(255,255,255,0.4);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        #loginScreen {
+            position: fixed; inset: 0;
+            background: rgba(0,0,0,0.95);
+            backdrop-filter: blur(30px);
+            z-index: 1000;
+            display: flex; align-items: center; justify-content: center;
+        }
+
+        /* --- PDF Report Styling --- */
+        #reportTemplate {
+            color: black;
+            background: white;
+            width: 1000px;
+            position: absolute;
+            left: -9999px;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+        }
+        .pdf-watermark {
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            opacity: 0.08;
+            z-index: 0;
+        }
+        .pdf-content { position: relative; z-index: 1; }
+
+        .hidden { display: none !important; }
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
+    </style>
+</head>
+<body class="p-3 md:p-6">
+
+    <!-- Watermark Background Web -->
+    <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Coat_of_arms_of_Malaysia.svg" class="fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-3/4 opacity-[0.03] pointer-events-none -z-10">
+
+    <!-- LOGIN SCREEN -->
+    <div id="loginScreen">
+        <div class="glass p-10 max-w-sm w-full text-center border-t-4 border-blue-500 shadow-2xl">
+            <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-24 mx-auto mb-6 drop-shadow-2xl">
+            <h2 class="text-2xl font-extrabold uppercase tracking-widest mb-1">PILOT CLOUD</h2>
+            <p class="text-[10px] text-blue-400 mb-10 uppercase tracking-widest font-bold">Pemandu Veterinar Malaysia</p>
+            <p class="text-[9px] text-blue-400 mb-10 uppercase tracking-widest font-bold">The Intelligent Pilot Data Process V17.1</p>
+            <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-2xl font-bold text-sm border border-white/10 bg-white/5 hover:bg-white/10 transition shadow-xl text-white">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
+                <span>MASUK DENGAN GOOGLE</span>
+            </button>
+            <p id="loginStatus" class="mt-4 text-[10px] text-yellow-500 hidden font-bold">Sedang Menyambung...</p>
+        </div>
+    </div>
+
+    <!-- MAIN APP CONTENT -->
+    <div id="mainApp" class="hidden">
+        <header class="container mx-auto mb-8">
+            <div class="glass p-4 flex flex-wrap justify-between items-center gap-6 shadow-2xl border-b border-white/10">
+                <div class="flex items-center gap-4 text-left">
+                    <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-10 lg:h-14 rounded-lg">
+                    <div class="flex flex-col">
+                        <h1 class="text-white text-sm lg:text-lg font-extrabold uppercase leading-none tracking-tight">PILOT Intelligent v17.1</h1>
+                        <div class="flex items-center gap-2 mt-1.5">
+                            <img id="userAvatar" class="h-5 w-5 rounded-full border border-white/20">
+                            <span id="userName" class="text-[10px] text-blue-400 font-bold uppercase">---</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CLOCK 12H -->
+                <div class="flex items-center gap-4 bg-black/40 px-6 py-3 rounded-2xl border border-white/5 shadow-inner">
+                    <h1 id="realTime" class="text-xl md:text-3xl font-digital font-bold text-blue-400 uppercase tracking-tighter">00:00:00 AM</h1>
+                    <div class="h-8 w-[1px] bg-white/10"></div>
+                    <div class="flex flex-col text-left font-bold uppercase tracking-tighter">
+                        <p id="realDay" class="text-[10px] text-blue-500">---</p>
+                        <p id="realDate" class="text-[9px] text-white/40">--/--/----</p>
+                    </div>
+                </div>
+                <button onclick="logout()" class="bg-red-500/10 border border-red-500/30 text-red-500 text-[10px] px-6 py-2 rounded-full font-bold hover:bg-red-600 transition shadow-lg uppercase">Logout 🔒</button>
+            </div>
+        </header>
+
+        <main class="container mx-auto">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                
+                <!-- COLUMN 1: FORM -->
+                <div class="lg:col-span-4 space-y-6">
+                    <div class="glass p-6 border-t-4 border-blue-500 shadow-xl">
+                        <div class="mb-6 flex bg-black/50 p-1.5 rounded-xl border border-white/5 shadow-inner">
+                            <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-2 text-[10px] font-bold rounded-lg transition-all bg-blue-600 text-white uppercase shadow-lg">Tugas</button>
+                            <button onclick="setType('log')" id="btnLog" class="flex-1 py-2 text-[10px] font-bold rounded-lg transition-all text-white/40 uppercase">Gerak</button>
+                            <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-2 text-[10px] font-bold rounded-lg transition-all text-white/40 uppercase">Minyak</button>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div>
+                                <label class="label-pro">Tarikh Log</label>
+                                <input type="text" id="datePicker" class="input-field" placeholder="Pilih Tarikh">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2">
+                                <div><label class="label-pro text-[8px]">Mula</label><input type="text" id="timeFrom" class="input-field font-digital text-center"></div>
+                                <div><label class="label-pro text-[8px]">Trans</label><input type="text" id="timeSemasa" class="input-field font-digital text-center"></div>
+                                <div><label class="label-pro text-[8px]">Akhir</label><input type="text" id="timeTo" class="input-field font-digital text-center"></div>
+                            </div>
+
+                            <!-- Odometer Tab (Gerak) -->
+                            <div id="odoFields" class="hidden space-y-4">
+                                <label class="label-pro text-green-400">Pengisian Odometer (KM)</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <input type="number" id="odoStart" class="input-field border-green-500/30" placeholder="Odo Terakhir">
+                                    <input type="number" id="odoEnd" class="input-field border-green-500/30" placeholder="Odo Semasa">
+                                </div>
+                            </div>
+
+                            <!-- Fuel Tab (Minyak) -->
+                            <div id="fuelFields" class="hidden space-y-4">
+                                <label class="label-pro text-red-400">Kos Minyak (RM)</label>
+                                <div class="grid grid-cols-2 gap-3">
+                                    <input type="number" id="rmInitial" class="input-field border-red-500/30" placeholder="RM Semasa">
+                                    <input type="number" id="rmOffice" class="input-field border-red-500/30" placeholder="RM Balik">
+                                </div>
+                                <select id="fuelType" class="input-field">
+                                    <option value="RON 95">RON 95</option>
+                                    <option value="RON 97">RON 97</option>
+                                    <option value="DIESEL">DIESEL</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label class="label-pro">Butiran / Laluan Tugasan</label>
+                                <textarea id="taskInput" rows="3" class="input-field" placeholder="Keterangan perincian tugas atau laluan..."></textarea>
+                            </div>
+                            
+                            <button onclick="saveEntry()" class="w-full btn-3d py-4 text-xs font-extrabold uppercase tracking-widest text-white mt-2 shadow-blue-500/20">Sync To Cloud ☁️</button>
+                        </div>
+                    </div>
+
+                    <!-- MULTI-EXPORT HUB -->
+                    <div class="glass p-5 border-l-4 border-yellow-500 shadow-xl">
+                        <button onclick="generateOfficialPDF()" class="w-full btn-3d bg-red-600/50 text-[10px] py-4 rounded-xl uppercase border border-red-500/30 mb-4 font-bold">📄 Download PDF Penyata Rasmi</button>
+                        <div class="grid grid-cols-2 gap-2 mb-3">
+                            <button onclick="exportWord()" class="btn-3d bg-blue-700/50 text-[9px] py-2 rounded uppercase font-bold text-white">Word</button>
+                            <button onclick="exportExcel()" class="btn-3d bg-green-700/50 text-[9px] py-2 rounded uppercase font-bold text-white">Excel</button>
+                            <button onclick="exportPPT()" class="btn-3d bg-orange-700/50 text-[9px] py-2 rounded uppercase font-bold text-white">PPT</button>
+                            <button onclick="exportNotepad()" class="btn-3d bg-gray-600/50 text-[9px] py-2 rounded uppercase font-bold text-white">Notepad</button>
+                        </div>
+                        <button onclick="shareToNotes()" class="w-full btn-3d bg-indigo-700/50 text-[9px] py-2 rounded uppercase font-bold text-white">📱 Share to Mobile Notes</button>
+                    </div>
+                </div>
+
+                <!-- COLUMN 2: LIVE LOG -->
+                <div class="lg:col-span-8">
+                    <div class="glass flex flex-col min-h-[600px] shadow-2xl overflow-hidden border-b-4 border-blue-500/30">
+                        <div class="p-5 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
+                            <h3 class="font-bold uppercase tracking-widest text-[11px] text-blue-300">Live Cloud Feed</h3>
+                            <button onclick="showMonthSummary()" class="text-[10px] bg-yellow-500/20 text-yellow-400 px-4 py-1 rounded-full font-bold border border-yellow-500/30 uppercase tracking-tighter">Ringkasan Analitik</button>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left text-sm">
+                                <thead class="bg-black/30 text-[9px] uppercase text-white/40 tracking-[0.2em] border-b border-white/5">
+                                    <tr>
+                                        <th class="p-5">Hari & Waktu</th>
+                                        <th class="p-5">Butiran & Analisis</th>
+                                        <th class="p-5 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activeBody" class="divide-y divide-white/5 text-white"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- PENYATA RASMI LETTERHEAD (PDF HIDDEN) -->
+    <div id="reportTemplate">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Coat_of_arms_of_Malaysia.svg" class="pdf-watermark">
+        
+        <div class="pdf-content">
+            <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 5px double #1a365d; padding-bottom: 20px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/2/26/Coat_of_arms_of_Malaysia.svg" width="95">
+                <div style="text-align: center; flex-grow: 1; padding: 0 20px;">
+                    <h2 style="margin:0; font-size: 20px; font-weight: 900; color: #1a365d; text-transform: uppercase;">Jabatan Perkhidmatan Veterinar</h2>
+                    <h3 style="margin:5px 0; font-size: 14px; font-weight: 700; color: #2d3748; text-transform: uppercase;">Kementerian Pertanian dan Keterjaminan Makanan</h3>
+                    <p style="margin:0; font-size: 10px; text-transform: uppercase; color: #4a5568; font-weight: bold;">Bahagian Penguat Kuasa Veterinar (BPK)</p>
+                </div>
+                <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" width="95">
+            </div>
+
+            <h3 style="text-align: center; text-decoration: underline; margin-top: 30px; font-size: 16px; color: #1a365d; font-weight: 900; text-transform: uppercase;">Penyata Bulanan Pergerakan, Tugasan & Kos Bahan Api</h3>
+            <p style="text-align: center; font-size: 12px; font-weight: bold; margin-bottom: 20px;">RINGKASAN REKOD: <span id="pdfMonthLabel"></span></p>
+
+            <div id="pdfContentArea"></div>
+
+            <div style="margin-top: 50px; display: flex; justify-content: space-between; font-size: 11px;">
+                <div style="line-height: 2;">
+                    <div style="background: #f1f5f9; padding: 10px; border-radius: 8px; border-left: 5px solid #3b82f6;">
+                        <p>JUMLAH KESELURUHAN JARAK: <span id="pdfTotalKM" style="font-weight:bold; color: #1e40af;"></span> KM</p>
+                        <p>JUMLAH KESELURUHAN MINYAK: RM <span id="pdfTotalRM" style="font-weight:bold; color: #b91c1c;"></span></p>
+                    </div>
+                    <p style="margin-top: 10px;">DICETAK PADA: <span id="pdfPrintDate"></span></p>
+                </div>
+                <div style="text-align: center; width: 220px;">
+                    <p>Tandatangan Pegawai Pelapor:</p><br><br><br>
+                    <p>__________________________</p>
+                    <p><b>( <span id="pdfOfficerName"></span> )</b></p>
+                    <p>PENGUAT KUASA VETERINAR</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script>
+        // --- FIREBASE CONFIG ---
+        const firebaseConfig = {
+          apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs",
+          authDomain: "bpk-cloud-system.firebaseapp.com",
+          projectId: "bpk-cloud-system",
+          storageBucket: "bpk-cloud-system.firebasestorage.app",
+          messagingSenderId: "690773145817",
+          appId: "1:690773145817:web:4a6638d25d572499fb66c8"
+        };
+
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        let currentUser = null;
+        let tasks = [];
+
+        // Auth Logic
+        auth.onAuthStateChanged(user => {
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userName').innerText = user.displayName;
+                document.getElementById('userAvatar').src = user.photoURL;
+                syncData();
+            } else {
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('mainApp').classList.add('hidden');
+            }
+        });
+
+        async function login() {
+            document.getElementById('loginStatus').classList.remove('hidden');
+            const provider = new firebase.auth.GoogleAuthProvider();
+            try { await auth.signInWithPopup(provider); } catch (e) { await auth.signInWithRedirect(provider); }
+        }
+
+        function logout() { auth.signOut(); }
+
+        function syncData() {
+            db.collection("users").doc(currentUser.uid).collection("logs")
+              .orderBy("id", "desc")
+              .onSnapshot(snap => {
+                  tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+                  renderUI();
+              });
+        }
+
+        // Tab Switch (Explicit)
+        function setType(type) {
+            window.currentType = type;
+            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(b => document.getElementById(b).className = "flex-1 py-2 text-[9px] font-bold rounded-lg transition-all text-white/40 uppercase shadow-none");
+            document.getElementById('odoFields').classList.add('hidden');
+            document.getElementById('fuelFields').classList.add('hidden');
+
+            const activeBtn = type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak';
+            const color = type === 'tugas' ? 'bg-blue-600' : type === 'log' ? 'bg-green-600' : 'bg-red-600';
+            document.getElementById(activeBtn).className = `flex-1 py-2 text-[10px] font-bold rounded-lg transition-all ${color} text-white uppercase shadow-lg`;
+
+            if(type === 'log') document.getElementById('odoFields').classList.remove('hidden');
+            if(type === 'minyak') {
+                document.getElementById('odoFields').classList.remove('hidden');
+                document.getElementById('fuelFields').classList.remove('hidden');
+            }
+        }
+
+        async function saveEntry() {
+            const date = document.getElementById('datePicker').value;
+            const tFrom = document.getElementById('timeFrom').value;
+            if(!date || !tFrom) return Swal.fire('Ralat', 'Tarikh & Masa wajib.', 'error');
+
+            const oStart = parseFloat(document.getElementById('odoStart').value) || 0;
+            const oEnd = parseFloat(document.getElementById('odoEnd').value) || 0;
+            const rm1 = parseFloat(document.getElementById('rmInitial').value) || 0;
+            const rm2 = parseFloat(document.getElementById('rmOffice').value) || 0;
+
+            const newEntry = {
+                id: Date.now(),
+                type: window.currentType,
+                date,
+                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
+                day: ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(date.split('-').reverse().join('-')).getDay()],
+                tFrom, tSemasa: document.getElementById('timeSemasa').value || '-', tTo: document.getElementById('timeTo').value || '-',
+                odoStart: oStart, odoEnd: oEnd,
+                dist: (oEnd > oStart) ? (oEnd - oStart) : 0,
+                rmMinyak: rm1 + rm2,
+                fuelType: document.getElementById('fuelType').value,
+                note: document.getElementById('taskInput').value || '-'
+            };
+
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(newEntry);
+            ['datePicker','timeFrom','timeSemasa','timeTo','odoStart','odoEnd','rmInitial','rmOffice','taskInput'].forEach(id => {
+                if(document.getElementById(id)) document.getElementById(id).value = '';
+            });
+            Swal.fire({ icon: 'success', title: 'Data Cloud Disimpan', timer: 1000, showConfirmButton: false });
+        }
+
+        function renderUI() {
+            const body = document.getElementById('activeBody');
+            body.innerHTML = '';
+            const grouped = tasks.reduce((acc, t) => {
+                acc[t.date] = acc[t.date] || [];
+                acc[t.date].push(t);
+                return acc;
+            }, {});
+
+            Object.keys(grouped).sort((a,b) => {
+                const da = a.split('-'), db = b.split('-');
+                return new Date(db[2],db[1],db[0]) - new Date(da[2],da[1],da[0]);
+            }).forEach(date => {
+                const dayTasks = grouped[date];
+                const header = document.createElement('tr');
+                header.className = "clickable-header bg-blue-500/10 border-l-4 border-blue-500 shadow-lg";
+                header.onclick = () => showDaySummary(date);
+                header.innerHTML = `<td colspan="3" class="p-3 text-[10px] font-extrabold uppercase text-blue-300 font-digital">📅 ${date} (${dayTasks[0].day}) <span class="ml-2 opacity-50 italic">[Summary]</span></td>`;
+                body.appendChild(header);
+
+                dayTasks.forEach(t => {
+                    const tr = document.createElement('tr');
+                    tr.className = "hover:bg-white/5 border-b border-white/5 transition cursor-pointer";
+                    tr.onclick = () => showDetails(t);
+                    tr.innerHTML = `
+                        <td class="p-4 font-digital ${t.type==='log'?'text-green-500':t.type==='minyak'?'text-red-400':'text-white'} text-[10px]">
+                            <div class="text-blue-400 font-bold mb-1">${t.day}</div>
+                            ${t.tFrom} → ${t.tTo}
+                        </td>
+                        <td class="p-4">
+                            <div class="font-medium text-[12px]">${t.note}</div>
+                            ${t.dist > 0 ? `<div class="text-[9px] text-green-500 font-bold uppercase mt-1">KM: +${t.dist} | ODO: ${t.odoEnd}</div>` : ''}
+                            ${t.rmMinyak > 0 ? `<div class="text-[9px] text-red-400 font-extrabold mt-1 uppercase">MINYAK: RM ${t.rmMinyak.toFixed(2)} (${t.fuelType})</div>` : ''}
+                        </td>
+                        <td class="p-4 text-right">
+                            <button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="text-red-500/30 hover:text-red-500 text-[9px] font-bold uppercase underline">Padam</button>
+                        </td>
+                    `;
+                    body.appendChild(tr);
+                });
+            });
+        }
+
+        // PDF PENYATA ENGINE
+        async function generateOfficialPDF() {
+            const curMY = (new Date().getMonth()+1).toString().padStart(2,'0') + '-' + new Date().getFullYear();
+            const monthData = [...tasks].filter(t => t.monthYear === curMY).reverse();
+            const totalKM = monthData.reduce((s,t) => s + (t.dist || 0), 0);
+            const totalRM = monthData.reduce((s,t) => s + (t.rmMinyak || 0), 0);
+
+            let tableHTML = `<table style="width:100%; border-collapse:collapse; margin-top:20px; font-size:10px; text-align:left;">
+                <thead><tr style="background:#1a365d; color:white;">
+                    <th style="padding:10px; border:1px solid #ddd;">TARIKH (HARI)</th><th style="padding:10px; border:1px solid #ddd;">MASA</th><th style="padding:10px; border:1px solid #ddd;">TUGASAN/LALUAN</th><th style="padding:10px; border:1px solid #ddd;">JARAK (KM)</th><th style="padding:10px; border:1px solid #ddd;">MINYAK (RM)</th>
+                </tr></thead><tbody>`;
+
+            monthData.forEach(t => {
+                tableHTML += `<tr>
+                    <td style="padding:8px; border:1px solid #ddd;">${t.date}<br><b>${t.day}</b></td>
+                    <td style="padding:8px; border:1px solid #ddd;">${t.tFrom} - ${t.tTo}</td>
+                    <td style="padding:8px; border:1px solid #ddd;"><b>${t.type.toUpperCase()}</b>: ${t.note}</td>
+                    <td style="padding:8px; border:1px solid #ddd; text-align:center;">${t.dist > 0 ? t.dist : '-'}</td>
+                    <td style="padding:8px; border:1px solid #ddd; text-align:center;">${t.rmMinyak > 0 ? t.rmMinyak.toFixed(2) : '-'}</td>
+                </tr>`;
+            });
+            tableHTML += `</tbody></table>`;
+            
+            document.getElementById('pdfContentArea').innerHTML = tableHTML;
+            document.getElementById('pdfMonthLabel').innerText = curMY;
+            document.getElementById('pdfTotalKM').innerText = totalKM;
+            document.getElementById('pdfTotalRM').innerText = totalRM.toFixed(2);
+            document.getElementById('pdfPrintDate').innerText = new Date().toLocaleString();
+            document.getElementById('pdfOfficerName').innerText = currentUser.displayName.toUpperCase();
+
+            const element = document.getElementById('reportTemplate');
+            html2pdf().set({ margin: 10, filename: `BPK_Log_${curMY}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 3, useCORS: true }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
+        }
+
+        // --- OTHER EXPORTS ---
+        function exportExcel() {
+            const ws = XLSX.utils.json_to_sheet(tasks);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "CloudLog");
+            XLSX.writeFile(wb, `BPK_Export.xlsx`);
+        }
+
+        function exportWord() {
+            let content = "LAPORAN LOG BPK\n\n";
+            tasks.forEach(t => content += `[${t.date} - ${t.day}] ${t.tFrom}: ${t.note} (KM: ${t.dist} | RM: ${t.rmMinyak})\n`);
+            const blob = new Blob([content], {type:"application/msword"});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`Log_Word.doc`; a.click();
+        }
+
+        function exportPPT() {
+            let pptx = new PptxGenJS();
+            tasks.slice(0,5).forEach(t => {
+                let slide = pptx.addSlide();
+                slide.addText(`LOG: ${t.date} (${t.day})`, {x:1, y:1, fontSize:24, bold:true});
+                slide.addText(t.note, {x:1, y:2, fontSize:18});
+            });
+            pptx.writeFile({ fileName: `BPK_Presentation.pptx` });
+        }
+
+        function exportNotepad() {
+            let text = tasks.map(t => `${t.date} (${t.day}) | ${t.type} | ${t.note}`).join('\n');
+            const blob = new Blob([text], {type: "text/plain"});
+            const a = document.createElement('a'); a.href=URL.createObjectURL(blob); a.download=`Log.txt`; a.click();
+        }
+
+        function shareToNotes() {
+            const text = tasks.slice(0,3).map(t => `${t.date} (${t.day}): ${t.note}`).join('\n');
+            if (navigator.share) navigator.share({ title: 'Log BPK', text: text });
+            else alert('Sila gunakan export Word di PC.');
+        }
+
+        // --- UTILS ---
+        setInterval(() => {
+            const now = new Date();
+            document.getElementById('realTime').textContent = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: true });
+            document.getElementById('realDate').textContent = now.toLocaleDateString('ms-MY');
+            document.getElementById('realDay').textContent = ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][now.getDay()];
+        }, 1000);
+
+        flatpickr("#datePicker", { dateFormat: "d-m-Y" });
+        ['#timeFrom','#timeSemasa','#timeTo'].forEach(id => flatpickr(id, { enableTime:true, noCalendar:true, dateFormat: "h:i K" }));
+        
+        function showDaySummary(date) {
+            const dayRecords = tasks.filter(t => t.date === date);
+            const tKM = dayRecords.reduce((s,t) => s + (t.dist || 0), 0);
+            const tRM = dayRecords.reduce((s,t) => s + (t.rmMinyak || 0), 0);
+            Swal.fire({
+                customClass:{popup:'swal-glass'}, title:`Summary: ${date} (${dayRecords[0].day})`,
+                html:`<div class="grid grid-cols-2 gap-3 mb-6"><div class="bg-red-500/10 p-4 rounded-xl text-center"><p class="text-[9px] uppercase font-bold text-red-400">Total RM</p><p class="text-xl font-bold">RM ${tRM.toFixed(2)}</p></div><div class="bg-green-500/10 p-4 rounded-xl text-center"><p class="text-[9px] uppercase font-bold text-green-400">Total KM</p><p class="text-xl font-bold">${tKM} KM</p></div></div>`
+            });
+        }
+
+        function showMonthSummary() {
+            const curMY = (new Date().getMonth()+1).toString().padStart(2,'0') + '-' + new Date().getFullYear();
+            const monthData = tasks.filter(t => t.monthYear === curMY);
+            const tRM = monthData.reduce((s,t) => s + (t.rmMinyak || 0), 0);
+            const tKM = monthData.reduce((s,t) => s + (t.dist || 0), 0);
+            Swal.fire({
+                customClass:{popup:'swal-glass'}, title:`Analitik Bulanan`,
+                html:`<div class="grid grid-cols-2 gap-3 mb-4"><div class="bg-red-500/20 p-5 rounded-2xl"><p class="text-[9px] font-bold text-red-400 uppercase">RM Minyak</p><p class="text-2xl font-bold">${tRM.toFixed(2)}</p></div><div class="bg-green-500/20 p-5 rounded-2xl"><p class="text-[9px] font-bold text-green-400 uppercase">Jarak KM</p><p class="text-2xl font-bold">${tKM}</p></div></div>`
+            });
+        }
+
+        function showDetails(t) {
+            Swal.fire({
+                customClass: { popup: 'swal-glass' },
+                title: `<span class="text-blue-400 font-bold uppercase text-sm">Butiran Rekod: ${t.day}</span>`,
+                html: `<div class="text-left space-y-4 p-2 text-white text-xs">
+                    <div class="grid grid-cols-3 gap-2 text-center bg-black/40 p-3 rounded-xl font-digital text-[9px]">
+                        <div><span class="opacity-30 uppercase">Dari</span><br>${t.tFrom}</div>
+                        <div><span class="opacity-30 uppercase">Trans</span><br>${t.tSemasa}</div>
+                        <div><span class="opacity-30 uppercase">Ke</span><br>${t.tTo}</div>
+                    </div>
+                    ${t.odoEnd > 0 ? `<div class="bg-green-500/10 p-4 rounded-xl border border-green-500/20 flex justify-between"><div><p class="text-green-400 font-bold text-[9px] uppercase">Odo: ${t.odoStart} → ${t.odoEnd}</p></div><div><p class="text-yellow-500 font-bold text-[11px] uppercase">+${t.dist} KM</p></div></div>` : ''}
+                    ${t.rmMinyak > 0 ? `<div class="bg-red-500/10 p-4 rounded-xl border border-red-500/20 text-center font-bold">MINYAK: RM ${t.rmMinyak.toFixed(2)} (${t.fuelType})</div>` : ''}
+                    <div class="p-4 bg-white/5 rounded-xl border border-white/10 italic leading-relaxed text-sm">${t.note}</div>
+                </div>`,
+                confirmButtonText: 'TUTUP'
+            });
+        }
+
+        async function deleteEntry(docId) {
+            const res = await Swal.fire({ title: 'Padam?', icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
+            if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
+        }
+
+        window.currentType = 'tugas'; setType('tugas');
+    </script>
+</body>
+</html>
