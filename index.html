@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5395525176253885" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5395525176253885"
+     crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v19.0 Official</title>
+    <title>PILOT Cloud Intelligent | v19.1 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
@@ -29,35 +30,29 @@
 
     <style>
         :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); --danger: #ef4444; }
-        body { font-family: 'Inter', sans-serif; background: #070b14; color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: #070b14; color: #f8fafc; min-height: 100vh; }
         .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.25rem; }
         .input-field { background: rgba(0, 0, 0, 0.4) !important; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; padding: 0.75rem; color: white !important; font-size: 0.9rem; }
-        .input-field:focus { border-color: var(--primary); outline: none; }
-        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; }
         .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; border: 1px solid rgba(255,255,255,0.1) !important; }
+        .bin-badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 9px; padding: 2px 5px; border-radius: 50%; font-weight: 800; }
         
-        /* Recycle Bin Styles */
-        .bin-badge { position: absolute; top: -5px; right: -5px; background: var(--danger); color: white; font-size: 10px; padding: 2px 6px; border-radius: 50%; }
-        
-        /* AI Helper Widget */
-        #aiHelper { position: fixed; bottom: 20px; right: 20px; z-index: 100; cursor: pointer; transition: 0.3s; }
-        #aiHelper:hover { transform: scale(1.1); }
-        .ai-bubble { background: #2563eb; padding: 12px 20px; border-radius: 20px 20px 0 20px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3); max-width: 200px; font-size: 11px; margin-bottom: 10px; display: none; }
-
-        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(90px, 1fr)); gap: 10px; }
         .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; }
-        .export-btn-grid button span { font-size: 9px; font-weight: 800; margin-top: 5px; text-transform: uppercase; }
+        .export-btn-grid span { font-size: 8px; font-weight: 800; margin-top: 5px; text-transform: uppercase; }
+
+        .stat-pulse { animation: pulse 2s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
     </style>
 </head>
 <body class="p-4 md:p-6">
 
-    <!-- LOGIN SCREEN -->
+    <!-- LOGIN -->
     <div id="loginScreen" class="fixed inset-0 z-[1000] bg-black flex items-center justify-center p-4">
-        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl border-blue-500/20">
+        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
             <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-20 mx-auto mb-6">
-            <h2 class="text-3xl font-bold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 text-xs uppercase tracking-widest">Master Protocol v19.0</p>
-            <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl font-bold text-white transition">
+            <h2 class="text-3xl font-bold mb-2">PILOT CLOUD</h2>
+            <p class="text-slate-400 mb-8 text-xs uppercase tracking-widest">Master Protocol v19.1</p>
+            <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 bg-white/5 border border-white/10 rounded-xl font-bold text-white hover:bg-white/10 transition">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>LOG MASUK GOOGLE</span>
             </button>
@@ -71,17 +66,20 @@
                 <div class="flex items-center gap-4">
                     <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-12">
                     <div>
-                        <h1 class="text-lg font-extrabold text-white">PILOT Cloud v19.0 Official</h1>
-                        <p id="userName" class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">User: Loading...</p>
+                        <h1 class="text-lg font-extrabold text-white">PILOT Cloud v19.1 Official</h1>
+                        <div class="flex items-center gap-2">
+                            <span class="h-2 w-2 bg-green-500 rounded-full animate-ping"></span>
+                            <p id="userName" class="text-[10px] text-blue-400 font-bold uppercase tracking-widest">Memuatkan...</p>
+                        </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-4 bg-black/40 px-4 py-2 rounded-xl border border-white/5">
-                    <div class="text-right hidden sm:block">
+                <div class="flex items-center gap-6 bg-black/40 px-6 py-3 rounded-2xl border border-white/5">
+                    <div class="text-right">
                         <p id="realDay" class="text-[9px] font-bold text-blue-500 uppercase">---</p>
-                        <p id="realTime" class="text-xl font-mono text-white">00:00:00</p>
+                        <p id="realTime" class="text-2xl font-mono text-white tracking-tighter">00:00:00</p>
                     </div>
-                    <button onclick="openRecycleBin()" class="relative p-2 bg-white/5 rounded-lg hover:bg-red-500/20 transition">
+                    <button onclick="openRecycleBin()" class="relative p-3 bg-white/5 rounded-xl hover:bg-red-500/20 transition">
                         🗑️ <span id="binCount" class="bin-badge">0</span>
                     </button>
                 </div>
@@ -89,7 +87,7 @@
         </header>
 
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 mb-12">
-            <!-- INPUT PANEL -->
+            <!-- INPUT -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="flex bg-black/40 p-1 rounded-xl mb-6">
@@ -100,53 +98,49 @@
 
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-2">
-                            <div><label class="text-[10px] font-bold text-slate-500 mb-1 block">TARIKH</label><input type="text" id="datePicker" class="input-field w-full"></div>
-                            <div><label class="text-[10px] font-bold text-slate-500 mb-1 block">MASA</label><input type="text" id="timeFrom" class="input-field w-full"></div>
+                            <input type="text" id="datePicker" class="input-field w-full">
+                            <input type="text" id="timeFrom" class="input-field w-full">
                         </div>
 
                         <div id="odoFields" class="hidden p-4 bg-blue-500/5 rounded-xl border border-blue-500/10 space-y-3">
                             <div class="flex justify-between items-center">
-                                <span class="text-[10px] font-bold text-blue-400 uppercase">Odometer AI Scan</span>
+                                <span class="text-[10px] font-bold text-blue-400">ODO AI SCANNER</span>
                                 <button onclick="triggerCamera()" class="text-[9px] bg-blue-600 px-2 py-1 rounded">📸 SCAN</button>
                             </div>
                             <div class="grid grid-cols-2 gap-2">
                                 <input type="number" id="odoStart" placeholder="Mula" class="input-field" oninput="calcPreview()">
                                 <input type="number" id="odoEnd" placeholder="Akhir" class="input-field" oninput="calcPreview()">
                             </div>
-                            <div id="distPreview" class="text-center font-mono text-[10px] text-emerald-400">0 KM</div>
+                            <div id="distPreview" class="text-center font-mono text-[10px] text-emerald-400">DISTANCE: 0 KM</div>
                         </div>
 
-                        <div id="fuelFields" class="hidden p-4 bg-red-500/5 rounded-xl border border-red-500/10 space-y-3">
+                        <div id="fuelFields" class="hidden p-4 bg-red-500/5 rounded-xl border border-red-500/10">
                             <div class="grid grid-cols-2 gap-2">
-                                <input type="number" id="rmInitial" placeholder="RM Isian" class="input-field" oninput="calcPreview()">
+                                <input type="number" id="rmInitial" placeholder="RM Isian" class="input-field">
                                 <select id="fuelType" class="input-field text-xs"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
                             </div>
                         </div>
 
-                        <div><label class="text-[10px] font-bold text-slate-500 mb-1 block">LOKASI & BUTIRAN</label>
-                            <input type="text" id="locationInput" placeholder="Lokasi..." class="input-field w-full mb-2">
-                            <textarea id="taskInput" rows="3" placeholder="Apa yang anda lakukan hari ini?" class="input-field w-full"></textarea>
-                        </div>
+                        <input type="text" id="locationInput" placeholder="📍 Lokasi (Autosync GPS...)" class="input-field w-full">
+                        <textarea id="taskInput" rows="3" placeholder="Masukkan butiran tugasan atau log pergerakan..." class="input-field w-full"></textarea>
 
-                        <button onclick="saveEntry()" class="w-full btn-primary shadow-lg shadow-blue-500/20">Sync To Cloud ☁️</button>
+                        <button onclick="saveEntry()" class="w-full py-4 bg-blue-600 rounded-xl font-bold text-xs uppercase tracking-widest shadow-lg hover:bg-blue-700 transition">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
-                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition uppercase tracking-widest flex items-center justify-center gap-2">📤 Export Official Report</button>
+                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition uppercase flex items-center justify-center gap-2">📤 Export Official Report</button>
             </div>
 
-            <!-- DATA TABLE -->
+            <!-- TABLE -->
             <div class="lg:col-span-8">
-                <div class="glass-card flex flex-col h-[700px]">
-                    <div class="p-4 border-b border-white/5 flex justify-between items-center">
-                        <span class="text-[10px] font-bold uppercase tracking-widest text-blue-400">Database Realtime</span>
-                        <div class="flex gap-2">
-                             <input type="text" id="tableSearch" oninput="renderUI()" placeholder="Cari log..." class="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-[10px] focus:outline-none">
-                        </div>
+                <div class="glass-card h-[650px] flex flex-col overflow-hidden">
+                    <div class="p-4 border-b border-white/5 flex justify-between items-center bg-white/5">
+                        <span class="text-[10px] font-bold uppercase text-blue-400">Database Realtime</span>
+                        <input type="text" id="tableSearch" oninput="renderUI()" placeholder="Cari log..." class="bg-black/40 border border-white/10 rounded-lg px-4 py-1.5 text-[10px] focus:outline-none w-48">
                     </div>
-                    <div class="overflow-y-auto custom-scroll flex-1 p-2">
+                    <div class="flex-1 overflow-y-auto custom-scroll p-2">
                         <table class="w-full text-left">
-                            <thead class="text-[10px] text-slate-500 uppercase sticky top-0 bg-[#0f172a] z-10">
-                                <tr><th class="p-4">Tarikh/Masa</th><th class="p-4">Butiran Log</th><th class="p-4 text-right">Aksi</th></tr>
+                            <thead class="text-[9px] text-slate-500 uppercase sticky top-0 bg-[#070b14] z-10">
+                                <tr><th class="p-4">Tarikh/Masa</th><th class="p-4">Butiran & Lokasi</th><th class="p-4 text-right">Aksi</th></tr>
                             </thead>
                             <tbody id="activeBody" class="text-xs"></tbody>
                         </table>
@@ -154,39 +148,78 @@
                 </div>
             </div>
         </main>
+
+        <!-- FOOTER: INFO & VISITOR -->
+        <footer class="container mx-auto pb-10 mt-10 border-t border-white/10 pt-10">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Address -->
+                <div class="space-y-3">
+                    <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-10 opacity-50 grayscale hover:grayscale-0 transition cursor-pointer">
+                    <p class="text-[11px] font-bold text-blue-500 uppercase">Jabatan Perkhidmatan Veterinar (JPV)</p>
+                    <p class="text-[10px] text-slate-400 leading-relaxed">
+                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
+                        Wisma Tani, Podium Blok 4G1, Presint 4,<br>
+                        62624 Putrajaya, Malaysia.
+                    </p>
+                </div>
+
+                <!-- Visitor Stats -->
+                <div class="glass-card p-5 bg-white/5 border-none flex flex-col justify-center">
+                    <p class="text-[9px] font-extrabold text-slate-500 uppercase mb-4 text-center tracking-widest">Realtime Visitor Pulse</p>
+                    <div class="grid grid-cols-3 gap-4 text-center">
+                        <div>
+                            <p class="text-xl">📥</p>
+                            <p id="vIn" class="text-emerald-400 font-mono font-bold text-lg">0</p>
+                            <p class="text-[8px] text-slate-500 font-bold uppercase">Masuk</p>
+                        </div>
+                        <div class="border-x border-white/10">
+                            <p class="text-xl stat-pulse">🟢</p>
+                            <p id="vActive" class="text-blue-400 font-mono font-bold text-lg">0</p>
+                            <p class="text-[8px] text-slate-500 font-bold uppercase">Aktif</p>
+                        </div>
+                        <div>
+                            <p class="text-xl">📊</p>
+                            <p id="vTotal" class="text-orange-400 font-mono font-bold text-lg">0</p>
+                            <p class="text-[8px] text-slate-500 font-bold uppercase">Jumlah</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Copyright -->
+                <div class="text-right space-y-2 flex flex-col justify-end">
+                    <p class="text-[9px] text-slate-500 font-bold uppercase">Hakcipta Terpelihara © 2026</p>
+                    <p class="text-[10px] text-slate-400 font-medium">Pilot Intelligent Process Cloud v19.1</p>
+                    <p class="text-[8px] text-slate-600">Sistem ini dioptimumkan untuk kegunaan rasmi JPV.</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
-    <!-- AI HELPER -->
-    <div id="aiHelper">
-        <div id="aiBubble" class="ai-bubble"></div>
-        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="h-14 w-14 drop-shadow-lg">
+    <!-- UI ELEMENTS -->
+    <div id="aiHelper" class="fixed bottom-6 right-6 cursor-pointer hover:scale-110 transition">
+        <div id="aiBubble" class="hidden absolute bottom-16 right-0 bg-blue-600 p-3 rounded-2xl rounded-br-none text-[10px] w-40 shadow-xl"></div>
+        <img src="https://cdn-icons-png.flaticon.com/512/4712/4712035.png" class="h-14 w-14">
     </div>
 
     <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
-    <canvas id="procCanvas" class="hidden"></canvas>
-
-    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // --- CONFIG & FIREBASE ---
+        // --- CONFIG ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
         
-        let currentUser = null;
-        let tasks = [];
-        let deletedTasks = [];
+        let currentUser = null, tasks = [], deletedTasks = [];
 
-        // --- AUTH ---
+        // --- AUTH & INITIALIZATION ---
         auth.onAuthStateChanged(user => {
             if (user) {
                 currentUser = user;
                 document.getElementById('loginScreen').style.display = 'none';
                 document.getElementById('mainApp').classList.remove('hidden');
-                document.getElementById('userName').innerText = `USER: ${user.displayName}`;
+                document.getElementById('userName').innerText = user.displayName.toUpperCase();
                 syncData();
-                initAI();
+                trackVisitors();
             } else {
                 document.getElementById('loginScreen').style.display = 'flex';
                 document.getElementById('mainApp').classList.add('hidden');
@@ -194,17 +227,16 @@
         });
 
         async function login() { try { await auth.signInWithPopup(provider); } catch(e) { alert(e.message); } }
-        function logout() { auth.signOut(); }
 
-        // --- DATA SYNC ---
+        // --- DATA ENGINE ---
         function syncData() {
             if(!currentUser) return;
-            // Get Active Logs
+            // Sync Active Logs
             db.collection("users").doc(currentUser.uid).collection("logs").orderBy("id", "desc").onSnapshot(snap => {
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
             });
-            // Get Deleted Logs for Bin
+            // Sync Recycle Bin
             db.collection("users").doc(currentUser.uid).collection("recycleBin").onSnapshot(snap => {
                 deletedTasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 document.getElementById('binCount').innerText = deletedTasks.length;
@@ -218,22 +250,185 @@
             
             tasks.filter(t => t.note.toLowerCase().includes(search) || t.location.toLowerCase().includes(search)).forEach(t => {
                 const tr = document.createElement('tr');
-                tr.className = "border-b border-white/5 hover:bg-white/5 transition cursor-pointer";
+                tr.className = "border-b border-white/5 hover:bg-white/5 transition cursor-pointer group";
                 tr.innerHTML = `
                     <td class="p-4" onclick="showDetails('${t.docId}')">
-                        <div class="font-bold">${t.date}</div>
-                        <div class="text-[9px] text-blue-500 uppercase">${t.tFrom}</div>
+                        <div class="font-bold text-white">${t.date}</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.tFrom}</div>
                     </td>
                     <td class="p-4" onclick="showDetails('${t.docId}')">
-                        <div class="line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] text-slate-500 uppercase">📍 ${t.location} ${t.dist > 0 ? `| 🛣️ ${t.dist}KM` : ''}</div>
+                        <div class="line-clamp-1 text-slate-200">${t.note}</div>
+                        <div class="text-[9px] text-slate-500 uppercase mt-1">📍 ${t.location} ${t.dist > 0 ? `| 🛣️ ${t.dist} KM` : ''}</div>
                     </td>
                     <td class="p-4 text-right">
-                        <button onclick="moveToBin('${t.docId}')" class="text-slate-500 hover:text-red-500 transition">🗑️</button>
+                        <button onclick="moveToBin('${t.docId}')" class="p-2 text-slate-500 hover:text-red-500 transition opacity-0 group-hover:opacity-100">🗑️</button>
                     </td>
                 `;
                 body.appendChild(tr);
             });
+        }
+
+        // --- RECYCLE BIN SYSTEM (FIXED) ---
+        async function moveToBin(docId) {
+            const item = tasks.find(t => t.docId === docId);
+            const batch = db.batch();
+            const logRef = db.collection("users").doc(currentUser.uid).collection("logs").doc(docId);
+            const binRef = db.collection("users").doc(currentUser.uid).collection("recycleBin").doc(docId);
+            
+            batch.set(binRef, item);
+            batch.delete(logRef);
+            
+            await batch.commit();
+            Swal.fire({ icon:'info', title:'Pindah ke Tong Sampah', timer:800, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+        }
+
+        function openRecycleBin() {
+            let html = `<div class="text-left space-y-2 max-h-[400px] overflow-y-auto pr-2 custom-scroll">`;
+            if(deletedTasks.length === 0) html += `<div class="py-10 text-center text-slate-500 text-xs">TIADA REKOD DIPADAM</div>`;
+            deletedTasks.forEach(t => {
+                html += `
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5 flex justify-between items-center">
+                        <div class="text-[10px]">
+                            <p class="font-bold text-white">${t.date} | ${t.tFrom}</p>
+                            <p class="truncate w-32 text-slate-400">${t.note}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="restoreFromBin('${t.docId}')" class="bg-emerald-600 px-3 py-1.5 rounded-lg text-[9px] font-bold">RESTORE</button>
+                            <button onclick="purgePermanently('${t.docId}')" class="bg-red-600 px-3 py-1.5 rounded-lg text-[9px] font-bold">PADAM</button>
+                        </div>
+                    </div>`;
+            });
+            html += `</div>`;
+            Swal.fire({ title: 'SMART RECYCLE BIN', html, showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' } });
+        }
+
+        async function restoreFromBin(docId) {
+            const item = deletedTasks.find(t => t.docId === docId);
+            const batch = db.batch();
+            const binRef = db.collection("users").doc(currentUser.uid).collection("recycleBin").doc(docId);
+            const logRef = db.collection("users").doc(currentUser.uid).collection("logs").doc(docId);
+            
+            batch.set(logRef, item);
+            batch.delete(binRef);
+            
+            await batch.commit();
+            Swal.close();
+            Swal.fire({ icon:'success', title:'Data Dipulihkan', timer:1000, showConfirmButton:false });
+        }
+
+        async function purgePermanently(docId) {
+            const res = await Swal.fire({ title:'Hapuskan Terus?', text:'Data ini tidak boleh dikembalikan!', icon:'warning', showCancelButton:true, confirmButtonColor:'#ef4444' });
+            if(res.isConfirmed) {
+                await db.collection("users").doc(currentUser.uid).collection("recycleBin").doc(docId).delete();
+                openRecycleBin();
+            }
+        }
+
+        // --- VISITOR TRACKER ---
+        async function trackVisitors() {
+            const ref = db.collection("system").doc("analytics");
+            // Increment total & in
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(ref);
+                const data = doc.exists ? doc.data() : { total: 0, active: 0, in: 0 };
+                t.set(ref, { 
+                    total: (data.total || 0) + 1, 
+                    active: (data.active || 0) + 1,
+                    in: (data.in || 0) + 1
+                }, { merge: true });
+            });
+
+            // Listen for changes
+            ref.onSnapshot(doc => {
+                if(doc.exists) {
+                    const d = doc.data();
+                    document.getElementById('vIn').innerText = d.in || 0;
+                    document.getElementById('vActive').innerText = d.active || 0;
+                    document.getElementById('vTotal').innerText = d.total || 0;
+                }
+            });
+
+            // On Close (decrement active)
+            window.addEventListener('beforeunload', () => {
+                db.collection("system").doc("analytics").update({
+                    active: firebase.firestore.FieldValue.increment(-1)
+                });
+            });
+        }
+
+        // --- EXPORT LOGIC ---
+        function showExportOptions() {
+            Swal.fire({
+                title: 'OFFICIAL EXPORTER HUB',
+                html: `
+                    <div class="export-btn-grid p-2">
+                        <button onclick="exportPDF()" class="text-red-500">📄<span>PDF</span></button>
+                        <button onclick="exportExcel()" class="text-emerald-500">📊<span>Excel</span></button>
+                        <button onclick="exportWord()" class="text-blue-500">📝<span>Word</span></button>
+                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PPTX</span></button>
+                        <button onclick="exportAccess()" class="text-purple-500">🗄️<span>Access</span></button>
+                        <button onclick="exportText('.txt')" class="text-slate-300">🗒️<span>Notepad</span></button>
+                        <button onclick="exportText('.cpp')" class="text-emerald-400">🧪<span>N++</span></button>
+                        <button onclick="exportMobileNotes()" class="text-orange-400">📱<span>Notes</span></button>
+                    </div>
+                `,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
+            });
+        }
+
+        function exportPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF('l', 'mm', 'a4');
+            doc.setFontSize(18); doc.text("LAPORAN RASMI PILOT CLOUD", 14, 15);
+            doc.setFontSize(10); doc.text(`Dijana oleh: ${currentUser.displayName}`, 14, 22);
+            const data = tasks.map(t => [t.date, t.tFrom, t.location, t.dist+'KM', t.note]);
+            doc.autoTable({ head: [['Tarikh', 'Masa', 'Lokasi', 'Jarak', 'Butiran']], body: data, startY: 30, theme:'grid' });
+            doc.save(`PILOT_REPORT_${Date.now()}.pdf`);
+        }
+
+        function exportExcel() {
+            const ws = XLSX.utils.json_to_sheet(tasks);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Database_Logs");
+            XLSX.writeFile(wb, "Pilot_Office_Excel.xlsx");
+        }
+
+        function exportWord() {
+            let content = "LAPORAN LOG PILOT CLOUD\n\n";
+            tasks.forEach(t => content += `[${t.date} | ${t.tFrom}]\nLokasi: ${t.location}\nButiran: ${t.note}\n\n`);
+            const blob = new Blob([content], { type: 'application/msword' });
+            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'Pilot_Report.doc'; link.click();
+        }
+
+        function exportPowerPoint() {
+            let pptx = new PptxGenJS();
+            let slide = pptx.addSlide();
+            slide.addText("RINGKASAN DATA PILOT CLOUD", { x:1, y:1, fontSize:24, color:'363636' });
+            tasks.slice(0, 5).forEach((t, i) => slide.addText(`• ${t.date}: ${t.note}`, { x:1, y:2 + (i*0.5), fontSize:14 }));
+            pptx.writeFile({ fileName: "Pilot_Summary.pptx" });
+        }
+
+        function exportAccess() {
+            const headers = "ID,Date,Time,Location,Distance,Note\n";
+            const rows = tasks.map(t => `${t.id},"${t.date}","${t.tFrom}","${t.location}",${t.dist},"${t.note}"`).join("\n");
+            const blob = new Blob([headers + rows], { type: 'text/csv' });
+            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = 'Pilot_Access_DB.csv'; link.click();
+        }
+
+        function exportText(ext) {
+            let txt = tasks.map(t => `${t.date} | ${t.tFrom} | ${t.location} | ${t.note}`).join("\n");
+            const blob = new Blob([txt], { type: 'text/plain' });
+            const link = document.createElement('a'); link.href = URL.createObjectURL(blob); link.download = `Pilot_Logs${ext}`; link.click();
+        }
+
+        async function exportMobileNotes() {
+            const str = tasks.map(t => `📅 ${t.date} | ${t.tFrom}\n📍 ${t.location}\n📝 ${t.note}\n---`).join('\n');
+            if (navigator.share) {
+                navigator.share({ title: 'PILOT LOGS', text: str });
+            } else {
+                navigator.clipboard.writeText(str);
+                Swal.fire('Disalin!', 'Sila paste ke aplikasi Notes anda.', 'success');
+            }
         }
 
         // --- CORE ACTIONS ---
@@ -245,8 +440,7 @@
             const entry = {
                 id: Date.now(),
                 type: window.currentType,
-                date,
-                tFrom: time,
+                date, tFrom: time,
                 odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
                 odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
@@ -257,176 +451,8 @@
             };
 
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Synced', timer:1000, showConfirmButton:false });
+            Swal.fire({ icon:'success', title:'Cloud Synced', timer:1000, showConfirmButton:false });
             resetInputs();
-        }
-
-        // --- RECYCLE BIN SYSTEM ---
-        async function moveToBin(docId) {
-            const item = tasks.find(t => t.docId === docId);
-            await db.collection("users").doc(currentUser.uid).collection("recycleBin").add(item);
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
-        }
-
-        function openRecycleBin() {
-            let html = `<div class="text-left space-y-2 max-h-[400px] overflow-y-auto">`;
-            if(deletedTasks.length === 0) html += `<p class="text-center text-slate-500 py-10">Tong sampah kosong.</p>`;
-            deletedTasks.forEach(t => {
-                html += `
-                    <div class="p-3 bg-white/5 rounded-lg flex justify-between items-center border border-white/5">
-                        <div class="text-[10px]">
-                            <p class="font-bold">${t.date}</p>
-                            <p class="truncate w-40 text-slate-400">${t.note}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="restoreItem('${t.docId}')" class="bg-emerald-600 px-2 py-1 rounded text-[9px] font-bold">RESTORE</button>
-                            <button onclick="permanentDelete('${t.docId}')" class="bg-red-600 px-2 py-1 rounded text-[9px] font-bold">PURGE</button>
-                        </div>
-                    </div>`;
-            });
-            html += `</div>`;
-            
-            Swal.fire({
-                title: 'SMART RECYCLE BIN',
-                html: html,
-                showConfirmButton: false,
-                showCloseButton: true,
-                customClass: { popup: 'swal-corp' }
-            });
-        }
-
-        async function restoreItem(docId) {
-            const item = deletedTasks.find(t => t.docId === docId);
-            delete item.docId;
-            await db.collection("users").doc(currentUser.uid).collection("logs").add(item);
-            await db.collection("users").doc(currentUser.uid).collection("recycleBin").doc(docId).delete();
-            Swal.close();
-            Swal.fire('Restored!', '', 'success');
-        }
-
-        async function permanentDelete(docId) {
-            const result = await Swal.fire({
-                title: 'Padam Kekal?',
-                text: "Data ini tidak boleh dikembalikan lagi!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444'
-            });
-            if(result.isConfirmed) {
-                await db.collection("users").doc(currentUser.uid).collection("recycleBin").doc(docId).delete();
-                openRecycleBin();
-            }
-        }
-
-        // --- UNIVERSAL EXPORT ENGINE ---
-        function showExportOptions() {
-            Swal.fire({
-                title: 'EXPORTER HUB v19.0',
-                html: `
-                    <div class="export-btn-grid p-2">
-                        <button onclick="exportPDF()" class="text-red-500">📄<span>PDF</span></button>
-                        <button onclick="exportExcel()" class="text-emerald-500">📊<span>Excel</span></button>
-                        <button onclick="exportWord()" class="text-blue-500">📝<span>Word</span></button>
-                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PowerPoint</span></button>
-                        <button onclick="exportAccess()" class="text-purple-500">🗄️<span>Access DB</span></button>
-                        <button onclick="exportNotepad('.txt')" class="text-slate-300">🗒️<span>Notepad</span></button>
-                        <button onclick="exportNotepad('.cpp')" class="text-emerald-400">🧪<span>Notepad++</span></button>
-                        <button onclick="exportMobileNotes()" class="text-orange-400">📱<span>Mobile Notes</span></button>
-                    </div>
-                `,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
-            });
-        }
-
-        function exportPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('l', 'mm', 'a4');
-            const data = tasks.map(t => [t.date, t.tFrom, t.location, t.dist + 'KM', t.rmMinyak, t.note]);
-            doc.text("LAPORAN RASMI PILOT CLOUD", 14, 15);
-            doc.autoTable({ head: [['Tarikh', 'Masa', 'Lokasi', 'Jarak', 'Kos', 'Butiran']], body: data, startY: 20 });
-            doc.save('Report_Pilot.pdf');
-        }
-
-        function exportExcel() {
-            const ws = XLSX.utils.json_to_sheet(tasks);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Logs");
-            XLSX.writeFile(wb, "Pilot_Database.xlsx");
-        }
-
-        function exportWord() {
-            let content = `LAPORAN LOG PILOT\nGenerated: ${new Date().toLocaleString()}\n\n`;
-            tasks.forEach(t => content += `[${t.date} | ${t.tFrom}] ${t.location}\nNote: ${t.note}\n-------------------\n`);
-            const blob = new Blob([content], { type: 'application/msword' });
-            saveBlob(blob, 'Laporan_Pilot.doc');
-        }
-
-        function exportPowerPoint() {
-            let pptx = new PptxGenJS();
-            let slide = pptx.addSlide();
-            slide.addText("LAPORAN RINGKASAN PILOT CLOUD", { x:1, y:1, fontSize:24, color:'363636' });
-            tasks.slice(0, 5).forEach((t, i) => {
-                slide.addText(`- ${t.date}: ${t.note}`, { x:1, y:2 + (i*0.5), fontSize:12 });
-            });
-            pptx.writeFile({ fileName: "Pilot_Summary.pptx" });
-        }
-
-        function exportAccess() {
-            // Export as CSV with specific headers for Access Import
-            const headers = "ID,Date,Time,Location,Distance,Cost,Details\n";
-            const rows = tasks.map(t => `${t.id},"${t.date}","${t.tFrom}","${t.location}",${t.dist},${t.rmMinyak},"${t.note}"`).join("\n");
-            const blob = new Blob([headers + rows], { type: 'text/csv' });
-            saveBlob(blob, 'Pilot_Access_Import.csv');
-        }
-
-        function exportNotepad(ext) {
-            let txt = tasks.map(t => `${t.date} | ${t.tFrom} | ${t.location} | ${t.note}`).join("\n");
-            const blob = new Blob([txt], { type: 'text/plain' });
-            saveBlob(blob, `Pilot_Logs${ext}`);
-        }
-
-        async function exportMobileNotes() {
-            const shareData = {
-                title: 'PILOT LOGS',
-                text: tasks.map(t => `📅 ${t.date} 📍 ${t.location}\n📝 ${t.note}\n`).join('\n---\n')
-            };
-            if (navigator.share) {
-                try { await navigator.share(shareData); } catch(e) { console.log(e); }
-            } else {
-                navigator.clipboard.writeText(shareData.text);
-                Swal.fire('Copied!', 'Clipboard updated for manual paste.', 'success');
-            }
-        }
-
-        function saveBlob(blob, name) {
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = name;
-            link.click();
-        }
-
-        // --- SMART AI HELPER ---
-        const tips = [
-            "Gunakan Scan Odo untuk menjimatkan masa menaip!",
-            "Pastikan anda sync data sebelum log keluar.",
-            "Recycle bin menyimpan data dipadam selama sesi aktif.",
-            "Anda boleh eksport ke Excel untuk laporan bulanan.",
-            "Tekan log untuk melihat perincian penuh lokasi GPS."
-        ];
-
-        function initAI() {
-            const bubble = document.getElementById('aiBubble');
-            setInterval(() => {
-                const randomTip = tips[Math.floor(Math.random() * tips.length)];
-                bubble.innerText = randomTip;
-                bubble.style.display = 'block';
-                setTimeout(() => bubble.style.display = 'none', 6000);
-            }, 30000);
-            
-            document.getElementById('aiHelper').onclick = () => {
-                const randomTip = tips[Math.floor(Math.random() * tips.length)];
-                Swal.fire({ title: 'AI PILOT TIPS', text: randomTip, icon: 'info', customClass: { popup: 'swal-corp' } });
-            };
         }
 
         // --- UTILS ---
@@ -434,10 +460,8 @@
             window.currentType = type;
             ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-2 text-[10px] font-bold rounded-lg transition-all text-slate-500");
             ['odoFields','fuelFields'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            
             const activeBtn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
             activeBtn.className = `flex-1 py-2 text-[10px] font-bold rounded-lg transition-all text-white ${type==='tugas'?'bg-blue-600':type==='log'?'bg-emerald-600':'bg-red-600'}`;
-            
             if(type !== 'tugas') document.getElementById('odoFields').classList.remove('hidden');
             if(type === 'minyak') document.getElementById('fuelFields').classList.remove('hidden');
         }
@@ -445,7 +469,7 @@
         function calcPreview() {
             const s = parseFloat(document.getElementById('odoStart').value) || 0;
             const e = parseFloat(document.getElementById('odoEnd').value) || 0;
-            document.getElementById('distPreview').innerText = `${e > s ? e - s : 0} KM`;
+            document.getElementById('distPreview').innerText = `DISTANCE: ${e > s ? e - s : 0} KM`;
         }
 
         function resetInputs() {
@@ -463,27 +487,29 @@
             if (numbers) {
                 document.getElementById('odoEnd').value = numbers[0];
                 calcPreview();
-                Swal.fire('Berjaya!', `Odo: ${numbers[0]} dikesan`, 'success');
+                Swal.fire('Berjaya!', `Odo: ${numbers[0]} KM dikesan`, 'success');
             } else {
-                Swal.fire('Gagal', 'Nombor tidak jelas, sila taip manual.', 'warning');
+                Swal.fire('Gagal', 'Sila pastikan gambar odometer jelas.', 'warning');
             }
         }
 
         function showDetails(docId) {
             const t = tasks.find(x => x.docId === docId);
             Swal.fire({
-                title: t.date,
-                html: `<div class="text-left text-xs space-y-2">
-                    <p><b>📍 Lokasi:</b> ${t.location}</p>
-                    <p><b>📝 Butiran:</b> ${t.note}</p>
-                    <p><b>🛣️ Jarak:</b> ${t.dist} KM</p>
-                    <p><b>💰 Kos:</b> RM ${t.rmMinyak}</p>
+                title: `<span class="text-blue-500">${t.date}</span>`,
+                html: `<div class="text-left text-xs space-y-3 p-2 bg-white/5 rounded-xl border border-white/5">
+                    <p><b>📍 LOKASI:</b><br>${t.location}</p>
+                    <p><b>📝 BUTIRAN:</b><br>${t.note}</p>
+                    <div class="grid grid-cols-2 gap-2 mt-4">
+                        <div class="bg-blue-500/10 p-2 rounded-lg text-center"><b>Jarak</b><br>${t.dist} KM</div>
+                        <div class="bg-red-500/10 p-2 rounded-lg text-center"><b>Kos</b><br>RM ${t.rmMinyak}</div>
+                    </div>
                 </div>`,
                 customClass: { popup: 'swal-corp' }
             });
         }
 
-        // --- INITIALIZE UI ---
+        // --- TIME ENGINE ---
         setInterval(() => {
             const n = new Date();
             document.getElementById('realTime').textContent = n.toLocaleTimeString('en-GB');
@@ -497,4 +523,4 @@
     </script>
 </body>
 </html>
-<!-- END OF FILE -->
+<!-- END OF FILE PILOT_v19.1_Official.html -->
