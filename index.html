@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v30 Official</title>
+    <title>PILOT Cloud Intelligent | v31 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -66,7 +66,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v30</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v31</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -117,11 +117,30 @@
                     </div>
 
                     <div class="space-y-4">
+                        <!-- UPDATED DATE & TIME FIELDS -->
                         <div>
-                            <label class="label-corp">Tarikh & Masa</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="datePicker" class="input-field w-full">
-                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="label-corp">Tarikh Mula</label>
+                                    <input type="text" id="startDate" class="input-field w-full">
+                                </div>
+                                <div>
+                                    <label class="label-corp">Masa Mula</label>
+                                    <input type="text" id="startTime" class="input-field w-full font-mono-corp text-center">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div>
+                            <div class="grid grid-cols-2 gap-4">
+                                <div>
+                                    <label class="label-corp">Tarikh Akhir</label>
+                                    <input type="text" id="endDate" class="input-field w-full">
+                                </div>
+                                <div>
+                                    <label class="label-corp">Masa Akhir</label>
+                                    <input type="text" id="endTime" class="input-field w-full font-mono-corp text-center">
+                                </div>
                             </div>
                         </div>
 
@@ -391,16 +410,27 @@
             document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
             const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
             const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-            document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+            if(document.getElementById('fuelPreview')) document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
         }
 
         async function saveEntry() {
-            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            const startTime = document.getElementById('startTime').value;
+            const endTime = document.getElementById('endTime').value;
+
+            if(!startDate || !startTime) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
+            
             const entry = {
-                id: Date.now(), type: window.currentType, date, day: getDayName(date),
-                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                id: Date.now(), 
+                type: window.currentType, 
+                date: startDate,
+                endDate: endDate || startDate,
+                day: getDayName(startDate),
+                monthYear: startDate.split('-')[1] + '-' + startDate.split('-')[2],
+                tFrom: startTime,
+                tUntil: endTime || startTime,
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
                 odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
                 rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
@@ -409,7 +439,7 @@
             };
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
             Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','endDate','endTime'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
             calcPreview();
         }
 
@@ -421,7 +451,10 @@
                 tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
                 tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
-                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
+                    <td>
+                        <div class="font-bold text-xs text-white">${t.date} ${t.endDate !== t.date ? '→ ' + t.endDate : ''}</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom} - ${t.tUntil}</div>
+                    </td>
                     <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
                         <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
                             ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
@@ -467,7 +500,15 @@
                 doc.text(`PEMANDU: ${userName} | JABATAN PERKHIDMATAN VETERINAR (JPV)`, 15, 28);
                 const data = tasks
                     .sort((a, b) => parseDate(a.date) - parseDate(b.date))
-                    .map(t => [t.date || '-', t.day || '-', t.tFrom || '-', t.location || '-', (t.dist || 0) + " KM", "RM " + (t.rmMinyak || 0).toFixed(2), t.note || '-']);
+                    .map(t => [
+                        t.date + (t.endDate !== t.date ? '\n'+t.endDate : ''), 
+                        t.day || '-', 
+                        t.tFrom + ' - ' + t.tUntil, 
+                        t.location || '-', 
+                        (t.dist || 0) + " KM", 
+                        "RM " + (t.rmMinyak || 0).toFixed(2), 
+                        t.note || '-'
+                    ]);
                 doc.autoTable({
                     head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'KOS', 'BUTIRAN']],
                     body: data,
@@ -486,14 +527,24 @@
         }
 
         function exportExcel() {
-            const rows = tasks.map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
+            const rows = tasks.map(t => ({ 
+                "TARIKH MULA": t.date, 
+                "TARIKH AKHIR": t.endDate,
+                "HARI": t.day, 
+                "MASA MULA": t.tFrom, 
+                "MASA AKHIR": t.tUntil,
+                "LOKASI": t.location, 
+                "JARAK (KM)": t.dist, 
+                "KOS (RM)": t.rmMinyak, 
+                "BUTIRAN": t.note 
+            }));
             const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
         }
 
         function exportWord() {
-            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
-            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
+            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh Mula</th><th>Tarikh Akhir</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
+            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.endDate}</td><td>${t.tFrom} - ${t.tUntil}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
             html += "</table></body></html>";
             const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
@@ -501,7 +552,7 @@
 
         function exportNotepad() {
             let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
-            tasks.forEach(t => txt += `[${t.date}] ${t.tFrom} | ${t.location} | ${t.note}\n`);
+            tasks.forEach(t => txt += `[${t.date} - ${t.endDate}] ${t.tFrom}-${t.tUntil} | ${t.location} | ${t.note}\n`);
             const blob = new Blob([txt], { type: 'text/plain' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Log.txt`; link.click();
         }
@@ -509,7 +560,7 @@
         function exportToNotes(p) {
             let txt = `📋 LOG PILOT CLOUD\n`;
             tasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
-                txt += `📅 ${t.date}\n📍 ${t.location}\n⏰ ${t.tFrom} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
+                txt += `📅 ${t.date} ${t.endDate !== t.date ? '-> ' + t.endDate : ''}\n📍 ${t.location}\n⏰ ${t.tFrom} - ${t.tUntil} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
             });
             navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
         }
@@ -545,7 +596,7 @@
                 html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4></div><div class="space-y-2">`;
                 mData.forEach(item => {
                     html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-blue-600 cursor-pointer hover:bg-white/10 transition">
-                        <div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.date}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div>
+                        <div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.date} ${item.endDate !== item.date ? '→ ' + item.endDate : ''}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div>
                         <div class="text-right text-[9px] font-mono-corp text-white">${item.dist > 0 ? item.dist+' KM' : ''}</div>
                     </div>`;
                 });
@@ -560,6 +611,8 @@
                 title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
                 html: `<div class="text-left space-y-3 py-2">
                     <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📅 Tempoh Masa</p>
+                        <p class="text-[10px] text-white mb-2">${t.date} (${t.tFrom}) sehingga ${t.endDate} (${t.tUntil})</p>
                         <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
                         <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
                         <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
@@ -579,8 +632,12 @@
             document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
             document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
-        flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+
+        flatpickr("#startDate", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#endDate", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#startTime", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        flatpickr("#endTime", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+
         setType('tugas');
     </script>
 </body>
