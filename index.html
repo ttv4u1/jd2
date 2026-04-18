@@ -1,538 +1,452 @@
 <!DOCTYPE html>
 <html lang="ms">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5395525176253885" crossorigin="anonymous"></script>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5395525176253885"
+     crossorigin="anonymous"></script>
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PILOT Cloud Intelligent | v19.0 Official</title>
     
-    <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
-
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
-    <!-- Frameworks -->
+    <!-- Libraries -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Montserrat:wght@800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    <!-- Firebase SDK -->
+    <!-- Firebase -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    <!-- Export & AI Libraries -->
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <!-- Export Engines -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/PptxGenJS@3.12.0/dist/pptxgen.bundle.js"></script>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
     <style>
-        :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
-        body { font-family: 'Inter', sans-serif; background: #0f172a; background-image: radial-gradient(circle at top right, #1e293b, #0f172a); color: #f8fafc; min-height: 100vh; }
-        h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
-        .font-mono-corp { font-family: 'Share Tech Mono', monospace; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
-        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; transition: all 0.2s; font-size: 0.9rem; }
-        .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
-        .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
-        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.025em; }
-        #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
-        .table-container { overflow-x: auto; border-radius: 1rem; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; text-transform: uppercase; color: #64748b; text-align: left; }
-        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
-        .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
-        .pulse-stat { animation: pulse-glow 2s infinite ease-in-out; }
-        @keyframes pulse-glow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+        :root { --primary: #3b82f6; --glass: rgba(15, 23, 42, 0.98); }
+        body { font-family: 'Inter', sans-serif; background: #020617; color: #f8fafc; min-height: 100vh; overflow-x: hidden; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(25px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 1.5rem; }
+        .input-field { background: rgba(0, 0, 0, 0.6) !important; border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 0.75rem; padding: 0.8rem; color: white !important; width: 100%; transition: 0.3s; }
+        .input-field:focus { border-color: var(--primary); box-shadow: 0 0 15px rgba(59, 130, 246, 0.3); outline: none; }
+        .btn-action { transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); cursor: pointer; }
+        .btn-action:hover { transform: translateY(-2px); filter: brightness(1.2); }
+        .status-badge { padding: 2px 8px; border-radius: 4px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
         
-        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
-        .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; gap: 6px; }
-        .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
-        .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
+        /* Sidebar Styles */
+        #aiSidebar { position: fixed; right: -400px; top: 0; width: 350px; height: 100%; background: #0f172a; z-index: 2000; transition: 0.5s; border-left: 1px solid #1e293b; box-shadow: -10px 0 30px rgba(0,0,0,0.5); }
+        #aiSidebar.active { right: 0; }
+        .chat-bubble { padding: 10px; border-radius: 10px; margin-bottom: 10px; font-size: 12px; }
+        .chat-ai { background: #1e293b; color: #93c5fd; border-left: 3px solid #3b82f6; }
     </style>
 </head>
-<body class="p-4 md:p-8">
+<body class="p-4">
 
-    <!-- LOGIN SCREEN -->
-    <div id="loginScreen">
-        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
-            <div class="flex justify-center gap-6 mb-8">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
-                <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
-            </div>
-            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v19.0 OFFICIAL</p>
-            <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
-                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
-                <span>PENGESAHAN GOOGLE</span>
+    <!-- LOGIN -->
+    <div id="loginScreen" class="fixed inset-0 z-[3000] bg-slate-950 flex items-center justify-center p-6">
+        <div class="glass-card p-10 max-w-sm w-full text-center border-t-4 border-blue-600">
+            <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-24 mx-auto mb-6">
+            <h2 class="text-2xl font-bold mb-2">PILOT CLOUD</h2>
+            <p class="text-xs text-slate-400 mb-8 tracking-[0.3em]">VERSION 19.0 OFFICIAL</p>
+            <button onclick="login()" class="w-full py-4 bg-white text-black rounded-xl font-bold flex items-center justify-center gap-3 hover:bg-slate-200 transition">
+                <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-5">
+                LOG MASUK GOOGLE
             </button>
         </div>
     </div>
 
     <!-- MAIN APP -->
     <div id="mainApp" class="hidden">
-        <header class="container mx-auto mb-8">
-            <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-6">
-                <div class="flex items-center gap-4">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
-                    <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
-                    <div>
-                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud by ©FiR</h1>
-                        <div class="flex items-center gap-2">
-                            <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
-                            <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">---</span>
-                        </div>
-                    </div>
+        <!-- HEADER -->
+        <header class="max-w-7xl mx-auto flex flex-wrap justify-between items-center bg-slate-900/50 p-6 rounded-3xl border border-white/5 mb-8">
+            <div class="flex items-center gap-4">
+                <img id="userAvatar" class="h-12 w-12 rounded-full border-2 border-blue-500 p-0.5">
+                <div>
+                    <h1 class="text-lg font-bold text-white leading-none" id="userName">User</h1>
+                    <span class="text-[10px] text-blue-500 font-mono">AUTHORIZED PILOT v19.0</span>
                 </div>
-
-                <div class="flex items-center gap-6 bg-black/40 px-6 py-4 rounded-2xl border border-white/5">
-                    <div class="text-right">
-                        <p id="realDay" class="text-[10px] font-bold text-blue-500 uppercase">---</p>
-                        <p id="realDate" class="text-sm font-medium text-slate-400">--/--/----</p>
-                    </div>
-                    <div class="h-10 w-[1px] bg-white/10"></div>
-                    <h1 id="realTime" class="text-2xl md:text-3xl lg:text-4xl font-mono-corp font-bold text-white tracking-tighter uppercase">00:00:00 AM</h1>
+            </div>
+            
+            <div class="flex items-center gap-6">
+                <div class="hidden md:block text-right">
+                    <p id="liveClock" class="text-xl font-mono font-bold">00:00:00</p>
+                    <p id="liveDate" class="text-[10px] text-slate-500 font-bold uppercase">---</p>
                 </div>
-
-                <div class="flex items-center gap-4">
-                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase hidden md:block">Log Keluar</button>
-                    <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-14">
-                </div>
+                <button onclick="logout()" class="p-2 bg-red-500/10 text-red-500 rounded-lg hover:bg-red-500 hover:text-white transition">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
+                </button>
             </div>
         </header>
 
-        <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
+        <div class="max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
             <!-- INPUT COLUMN -->
             <div class="lg:col-span-4 space-y-6">
-                <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
-                    <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
-                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGAS</button>
-                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">GERAK</button>
-                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">MINYAK</button>
+                <div class="glass-card p-6 border-t-4 border-blue-600 shadow-2xl">
+                    <div class="flex bg-slate-950 p-1.5 rounded-xl mb-6">
+                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-2.5 text-[10px] font-bold rounded-lg bg-blue-600 text-white transition-all">TUGAS</button>
+                        <button onclick="setType('dustbin')" id="btnDustbin" class="flex-1 py-2.5 text-[10px] font-bold rounded-lg text-slate-500 transition-all">DUSTBIN</button>
+                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-2.5 text-[10px] font-bold rounded-lg text-slate-500 transition-all">GERAK</button>
                     </div>
 
                     <div class="space-y-4">
-                        <div>
-                            <label class="label-corp">Tarikh & Masa</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="datePicker" class="input-field w-full">
-                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
-                            </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="text-[10px] font-bold text-slate-500 uppercase">Tarikh</label><input type="text" id="datePicker" class="input-field"></div>
+                            <div><label class="text-[10px] font-bold text-slate-500 uppercase">Masa</label><input type="text" id="timePicker" class="input-field"></div>
                         </div>
 
-                        <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                            <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">
-                                    <span>📸</span> SCAN ODO (ALBUM/SNAP)
-                                </button>
-                                <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
-                            </div>
+                        <!-- Dustbin Features -->
+                        <div id="dustbinFields" class="hidden space-y-3 p-4 bg-purple-500/5 rounded-xl border border-purple-500/20">
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
-                                <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
+                                <div><label class="text-[10px] font-bold text-purple-400">Level Penuh (%)</label><input type="number" id="dbLevel" class="input-field" placeholder="0-100"></div>
+                                <div><label class="text-[10px] font-bold text-purple-400">Bateri (%)</label><input type="number" id="dbBattery" class="input-field" placeholder="100"></div>
                             </div>
-                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">AUTO-CALC: 0 KM</div>
+                            <select id="dbStatus" class="input-field">
+                                <option value="Normal">Status: Normal</option>
+                                <option value="Full">Status: Penuh</option>
+                                <option value="Maintenance">Penyelenggaraan</option>
+                            </select>
                         </div>
 
-                        <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                            <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
-                            <div class="grid grid-cols-2 gap-3">
-                                <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
-                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain">
+                        <!-- Odo/Log Features -->
+                        <div id="logFields" class="hidden grid grid-cols-2 gap-2">
+                            <input type="number" id="odoStart" class="input-field" placeholder="Odo Mula">
+                            <input type="number" id="odoEnd" class="input-field" placeholder="Odo Akhir">
+                        </div>
+
+                        <div id="locationArea">
+                            <label class="text-[10px] font-bold text-slate-500 uppercase">📍 Lokasi Semasa</label>
+                            <div class="flex gap-2">
+                                <input type="text" id="locationInput" class="input-field text-xs" placeholder="Mencari GPS...">
+                                <button onclick="getGPS()" class="px-3 bg-blue-600 rounded-lg">📡</button>
                             </div>
-                            <select id="fuelType" class="input-field w-full"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
-                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
                         </div>
 
-                        <div id="locationField" class="hidden">
-                            <label class="label-corp">📍 Geolocation GPS</label>
-                            <input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi...">
-                        </div>
-
-                        <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
-                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
+                        <div><label class="text-[10px] font-bold text-slate-500 uppercase">Catatan</label><textarea id="noteInput" rows="3" class="input-field text-xs"></textarea></div>
+                        
+                        <button onclick="saveData()" class="w-full py-4 bg-blue-600 hover:bg-blue-700 rounded-xl font-bold shadow-lg shadow-blue-500/20 transition-all">SYNC CLOUD DATA ☁️</button>
                     </div>
                 </div>
-                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi v19.0</button>
+
+                <!-- SMART TIPS -->
+                <div class="glass-card p-5 border-l-4 border-emerald-500 bg-emerald-500/5">
+                    <h4 class="text-xs font-bold text-emerald-500 mb-2 flex items-center gap-2">💡 SMART TIPS</h4>
+                    <p id="tipContent" class="text-[11px] text-slate-300 italic">"Sentiasa pastikan tayar kenderaan dalam keadaan optimum sebelum perjalanan jauh."</p>
+                </div>
             </div>
 
-            <!-- TABLE SIDE -->
+            <!-- TABLE COLUMN -->
             <div class="lg:col-span-8">
-                <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
-                    <div class="p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
-                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
-                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
+                <div class="glass-card h-full flex flex-col overflow-hidden">
+                    <div class="p-6 border-b border-white/5 flex justify-between items-center">
+                        <h2 class="text-xs font-bold tracking-widest text-slate-400 uppercase">Pangkalan Data Rasmi</h2>
+                        <div class="flex gap-2">
+                            <button onclick="openAI()" class="px-4 py-2 bg-indigo-600 rounded-lg text-[10px] font-bold uppercase">AI Help 🤖</button>
+                            <button onclick="showExportMenu()" class="px-4 py-2 bg-emerald-600 rounded-lg text-[10px] font-bold uppercase">Export All 📤</button>
+                        </div>
                     </div>
-                    <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
-                        <table>
-                            <thead><tr><th>Tarikh & Masa</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
-                            <tbody id="activeBody"></tbody>
+                    <div class="flex-1 overflow-y-auto p-2" style="max-height: 600px;">
+                        <table class="w-full text-left">
+                            <thead>
+                                <tr class="text-[10px] text-slate-500 border-b border-white/5">
+                                    <th class="p-4">TARIKH/MASA</th>
+                                    <th class="p-4">MODUL</th>
+                                    <th class="p-4">BUTIRAN</th>
+                                    <th class="p-4 text-right">AKSI</th>
+                                </tr>
+                            </thead>
+                            <tbody id="dataTable"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
-        </main>
-
-        <!-- FOOTER -->
-        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
-                <div class="glass-card p-5 bg-white/5 border-none space-y-4">
-                    <div class="flex items-center gap-2">
-                        <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
-                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 text-center">
-                        <div><p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p><p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p></div>
-                        <div class="border-x border-white/10"><p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p><p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p></div>
-                        <div><p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p><p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p></div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2 space-y-3 px-2">
-                    <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
-                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">Kementerian Pertanian Dan Keterjaminan Makanan,<br>Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya</p>
-                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase"><p>Tel: (603) 8870 2000 | Faks: (603) 8888 6021</p><p>Emel: pro[at]dvs.gov.my</p></div>
-                </div>
-
-                <div class="text-center md:text-right space-y-3">
-                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent Veterinar Malaysia</p>
-                    <p class="text-[8px] text-slate-600 leading-tight">v19.0 Official System</p>
-                </div>
-            </div>
-        </footer>
+        </div>
     </div>
 
-    <canvas id="procCanvas" class="hidden"></canvas>
+    <!-- AI SIDEBAR -->
+    <div id="aiSidebar">
+        <div class="p-6 flex flex-col h-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="font-bold text-blue-400">PILOT AI ASSISTANT</h3>
+                <button onclick="closeAI()" class="text-slate-500">✕</button>
+            </div>
+            <div id="chatBox" class="flex-1 overflow-y-auto space-y-4 mb-4 pr-2">
+                <div class="chat-bubble chat-ai">Hai! Saya AI Pilot. Bagaimana saya boleh bantu anda hari ini? Anda boleh tanya tentang masalah log, eksport atau dustbin.</div>
+            </div>
+            <div class="flex gap-2">
+                <input type="text" id="aiInput" class="input-field text-xs" placeholder="Tanya sesuatu...">
+                <button onclick="askAI()" class="px-4 bg-blue-600 rounded-lg">➤</button>
+            </div>
+        </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // --- CONFIG & AUTH ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
-        if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
-        const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
-        let currentUser = null, tasks = [];
-
-        // Logos (Base64 is better for exports, using direct links for now)
-        const URL_JATA = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png";
-        const URL_DVS = "https://github.com/ttv4u1/KP/raw/main/DVS.svg";
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth(), db = firebase.firestore();
+        let currentUser = null, allLogs = [], currentType = 'tugas';
 
         auth.onAuthStateChanged(user => {
-            if (user) { 
-                currentUser = user; document.getElementById('loginScreen').style.display = 'none'; 
-                document.getElementById('mainApp').classList.remove('hidden'); 
-                document.getElementById('userName').innerText = user.displayName; 
-                document.getElementById('userAvatar').src = user.photoURL; 
-                incrementVisitors(); syncData(); 
-            } else { 
-                document.getElementById('loginScreen').style.display = 'flex'; 
-                document.getElementById('mainApp').classList.add('hidden'); 
+            if (user) {
+                currentUser = user;
+                document.getElementById('loginScreen').style.display = 'none';
+                document.getElementById('mainApp').classList.remove('hidden');
+                document.getElementById('userName').innerText = user.displayName;
+                document.getElementById('userAvatar').src = user.photoURL;
+                fetchData();
+                startClock();
+            } else {
+                document.getElementById('loginScreen').style.display = 'flex';
+                document.getElementById('mainApp').classList.add('hidden');
             }
         });
 
-        async function login() { try { await auth.signInWithPopup(provider); } catch (e) { auth.signInWithRedirect(provider); } }
-        function logout() { auth.signOut(); }
+        const login = () => auth.signInWithPopup(new firebase.auth.GoogleAuthProvider());
+        const logout = () => auth.signOut();
 
-        function syncData() {
-            if(!currentUser) return;
-            db.collection("users").doc(currentUser.uid).collection("logs").onSnapshot(snap => {
-                tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
-                renderUI();
+        // --- CORE LOGIC ---
+        function setType(type) {
+            currentType = type;
+            const buttons = { tugas: 'btnTugas', dustbin: 'btnDustbin', log: 'btnLog' };
+            Object.keys(buttons).forEach(k => {
+                document.getElementById(buttons[k]).className = "flex-1 py-2.5 text-[10px] font-bold rounded-lg text-slate-500 transition-all";
             });
-            db.collection("system").doc("analytics").onSnapshot(doc => {
-                if(doc.exists) {
-                    const d = doc.data(); animateValue("statToday", d.today || 0);
-                    animateValue("statMonth", d.month || 0); animateValue("statTotal", d.total || 0);
-                }
+            const colors = { tugas: 'bg-blue-600', dustbin: 'bg-purple-600', log: 'bg-emerald-600' };
+            document.getElementById(buttons[type]).className = `flex-1 py-2.5 text-[10px] font-bold rounded-lg ${colors[type]} text-white transition-all`;
+            
+            document.getElementById('dustbinFields').classList.toggle('hidden', type !== 'dustbin');
+            document.getElementById('logFields').classList.toggle('hidden', type !== 'log');
+            if(type === 'dustbin' || type === 'log') getGPS();
+        }
+
+        async function fetchData() {
+            db.collection("users").doc(currentUser.uid).collection("logs").orderBy("timestamp", "desc").onSnapshot(snap => {
+                allLogs = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
+                renderTable();
             });
         }
 
-        // --- EXPORT LOGIC v19.0 ---
+        async function saveData() {
+            const data = {
+                type: currentType,
+                date: document.getElementById('datePicker').value,
+                time: document.getElementById('timePicker').value,
+                location: document.getElementById('locationInput').value,
+                note: document.getElementById('noteInput').value,
+                timestamp: firebase.firestore.FieldValue.serverTimestamp()
+            };
 
-        function showExportOptions() {
+            if(currentType === 'dustbin') {
+                data.level = document.getElementById('dbLevel').value;
+                data.battery = document.getElementById('dbBattery').value;
+                data.status = document.getElementById('dbStatus').value;
+            } else if(currentType === 'log') {
+                data.odoStart = document.getElementById('odoStart').value;
+                data.odoEnd = document.getElementById('odoEnd').value;
+                data.dist = (data.odoEnd - data.odoStart) || 0;
+            }
+
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(data);
+            Swal.fire({ icon: 'success', title: 'Data Berjaya Disync', timer: 1000, showConfirmButton: false });
+            clearInputs();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('dataTable');
+            tbody.innerHTML = '';
+            allLogs.forEach(log => {
+                const tr = document.createElement('tr');
+                tr.className = "border-b border-white/5 hover:bg-white/5 text-xs transition";
+                tr.innerHTML = `
+                    <td class="p-4"><div class="font-bold">${log.date}</div><div class="text-[9px] text-slate-500">${log.time}</div></td>
+                    <td class="p-4"><span class="status-badge ${log.type === 'tugas' ? 'bg-blue-500' : log.type === 'dustbin' ? 'bg-purple-500' : 'bg-emerald-500'}">${log.type}</span></td>
+                    <td class="p-4">
+                        <div class="font-medium text-slate-200 line-clamp-1">${log.note}</div>
+                        <div class="text-[9px] text-slate-500">📍 ${log.location}</div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="deleteLog('${log.docId}')" class="text-red-500 opacity-50 hover:opacity-100">🗑️</button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // --- UNIVERSAL EXPORT SUITE ---
+        function showExportMenu() {
             Swal.fire({
-                title: 'PUSAT EKSPORT DATA v19.0',
+                title: 'UNIVERSAL EXPORT CENTER',
                 html: `
-                    <div class="p-2 export-btn-grid">
-                        <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
-                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
-                        <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
-                        <button onclick="exportAccessCSV()" class="text-purple-400">🗄️<span>Access DB</span></button>
-                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PowerPoint</span></button>
-                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
-                        <button onclick="exportNotepadPlusPlus()" class="text-emerald-500">🧪<span>Notepad++</span></button>
-                        <button onclick="exportToNotes('ios')" class="text-orange-400">🍎<span>iOS Notes</span></button>
-                        <button onclick="exportToNotes('android')" class="text-green-400">🤖<span>Android</span></button>
+                    <div class="grid grid-cols-2 gap-3 p-2">
+                        <button onclick="exportPDF()" class="p-4 bg-red-500/10 border border-red-500/20 rounded-xl text-red-500 text-xs font-bold">📄 PDF (PRO)</button>
+                        <button onclick="exportExcel()" class="p-4 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-emerald-500 text-xs font-bold">📊 MS EXCEL</button>
+                        <button onclick="exportWord()" class="p-4 bg-blue-500/10 border border-blue-500/20 rounded-xl text-blue-500 text-xs font-bold">📝 MS WORD</button>
+                        <button onclick="exportPPT()" class="p-4 bg-orange-500/10 border border-orange-500/20 rounded-xl text-orange-500 text-xs font-bold">📽️ POWERPOINT</button>
+                        <button onclick="exportAccess()" class="p-4 bg-purple-500/10 border border-purple-500/20 rounded-xl text-purple-500 text-xs font-bold">🗄️ ACCESS DB</button>
+                        <button onclick="exportNotes('ios')" class="p-4 bg-slate-500/10 border border-slate-500/20 rounded-xl text-white text-xs font-bold">📱 SMART NOTES</button>
                     </div>
                 `,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
+                showConfirmButton: false,
+                customClass: { popup: 'glass-card' }
             });
         }
 
         async function exportPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('l', 'mm', 'a4');
-            const sorted = tasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date));
-            
-            // Background Watermark (Opacity handled by RGBA if supported, or just light color)
-            doc.setGState(new doc.GState({opacity: 0.1}));
-            doc.addImage(URL_JATA, 'PNG', 70, 40, 150, 120);
-            doc.setGState(new doc.GState({opacity: 1.0}));
-
-            // Header Blue Box
-            doc.setFillColor(37, 99, 235);
-            doc.rect(0, 0, 297, 35, 'F');
-
-            // Logos in Header
-            doc.addImage(URL_JATA, 'PNG', 10, 5, 25, 22);
-            // Since DVS is SVG, we use a placeholder or check if lib supports it. Best converted to PNG.
-            doc.setTextColor(255, 255, 255);
             doc.setFontSize(18);
-            doc.setFont("helvetica", "bold");
-            doc.text("LAPORAN RASMI LOG PERGERAKAN PILOT CLOUD", 45, 15);
+            doc.text("LAPORAN RASMI PILOT CLOUD v19.0", 14, 20);
             doc.setFontSize(10);
-            doc.text(`PETUGAS: ${currentUser.displayName.toUpperCase()} | JABATAN PERKHIDMATAN VETERINAR`, 45, 22);
-            doc.text(`TARIKH CETAKAN: ${new Date().toLocaleString()}`, 45, 28);
-
-            const tableData = sorted.map(t => [t.date, t.day, t.tFrom, t.location, t.odoStart, t.odoEnd, t.dist, t.rmMinyak.toFixed(2), t.note]);
+            doc.text(`Pemandu/User: ${currentUser.displayName} | Tarikh: ${new Date().toLocaleDateString()}`, 14, 28);
             
+            const rows = allLogs.map(l => [l.date, l.time, l.type.toUpperCase(), l.location, l.note]);
             doc.autoTable({
-                head: [['TARIKH', 'HARI', 'MASA', 'LOKASI/GPS', 'ODO MULA', 'ODO AKHIR', 'KM', 'RM', 'BUTIRAN/TUGAS']],
-                body: tableData,
-                startY: 40,
+                startY: 35,
+                head: [['TARIKH', 'MASA', 'MODUL', 'LOKASI', 'CATATAN']],
+                body: rows,
                 theme: 'grid',
-                styles: { fontSize: 7, cellPadding: 2 },
-                headStyles: { fillColor: [30, 41, 59] }
+                headStyles: { fillColor: [59, 130, 246] }
             });
-
-            doc.save(`PILOT_RASMI_v19_${Date.now()}.pdf`);
+            
+            const fileName = `PILOT_REPORT_${Date.now()}.pdf`;
+            doc.save(fileName);
+            handleShare(fileName, doc.output('blob'));
         }
 
         function exportExcel() {
-            const rows = tasks.map(t => ({
-                "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI GPS": t.location,
-                "ODO MULA": t.odoStart, "ODO AKHIR": t.odoEnd, "JARAK (KM)": t.dist,
-                "KOS MINYAK (RM)": t.rmMinyak, "BUTIRAN TUGAS": t.note
-            }));
-            const ws = XLSX.utils.json_to_sheet(rows);
+            const ws = XLSX.utils.json_to_sheet(allLogs);
             const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Log_Data");
-            XLSX.writeFile(wb, `PILOT_v19_Data.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "Logs");
+            XLSX.writeFile(wb, `PILOT_DATA_${Date.now()}.xlsx`);
         }
 
         function exportWord() {
-            let html = `
-                <html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
-                <head><meta charset='utf-8'><style>
-                    body { font-family: 'Arial'; }
-                    .header { background: #2563eb; color: white; padding: 20px; text-align: center; }
-                    table { width: 100%; border-collapse: collapse; margin-top: 20px; }
-                    th, td { border: 1px solid #ccc; padding: 8px; font-size: 10pt; }
-                    th { background: #f2f2f2; }
-                </style></head>
-                <body>
-                    <div class="header">
-                        <h1>JABATAN PERKHIDMATAN VETERINAR</h1>
-                        <p>LAPORAN LOG PILOT CLOUD v19.0</p>
-                    </div>
-                    <p><b>Nama Pemandu:</b> ${currentUser.displayName}</p>
-                    <table>
-                        <tr><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>KM</th><th>RM</th><th>Tugas</th></tr>
-                        ${tasks.map(t => `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.dist}</td><td>${t.rmMinyak}</td><td>${t.note}</td></tr>`).join('')}
-                    </table>
-                </body></html>`;
-            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `PILOT_Laporan_Word.doc`;
+            let content = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'></head><body><h1>Laporan Pilot Cloud</h1><table border='1'><tr><th>Tarikh</th><th>Modul</th><th>Catatan</th></tr>`;
+            allLogs.forEach(l => {
+                content += `<tr><td>${l.date}</td><td>${l.type}</td><td>${l.note}</td></tr>`;
+            });
+            content += `</table></body></html>`;
+            const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `PILOT_DOC_${Date.now()}.doc`;
             link.click();
         }
 
-        function exportPowerPoint() {
+        function exportPPT() {
             let pptx = new PptxGenJS();
-            pptx.layout = 'LAYOUT_WIDE';
-
-            // Title Slide
-            let slide1 = pptx.addSlide();
-            slide1.background = { color: "0f172a" };
-            slide1.addText("LAPORAN PERGERAKAN PILOT CLOUD", { x: 1, y: 1.5, w: '80%', fontSize: 36, bold: true, color: "2563eb" });
-            slide1.addText(`Pegawai: ${currentUser.displayName}\nVersi Sistem: 19.0 Official`, { x: 1, y: 3, w: '80%', fontSize: 18, color: "f8fafc" });
-
-            // Data Slides
-            let slide2 = pptx.addSlide();
-            slide2.addText("RINGKASAN DATABASE", { x: 0.5, y: 0.5, fontSize: 24, bold: true });
-            
-            let tableData = [["Tarikh", "Lokasi", "Jarak", "Butiran"]];
-            tasks.slice(0, 10).forEach(t => tableData.push([t.date, t.location, t.dist + " KM", t.note]));
-
-            slide2.addTable(tableData, { x: 0.5, y: 1.2, w: 12, border: { pt: 1, color: "CCCCCC" }, fontSize: 10 });
-            
-            pptx.writeFile({ fileName: `PILOT_v19_Presentasi.pptx` });
+            let slide = pptx.addSlide();
+            slide.addText("LAPORAN PILOT CLOUD DATA", { x: 1, y: 1, fontSize: 24, color: "363636" });
+            let rows = [['Tarikh', 'Masa', 'Modul', 'Catatan']];
+            allLogs.slice(0, 5).forEach(l => rows.push([l.date, l.time, l.type, l.note]));
+            slide.addTable(rows, { x: 0.5, y: 2, colWidth: [1, 1, 1, 4] });
+            pptx.writeFile({ fileName: `PILOT_PRESENTATION.pptx` });
         }
 
-        function exportAccessCSV() {
-            // CSV format optimized for Access DB Import
-            let csv = "ID,Date_Entry,Day_Name,Time_Start,Location_Name,Odo_Start,Odo_End,Distance_KM,Fuel_RM,Description\n";
-            tasks.forEach(t => {
-                csv += `"${t.id}","${t.date}","${t.day}","${t.tFrom}","${t.location}",${t.odoStart},${t.odoEnd},${t.dist},${t.rmMinyak},"${t.note.replace(/"/g, '""')}"\n`;
+        function exportAccess() {
+            // Access reads CSV as linked tables perfectly
+            let csv = "Date,Time,Module,Location,Details\n";
+            allLogs.forEach(l => {
+                csv += `"${l.date}","${l.time}","${l.type}","${l.location}","${l.note}"\n`;
             });
             const blob = new Blob([csv], { type: 'text/csv' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `PILOT_AccessDB_Import.csv`;
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `PILOT_ACCESS_SCHEMA.csv`;
             link.click();
         }
 
-        function exportNotepad() {
-            let txt = `=== PILOT CLOUD LOG v19.0 ===\nPETUGAS: ${currentUser.displayName}\n\n`;
-            tasks.forEach(t => txt += `[${t.date} | ${t.tFrom}] LOKASI: ${t.location} | JARAK: ${t.dist}KM | NOTA: ${t.note}\n`);
-            const blob = new Blob([txt], { type: 'text/plain' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `PILOT_Log_Simple.txt`;
-            link.click();
-        }
-
-        function exportNotepadPlusPlus() {
-            let code = `/* PILOT CLOUD LOG EXPORT v19.0 */\n`;
-            code += `Officer { name: "${currentUser.displayName}"; export_date: "${new Date().toISOString()}"; }\n\n`;
-            tasks.forEach(t => {
-                code += `Entry_${t.id} {\n  date: "${t.date}";\n  time: "${t.tFrom}";\n  dist: ${t.dist};\n  fuel: ${t.rmMinyak};\n  location: "${t.location}";\n  task: "${t.note}";\n}\n`;
+        function exportNotes(platform) {
+            let text = `--- PILOT CLOUD LOGS ---\n`;
+            allLogs.forEach(l => {
+                text += `[${l.date}] ${l.type}: ${l.note}\n`;
             });
-            const blob = new Blob([code], { type: 'text/plain' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `PILOT_Log_DevFormat.log`;
-            link.click();
+            navigator.clipboard.writeText(text);
+            Swal.fire('Disalin!', 'Data telah disalin ke clipboard. Sila paste dalam Notes anda.', 'success');
         }
 
-        function exportToNotes(platform) {
-            let txt = `📋 LOG PILOT CLOUD v19.0\n`;
-            txt += `👤 ${currentUser.displayName}\n`;
-            txt += `--------------------------\n`;
-            tasks.sort((a,b)=>parseDate(b.date)-parseDate(a.date)).slice(0, 20).forEach(t => {
-                txt += `📅 ${t.date} (${t.day})\n📍 ${t.location}\n🛣️ ${t.dist} KM | 💰 RM ${t.rmMinyak}\n📝 ${t.note}\n\n`;
-            });
-            navigator.clipboard.writeText(txt).then(() => {
-                Swal.fire('BERJAYA!', `Data disalin. Sila buka aplikasi Notes (${platform}) dan 'Paste'.`, 'success');
-            });
-        }
-
-        // --- COMMON UTILS ---
-
-        function setType(type) {
-            window.currentType = type;
-            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
-            ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
-            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
-            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); detectLocation(); }
-            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
-        }
-
-        async function saveEntry() {
-            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
-            const entry = {
-                id: Date.now(), type: window.currentType, date, day: getDayName(date),
-                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
-                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
-                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
-                location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-'
-            };
-            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-        }
-
-        function renderUI() {
-            const body = document.getElementById('activeBody'); body.innerHTML = '';
-            let sorted = [...tasks].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
-            sorted.forEach(t => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
-                tr.onclick = () => showDetails(t);
-                tr.innerHTML = `
-                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
-                    <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
-                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
-                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
-                        </div></td>
-                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
-                body.appendChild(tr);
-            });
-        }
-
-        function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
-        function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
-        
-        async function incrementVisitors() {
-            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
-            const ref = db.collection("system").doc("analytics");
-            await db.runTransaction(async (t) => {
-                const doc = await t.get(ref);
-                if (!doc.exists) t.set(ref, { today: 1, month: 1, total: 1, lastDate: today });
-                else {
-                    let d = doc.data(); let u = { total: (d.total || 0) + 1 };
-                    if(d.lastDate !== today) { u.today = 1; u.lastDate = today; } else u.today = (d.today || 0) + 1;
-                    t.update(ref, u);
-                }
-            });
-        }
-        function animateValue(id, val) {
-            const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
-            const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
-        }
-
-        function detectLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    const { latitude, longitude } = pos.coords;
-                    try {
-                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                        const data = await res.json();
-                        document.getElementById('locationInput').value = data.address.suburb || data.address.city || data.display_name;
-                    } catch (e) { document.getElementById('locationInput').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`; }
-                }, () => {}, {enableHighAccuracy: true});
+        async function handleShare(name, blob) {
+            if (navigator.share) {
+                try {
+                    const file = new File([blob], name, { type: blob.type });
+                    await navigator.share({
+                        files: [file],
+                        title: 'Laporan Pilot Cloud',
+                        text: 'Sila terima laporan data rasmi dari sistem PILOT Cloud.'
+                    });
+                } catch (e) { console.log('Share canceled'); }
             }
         }
 
-        function calcPreview() {
-            const s = parseFloat(document.getElementById('odoStart').value) || 0;
-            const e = parseFloat(document.getElementById('odoEnd').value) || 0;
-            document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
-            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
-            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-            if(document.getElementById('fuelPreview')) document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+        // --- AI & HELPERS ---
+        function openAI() { document.getElementById('aiSidebar').classList.add('active'); }
+        function closeAI() { document.getElementById('aiSidebar').classList.remove('active'); }
+
+        function askAI() {
+            const q = document.getElementById('aiInput').value.toLowerCase();
+            const box = document.getElementById('chatBox');
+            box.innerHTML += `<div class="chat-bubble bg-blue-600 text-white ml-auto w-fit">User: ${q}</div>`;
+            
+            let reply = "Maaf, saya tidak faham. Sila tanya tentang 'masalah eksport', 'cara guna dustbin' atau 'sync data'.";
+            if(q.includes('eksport')) reply = "Untuk eksport, klik butang 'Export All'. Anda boleh pilih PDF, Excel, atau Word. Pastikan pop-up dibenarkan.";
+            if(q.includes('dustbin')) reply = "Modul Dustbin digunakan untuk menjejak tahap penuh tong sampah IoT. Pastikan anda masukkan level (%) dan status bateri.";
+            if(q.includes('gps')) reply = "Jika GPS tidak tepat, pastikan peranti anda mempunyai 'High Accuracy Mode' diaktifkan dalam setting.";
+
+            setTimeout(() => {
+                box.innerHTML += `<div class="chat-bubble chat-ai">AI: ${reply}</div>`;
+                box.scrollTop = box.scrollHeight;
+            }, 800);
+            document.getElementById('aiInput').value = '';
         }
 
-        async function deleteEntry(docId) {
-            const res = await Swal.fire({ title: 'Padam Data?', text: "Data akan dibuang dari cloud selamanya.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
-            if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
+        function getGPS() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(pos => {
+                    const { latitude, longitude } = pos.coords;
+                    document.getElementById('locationInput').value = `${latitude.toFixed(5)}, ${longitude.toFixed(5)}`;
+                });
+            }
         }
 
+        function startClock() {
+            setInterval(() => {
+                const now = new Date();
+                document.getElementById('liveClock').innerText = now.toLocaleTimeString('en-GB');
+                document.getElementById('liveDate').innerText = now.toLocaleDateString('ms-MY', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            }, 1000);
+        }
+
+        function clearInputs() {
+            ['noteInput', 'odoStart', 'odoEnd', 'dbLevel', 'dbBattery'].forEach(id => {
+                if(document.getElementById(id)) document.getElementById(id).value = '';
+            });
+        }
+
+        async function deleteLog(id) {
+            if(confirm("Padam log ini secara kekal?")) {
+                await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).delete();
+            }
+        }
+
+        flatpickr("#datePicker", { defaultDate: "today", dateFormat: "d-m-Y" });
+        flatpickr("#timePicker", { enableTime: true, noCalendar: true, dateFormat: "h:i K", defaultDate: new Date() });
+
+        const tips = [
+            "Sentiasa bersihkan sensor Dustbin setiap minggu.",
+            "Rekod Odo selepas setiap perjalanan untuk audit tepat.",
+            "Gunakan fungsi PDF Export untuk laporan mesyuarat rasmi.",
+            "Pastikan bateri peranti IoT Dustbin sentiasa atas 20%."
+        ];
         setInterval(() => {
-            const n = new Date();
-            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
-            document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
-            document.getElementById('realDay').textContent = ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][n.getDay()];
-        }, 1000);
-
-        flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-        setType('tugas');
+            document.getElementById('tipContent').innerText = `"${tips[Math.floor(Math.random()*tips.length)]}"`;
+        }, 10000);
 
     </script>
 </body>
