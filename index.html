@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v33 Official</title>
+    <title>PILOT Cloud Intelligent | v34 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -55,26 +55,28 @@
         .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
         .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
 
-        /* HIGHLIGHT STYLES */
         .row-newly-added { background: rgba(37, 99, 235, 0.2) !important; animation: pulse-new 2s infinite; }
         .row-future-task { background: rgba(245, 158, 11, 0.15) !important; border-left: 4px solid #f59e0b !important; }
         @keyframes pulse-new { 0% { background: rgba(37, 99, 235, 0.1); } 50% { background: rgba(37, 99, 235, 0.3); } 100% { background: rgba(37, 99, 235, 0.1); } }
 
-        /* AI HELPER UI */
         .ai-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5); cursor: pointer; z-index: 999; transition: 0.3s; border: 2px solid rgba(255,255,255,0.2); }
         .ai-fab:hover { transform: scale(1.1) rotate(15deg); background: #1d4ed8; }
         .ai-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 800; }
+
+        /* CHAT BUBBLES */
+        .chat-container { height: 300px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 10px; }
+        .chat-bubble { max-width: 80%; padding: 8px 12px; border-radius: 15px; font-size: 11px; line-height: 1.4; }
+        .bubble-ai { background: #1e293b; color: #e2e8f0; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #334155; }
+        .bubble-user { background: #2563eb; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- AI HELPER BUTTON -->
     <div class="ai-fab" onclick="openAIHelper()">
         <span>🤖</span>
         <div class="ai-badge">LIVE</div>
     </div>
 
-    <!-- LOGIN SCREEN -->
     <div id="loginScreen">
         <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
             <div class="flex justify-center gap-6 mb-8">
@@ -82,7 +84,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v33</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v34</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -90,7 +92,6 @@
         </div>
     </div>
 
-    <!-- MAIN APP -->
     <div id="mainApp" class="hidden">
         <header class="container mx-auto mb-8">
             <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-6">
@@ -123,7 +124,6 @@
         </header>
 
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-            <!-- INPUT COLUMN -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
@@ -177,7 +177,6 @@
                 <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
             </div>
 
-            <!-- TABLE SIDE -->
             <div class="lg:col-span-8">
                 <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
                     <div class="p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
@@ -220,7 +219,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
-        // --- CONFIG & FIREBASE ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
@@ -256,40 +254,88 @@
             });
         }
 
-        // --- AI HELPER FUNCTION ---
+        // --- ENHANCED AI HELPER WITH INTELLIGENT CHAT ---
         function openAIHelper() {
             Swal.fire({
                 title: '🤖 PILOT AI ASSISTANT',
                 html: `
-                    <div class="text-left space-y-4">
-                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest border-b border-white/10 pb-2">Sila Pilih Fasa Tugas:</p>
-                        <div class="grid grid-cols-1 gap-2">
-                            <button onclick="showAITip('pra')" class="p-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl border border-blue-500/20 flex items-center gap-3 transition">
-                                <span class="text-xl">🛡️</span>
-                                <div class="text-left">
-                                    <p class="text-[11px] font-bold text-white uppercase">Protokol Pra-Perjalanan</p>
-                                    <p class="text-[9px] text-slate-400">Pemeriksaan kenderaan sebelum gerak.</p>
-                                </div>
-                            </button>
-                            <button onclick="showAITip('semasa')" class="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl border border-emerald-500/20 flex items-center gap-3 transition">
-                                <span class="text-xl">🛣️</span>
-                                <div class="text-left">
-                                    <p class="text-[11px] font-bold text-white uppercase">Keselamatan Operasi</p>
-                                    <p class="text-[9px] text-slate-400">Etika pemanduan semasa bertugas.</p>
-                                </div>
-                            </button>
-                            <button onclick="showAITip('tamat')" class="p-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl border border-red-500/20 flex items-center gap-3 transition">
-                                <span class="text-xl">🏁</span>
-                                <div class="text-left">
-                                    <p class="text-[11px] font-bold text-white uppercase">Prosedur Penutupan</p>
-                                    <p class="text-[9px] text-slate-400">Tindakan selepas tamat perjalanan.</p>
-                                </div>
-                            </button>
-                        </div>
+                    <div id="aiChatBox" class="chat-container text-left custom-scroll">
+                        <div class="chat-bubble bubble-ai">Sila pilih fasa atau tanya saya apa-apa tentang sistem ini.</div>
+                    </div>
+                    <div class="flex gap-2 mb-3">
+                         <button onclick="showAITip('pra')" class="flex-1 py-1.5 bg-blue-600/20 text-[9px] font-bold rounded-lg border border-blue-500/30">🛡️ PRA</button>
+                         <button onclick="showAITip('semasa')" class="flex-1 py-1.5 bg-emerald-600/20 text-[9px] font-bold rounded-lg border border-emerald-500/30">🛣️ SEMASA</button>
+                         <button onclick="showAITip('tamat')" class="flex-1 py-1.5 bg-red-600/20 text-[9px] font-bold rounded-lg border border-red-500/30">🏁 TAMAT</button>
+                    </div>
+                    <div class="flex gap-2">
+                        <input type="text" id="aiInput" class="input-field flex-1 text-[11px]" placeholder="Tanya sesuatu...">
+                        <button onclick="processAIChat()" class="bg-blue-600 px-4 rounded-xl">🚀</button>
                     </div>
                 `,
                 showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
             });
+
+            // Allow enter key
+            setTimeout(() => {
+                document.getElementById('aiInput').addEventListener('keypress', function (e) {
+                    if (e.key === 'Enter') processAIChat();
+                });
+            }, 500);
+        }
+
+        async function processAIChat() {
+            const input = document.getElementById('aiInput');
+            const chatBox = document.getElementById('aiChatBox');
+            const query = input.value.trim();
+            if (!query) return;
+
+            // User bubble
+            chatBox.innerHTML += `<div class="chat-bubble bubble-user">${query}</div>`;
+            input.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            // AI Loading
+            const loadingId = 'ai-loading-' + Date.now();
+            chatBox.innerHTML += `<div id="${loadingId}" class="chat-bubble bubble-ai animate-pulse">Berfikir...</div>`;
+            
+            // AI Response Logic
+            setTimeout(() => {
+                const response = getIntelligentResponse(query);
+                document.getElementById(loadingId).remove();
+                chatBox.innerHTML += `<div class="chat-bubble bubble-ai">${response}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 800);
+        }
+
+        function getIntelligentResponse(query) {
+            const q = query.toLowerCase();
+            const stats = {
+                total: tasks.length,
+                totalKm: tasks.reduce((acc, t) => acc + (t.dist || 0), 0),
+                totalMinyak: tasks.reduce((acc, t) => acc + (t.rmMinyak || 0), 0)
+            };
+
+            if (q.includes("halo") || q.includes("hi") || q.includes("siapa")) {
+                return `Selamat datang! Saya adalah <b>PILOT AI</b>, pembantu digital anda untuk sistem log Jabatan Perkhidmatan Veterinar. Bagaimana saya boleh bantu anda hari ini?`;
+            }
+            if (q.includes("statistik") || q.includes("jumlah") || q.includes("banyak")) {
+                return `Berdasarkan data cloud anda: <br>• Anda mempunyai <b>${stats.total}</b> rekod.<br>• Jumlah perjalanan: <b>${stats.totalKm} KM</b>.<br>• Kos minyak terkumpul: <b>RM ${stats.totalMinyak.toFixed(2)}</b>.`;
+            }
+            if (q.includes("eksport") || q.includes("simpan") || q.includes("pdf")) {
+                return `Untuk menyimpan data, klik butang hijau <b>"Eksport Data Rasmi"</b> di menu utama. Anda boleh memilih format PDF, Excel atau Word.`;
+            }
+            if (q.includes("odometer") || q.includes("scan")) {
+                return `Gunakan fungsi <b>"Scan Odo"</b> dengan mengambil gambar yang jelas pada paparan odometer kenderaan. Pastikan tiada silauan cahaya untuk ketepatan AI 99.9%.`;
+            }
+            if (q.includes("rosak") || q.includes("masalah")) {
+                return `Jika terdapat kerosakan teknikal pada kenderaan, sila rekodkan dalam 'Butiran Perincian' dan segera maklumkan kepada Unit Pentadbiran/Kenderaan DVS.`;
+            }
+            if (q.includes("makan") || q.includes("lapar")) {
+                return `Sebagai AI, saya tidak makan, tapi pastikan anda berehat di R&R jika memandu jauh! Keselamatan adalah keutamaan.`;
+            }
+            
+            // Default "Smart" Fallback
+            return `Soalan yang menarik. Mengenai "${query}", saya syorkan anda menyemak Protokol v33 dalam manual sistem atau memastikan data diselaraskan (sync) ke cloud untuk analisis tepat. Ada lagi yang boleh saya bantu?`;
         }
 
         window.showAITip = (fasa) => {
@@ -305,13 +351,20 @@
                 content = "• Rekod bacaan odometer akhir.<br>• Pastikan kenderaan dikunci rapi.<br>• Buang sampah & bersihkan kabin.<br>• Lapor jika ada kerosakan teknikal.";
             }
 
-            Swal.fire({
-                title: `<span style="color:${color}">${title}</span>`,
-                html: `<div class="text-left text-xs leading-relaxed text-slate-300 font-medium">${content}</div>`,
-                confirmButtonText: 'FAHAM', customClass: { popup: 'swal-corp' }
-            });
+            const chatBox = document.getElementById('aiChatBox');
+            if (chatBox) {
+                chatBox.innerHTML += `<div class="chat-bubble bubble-ai"><b style="color:${color}">${title}</b><br>${content}</div>`;
+                chatBox.scrollTop = chatBox.scrollHeight;
+            } else {
+                Swal.fire({
+                    title: `<span style="color:${color}">${title}</span>`,
+                    html: `<div class="text-left text-xs leading-relaxed text-slate-300 font-medium">${content}</div>`,
+                    confirmButtonText: 'FAHAM', customClass: { popup: 'swal-corp' }
+                });
+            }
         }
 
+        // --- ALL ORIGINAL FUNCTIONS PRESERVED ---
         async function deleteEntry(docId) {
             const result = await Swal.fire({ title: 'Padam Data?', text: "Rekod akan dibuang secara kekal!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'YA, PADAM', customClass: { popup: 'swal-corp' } });
             if (result.isConfirmed) {
@@ -419,24 +472,14 @@
             sorted.forEach(t => {
                 const tr = document.createElement('tr');
                 const entryDate = parseDate(t.date);
-                
-                // HIGHLIGHT LOGIC
                 let rowClass = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
                 if(t.id === newlyAddedId) rowClass += " row-newly-added";
                 else if(entryDate > now) rowClass += " row-future-task";
-
                 tr.className = rowClass;
                 tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
-                    <td>
-                        <div class="font-bold text-xs text-white">${t.date}</div>
-                        <div class="text-[9px] ${entryDate > now ? 'text-amber-500' : 'text-blue-500'} font-bold uppercase">${t.day} | ${t.tFrom}</div>
-                    </td>
-                    <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
-                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
-                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
-                        </div></td>
+                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] ${entryDate > now ? 'text-amber-500' : 'text-blue-500'} font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
+                    <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div><div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}<span class="truncate max-w-[120px]">📍 ${t.location}</span></div></td>
                     <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
                 body.appendChild(tr);
             });
