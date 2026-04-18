@@ -5,10 +5,16 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v19 Official</title>
+    <title>PILOT Cloud Intelligent | v18.8 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+    <!-- Frameworks -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -27,26 +33,34 @@
     <style>
         :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
         body { font-family: 'Inter', sans-serif; background: #0f172a; background-image: radial-gradient(circle at top right, #1e293b, #0f172a); color: #f8fafc; min-height: 100vh; }
+        h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
+        .font-mono-corp { font-family: 'Share Tech Mono', monospace; }
         .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
-        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; font-size: 0.9rem; }
-        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: 0.2s; text-transform: uppercase; }
-        
-        /* New Features Style */
-        .highlight-new { animation: highlight-fade 5s ease-out forwards; }
-        @keyframes highlight-fade { from { background: rgba(37, 99, 235, 0.3); } to { background: transparent; } }
-        
-        .unread-row { border-left: 4px solid #2563eb !important; background: rgba(37, 99, 235, 0.05); }
-        .is-favourite { color: #fbbf24 !important; filter: drop-shadow(0 0 5px #fbbf24); }
-        .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
-        
+        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; transition: all 0.2s; font-size: 0.9rem; }
+        .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+        .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
+        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.025em; }
         #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
         .table-container { overflow-x: auto; border-radius: 1rem; }
-        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; color: #64748b; text-align: left; }
-        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
+        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; text-transform: uppercase; color: #64748b; text-align: left; }
+        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
+        .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
+        .pulse-stat { animation: pulse-glow 2s infinite ease-in-out; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
         
         .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
-        .export-btn-grid button { display: flex; flex-direction: column; align-items: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
+        .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; gap: 6px; }
+        .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
+        .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
+
+        /* New UI Elements */
+        .unread-dot { width: 8px; height: 8px; background: #3b82f6; border-radius: 50%; display: inline-block; margin-right: 8px; }
+        .fav-star { color: #f59e0b; cursor: pointer; font-size: 1.2rem; }
+        .fav-star.inactive { color: #475569; }
+        .bulk-toolbar { display: flex; gap: 10px; padding: 10px; background: rgba(37, 99, 235, 0.1); border-radius: 10px; margin-bottom: 10px; align-items: center; }
+        .checkbox-custom { width: 18px; height: 18px; cursor: pointer; accent-color: #2563eb; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -58,8 +72,8 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
-            <h2 class="text-3xl font-bold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v18.9</p>
+            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v18.8</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -73,11 +87,12 @@
             <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-6">
                 <div class="flex items-center gap-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
+                    <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-white">PILOT Data Process Cloud v18.9</h1>
+                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud by ©FiR</h1>
                         <div class="flex items-center gap-2">
                             <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
-                            <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase">---</span>
+                            <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">---</span>
                         </div>
                     </div>
                 </div>
@@ -85,12 +100,14 @@
                 <div class="flex items-center gap-6 bg-black/40 px-6 py-4 rounded-2xl border border-white/5">
                     <div class="text-right">
                         <p id="realDay" class="text-[10px] font-bold text-blue-500 uppercase">---</p>
-                        <h1 id="realTime" class="text-2xl font-mono font-bold text-white tracking-tighter uppercase">00:00:00 AM</h1>
+                        <p id="realDate" class="text-sm font-medium text-slate-400">--/--/----</p>
                     </div>
+                    <div class="h-10 w-[1px] bg-white/10"></div>
+                    <h1 id="realTime" class="text-2xl md:text-3xl lg:text-4xl font-mono-corp font-bold text-white tracking-tighter uppercase">00:00:00 AM</h1>
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase">Log Keluar</button>
+                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase hidden md:block">Log Keluar</button>
                     <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-14">
                 </div>
             </div>
@@ -107,54 +124,85 @@
                     </div>
 
                     <div class="space-y-4">
-                        <div class="grid grid-cols-2 gap-2">
-                            <div><label class="label-corp">Tarikh</label><input type="text" id="datePicker" class="input-field w-full"></div>
-                            <div><label class="label-corp">Masa</label><input type="text" id="timeFrom" class="input-field w-full text-center"></div>
+                        <div>
+                            <label class="label-corp">Tarikh & Masa</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="datePicker" class="input-field w-full">
+                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
+                            </div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 rounded-lg text-[9px] font-bold text-white">📸 SCAN</button>
+                                <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
+                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">
+                                    <span>📸</span> SCAN ODO (ALBUM/SNAP)
+                                </button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
                                 <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
                             </div>
-                            <div id="distPreview" class="text-center font-mono text-emerald-400 text-[10px] font-bold">AUTO-CALC: 0 KM</div>
+                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">AUTO-CALC: 0 KM</div>
+                        </div>
+
+                        <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
+                            <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
+                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain">
+                            </div>
+                            <select id="fuelType" class="input-field w-full"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
+                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
                         </div>
 
                         <div id="locationField" class="hidden">
-                            <label class="label-corp">📍 Lokasi Semasa</label>
-                            <input type="text" id="locationInput" class="input-field w-full text-[11px]">
+                            <label class="label-corp">📍 Geolocation GPS</label>
+                            <input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi...">
                         </div>
 
-                        <div><label class="label-corp">Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full"></textarea></div>
+                        <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
                         <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
-                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition uppercase tracking-widest text-white">📤 Eksport Data Rasmi</button>
+                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
             </div>
 
             <!-- TABLE SIDE -->
             <div class="lg:col-span-8">
                 <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
-                    <!-- TOOLBAR -->
-                    <div class="p-4 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
-                        <div class="flex items-center gap-3">
-                            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="w-4 h-4 rounded border-white/20 bg-black">
-                            <button onclick="bulkDelete()" class="px-3 py-1.5 bg-red-500/20 text-red-500 rounded-lg text-[10px] font-bold border border-red-500/20 hover:bg-red-500 hover:text-white transition">DELETE SELECTED</button>
+                    <div class="p-6 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
+                        <div class="flex items-center gap-4">
+                            <h3 id="tableTitle" class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
+                            <select id="viewFilter" onchange="renderUI()" class="bg-black/40 text-[10px] font-bold text-white border border-white/10 rounded-lg px-2 py-1 outline-none">
+                                <option value="active">AKTIF</option>
+                                <option value="favourite">KEGEMARAN ⭐</option>
+                                <option value="deleted">RECYCLE BIN 🗑️</option>
+                            </select>
                         </div>
-                        <div class="flex items-center gap-2">
-                            <button onclick="viewRecycleBin()" class="px-3 py-1.5 bg-slate-700 text-white rounded-lg text-[10px] font-bold">🗑️ RECYCLE BIN</button>
-                            <button onclick="showFullAnalytics()" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-[10px] font-bold uppercase">History 📊</button>
-                        </div>
+                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
                     </div>
 
-                    <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[600px]">
+                    <!-- BULK TOOLBAR -->
+                    <div id="bulkToolbar" class="px-6 py-2 border-b border-white/5 bg-white/5 hidden flex items-center gap-4">
+                        <span id="selectedCount" class="text-[10px] font-bold text-blue-400">0 TERPILIH</span>
+                        <button onclick="bulkMarkRead()" class="text-[9px] font-bold text-slate-300 hover:text-white border border-white/10 px-2 py-1 rounded">MARK AS READ</button>
+                        <button onclick="bulkAction('favourite')" class="text-[9px] font-bold text-orange-400 hover:text-orange-300 border border-orange-400/20 px-2 py-1 rounded">⭐ FAV</button>
+                        <button id="bulkDeleteBtn" onclick="bulkAction('deleted')" class="text-[9px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-2 py-1 rounded">🗑️ DELETE</button>
+                        <button id="bulkRestoreBtn" onclick="bulkAction('active')" class="text-[9px] font-bold text-emerald-500 hover:text-emerald-400 border border-emerald-500/20 px-2 py-1 rounded hidden">♻️ RESTORE</button>
+                    </div>
+
+                    <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
                         <table>
-                            <thead><tr><th width="40"></th><th>Masa/Info</th><th>Butiran</th><th class="text-right">Aksi</th></tr></thead>
+                            <thead>
+                                <tr>
+                                    <th width="40"><input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="checkbox-custom"></th>
+                                    <th>Tarikh & Masa</th>
+                                    <th>Butiran & Lokasi</th>
+                                    <th class="text-right">Aksi</th>
+                                </tr>
+                            </thead>
                             <tbody id="activeBody"></tbody>
                         </table>
                     </div>
@@ -162,18 +210,55 @@
             </div>
         </main>
 
-        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10 text-center md:text-left">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <p class="text-[10px] font-bold text-blue-500 uppercase">Statistik Cloud</p>
-                    <div class="flex gap-4 mt-2">
-                        <div><p class="text-[8px] text-slate-500 uppercase">Hari Ini</p><p id="statToday" class="text-xl font-mono text-emerald-400">0</p></div>
-                        <div><p class="text-[8px] text-slate-500 uppercase">Jumlah</p><p id="statTotal" class="text-xl font-mono text-orange-400">0</p></div>
+        <!-- FOOTER: REALTIME STATS & ADDRESS -->
+        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <div class="glass-card p-5 bg-white/5 border-none space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p>
+                    </div>
+                    <div class="grid grid-cols-3 gap-2 text-center">
+                        <div>
+                            <p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p>
+                            <p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p>
+                        </div>
+                        <div class="border-x border-white/10">
+                            <p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p>
+                            <p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p>
+                        </div>
+                        <div>
+                            <p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p>
+                            <p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p>
+                        </div>
                     </div>
                 </div>
-                <div class="md:col-span-2 text-right">
-                    <p class="text-[10px] text-slate-400 uppercase">Hakcipta © 2026 PILOT Intelligent System | JPV Malaysia</p>
+
+                <div class="lg:col-span-2 space-y-3 px-2">
+                    <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
+                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">
+                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
+                        Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya
+                    </p>
+                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase">
+                        <p>Tel: (603) 8870 2000 | Faks: (603) 8888 6021</p>
+                        <p>Emel: pro[at]dvs.gov.my</p>
+                    </div>
                 </div>
+
+                <div class="text-center md:text-right space-y-3">
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">
+                        Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent Veterinar Malaysia
+                    </p>
+                    <p class="text-[8px] text-slate-600 leading-tight">
+                        Paparan terbaik: Mozilla Firefox, Chrome,<br>dan Internet Explorer 11 ke atas.
+                    </p>
+                </div>
+
             </div>
         </footer>
     </div>
@@ -184,23 +269,19 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // --- CONFIG & FIREBASE ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
-        
-        let currentUser = null;
-        let tasks = [];
-        let selectedIds = new Set();
-        let sessionNewIds = new Set(); // To track highlight for current session
+        let currentUser = null, tasks = [], selectedIds = [];
 
         auth.onAuthStateChanged(user => {
             if (user) { 
-                currentUser = user; 
-                document.getElementById('loginScreen').style.display = 'none'; 
+                currentUser = user; document.getElementById('loginScreen').style.display = 'none'; 
                 document.getElementById('mainApp').classList.remove('hidden'); 
                 document.getElementById('userName').innerText = user.displayName; 
                 document.getElementById('userAvatar').src = user.photoURL; 
-                syncData(); 
+                incrementVisitors(); syncData(); 
             } else { 
                 document.getElementById('loginScreen').style.display = 'flex'; 
                 document.getElementById('mainApp').classList.add('hidden'); 
@@ -212,238 +293,395 @@
 
         function syncData() {
             if(!currentUser) return;
-            // Listen for data that is NOT deleted
-            db.collection("users").doc(currentUser.uid).collection("logs").orderBy("id", "desc").onSnapshot(snap => {
+            db.collection("users").doc(currentUser.uid).collection("logs").onSnapshot(snap => {
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
-                updateStats();
             });
-        }
-
-        function renderUI() {
-            const body = document.getElementById('activeBody'); 
-            body.innerHTML = '';
-            
-            // Filter non-deleted tasks
-            const activeTasks = tasks.filter(t => !t.isDeleted);
-            
-            activeTasks.forEach(t => {
-                const tr = document.createElement('tr');
-                const isNew = sessionNewIds.has(t.docId) ? 'highlight-new' : '';
-                const isUnread = !t.isRead ? 'unread-row' : '';
-                
-                tr.className = `hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all ${isNew} ${isUnread}`;
-                tr.onclick = () => markAsRead(t.docId);
-
-                tr.innerHTML = `
-                    <td onclick="event.stopPropagation()"><input type="checkbox" onchange="toggleSelect('${t.docId}')" ${selectedIds.has(t.docId) ? 'checked' : ''} class="w-4 h-4 rounded border-white/10 bg-black"></td>
-                    <td onclick="showDetails('${t.docId}')">
-                        <div class="font-bold text-[11px] text-white">${t.date}</div>
-                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div>
-                    </td>
-                    <td onclick="showDetails('${t.docId}')">
-                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] mt-1 text-slate-500 flex gap-2">
-                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
-                            <span class="truncate">📍 ${t.location}</span>
-                        </div>
-                    </td>
-                    <td class="text-right">
-                        <div class="flex justify-end gap-2">
-                            <button onclick="event.stopPropagation(); toggleFav('${t.docId}', ${t.isFav})" class="text-lg ${t.isFav ? 'is-favourite' : 'text-slate-600'}">★</button>
-                            <button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition">🗑️</button>
-                        </div>
-                    </td>
-                `;
-                body.appendChild(tr);
-            });
-        }
-
-        async function saveEntry() {
-            const date = document.getElementById('datePicker').value;
-            const time = document.getElementById('timeFrom').value;
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
-
-            const entry = {
-                id: Date.now(),
-                type: window.currentType || 'tugas',
-                date,
-                day: getDayName(date),
-                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time,
-                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
-                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
-                location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-',
-                isDeleted: false,
-                isRead: false,
-                isFav: false
-            };
-
-            const docRef = await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            sessionNewIds.add(docRef.id);
-            setTimeout(() => { sessionNewIds.delete(docRef.id); renderUI(); }, 5000);
-
-            // Clear inputs
-            ['odoStart','odoEnd','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-            Swal.fire({ icon:'success', title:'Berjaya Disimpan', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-        }
-
-        // --- NEW MANAGEMENT FUNCTIONS ---
-
-        async function markAsRead(docId) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isRead: true });
-        }
-
-        async function toggleFav(docId, currentStatus) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isFav: !currentStatus });
-        }
-
-        function toggleSelect(id) {
-            if(selectedIds.has(id)) selectedIds.delete(id);
-            else selectedIds.add(id);
-        }
-
-        function toggleSelectAll() {
-            const activeTasks = tasks.filter(t => !t.isDeleted);
-            if(selectedIds.size === activeTasks.length) selectedIds.clear();
-            else activeTasks.forEach(t => selectedIds.add(t.docId));
-            renderUI();
-        }
-
-        async function deleteEntry(docId) {
-            const result = await Swal.fire({
-                title: 'Pindah ke Tong Sampah?',
-                text: "Data boleh dipulihkan semula nanti.",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                confirmButtonText: 'Ya, Padam',
-                customClass: { popup: 'swal-corp' }
-            });
-
-            if (result.isConfirmed) {
-                await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isDeleted: true });
-            }
-        }
-
-        async function bulkDelete() {
-            if(selectedIds.size === 0) return;
-            const result = await Swal.fire({ title: `Padam ${selectedIds.size} item?`, icon: 'warning', showCancelButton: true, customClass: { popup: 'swal-corp' } });
-            if (result.isConfirmed) {
-                const batch = db.batch();
-                selectedIds.forEach(id => {
-                    const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
-                    batch.update(ref, { isDeleted: true });
-                });
-                await batch.commit();
-                selectedIds.clear();
-                Swal.fire('Selesai', 'Data dipindahkan ke Recycle Bin', 'success');
-            }
-        }
-
-        function viewRecycleBin() {
-            const deleted = tasks.filter(t => t.isDeleted);
-            let html = `<div class="space-y-2 text-left max-h-96 overflow-y-auto">`;
-            if(deleted.length === 0) html += `<p class="text-center text-slate-500 py-10">Tiada item dipadam.</p>`;
-            deleted.forEach(t => {
-                html += `
-                    <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/5">
-                        <div class="text-[10px]">
-                            <p class="font-bold text-white">${t.date} - ${t.tFrom}</p>
-                            <p class="text-slate-400 truncate w-40">${t.note}</p>
-                        </div>
-                        <div class="flex gap-2">
-                            <button onclick="restoreItem('${t.docId}')" class="px-2 py-1 bg-emerald-600 text-[9px] font-bold rounded">RESTORE</button>
-                            <button onclick="hardDeleteItem('${t.docId}')" class="px-2 py-1 bg-red-600 text-[9px] font-bold rounded">PURGE</button>
-                        </div>
-                    </div>
-                `;
-            });
-            html += `</div><button onclick="emptyBin()" class="w-full mt-4 py-2 bg-red-500/20 text-red-500 text-[10px] font-bold rounded-lg border border-red-500/20">KOSONGKAN TONG SAMPAH</button>`;
-
-            Swal.fire({ title: 'RECYCLE BIN', html, showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' } });
-        }
-
-        async function restoreItem(id) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).update({ isDeleted: false });
-            viewRecycleBin();
-        }
-
-        async function hardDeleteItem(id) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).delete();
-            viewRecycleBin();
-        }
-
-        async function emptyBin() {
-            const deleted = tasks.filter(t => t.isDeleted);
-            if(deleted.length === 0) return;
-            const result = await Swal.fire({ title: 'Kosongkan Semua?', text: "Tindakan ini kekal dan tidak boleh diundur!", icon: 'error', showCancelButton: true });
-            if(result.isConfirmed) {
-                const batch = db.batch();
-                deleted.forEach(t => {
-                    const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId);
-                    batch.delete(ref);
-                });
-                await batch.commit();
-                Swal.fire('Dibersihkan', 'Tong sampah kini kosong.', 'success');
-            }
-        }
-
-        // --- PREVIOUS DATA MIGRATION (MOCK DATA) ---
-        async function migrateOldData() {
-            const oldData = [
-                { date: "15-04-2026", day: "RABU", tFrom: "08:30 AM", location: "Pejabat Veterinar Putrajaya", note: "Mesyuarat mingguan sistem v18.7", dist: 0 },
-                { date: "16-04-2026", day: "KHAMIS", tFrom: "10:00 AM", location: "Ladang Ternakan Berkat", note: "Pemeriksaan kesihatan lembu siri 2", dist: 45 },
-                { date: "17-04-2026", day: "JUMAAT", tFrom: "02:30 PM", location: "Klinik Haiwan Kesayangan", note: "Audit stok vaksin tahunan", dist: 12 }
-            ];
-            
-            for(let data of oldData) {
-                const check = tasks.find(t => t.note === data.note);
-                if(!check) {
-                    await db.collection("users").doc(currentUser.uid).collection("logs").add({
-                        ...data, id: Date.now(), isDeleted: false, isRead: true, isFav: false, mYear: "04-2026", type: 'tugas'
-                    });
+            db.collection("system").doc("analytics").onSnapshot(doc => {
+                if(doc.exists) {
+                    const d = doc.data(); animateValue("statToday", d.today || 0);
+                    animateValue("statMonth", d.month || 0); animateValue("statTotal", d.total || 0);
                 }
+            });
+        }
+
+        // --- IMPROVED AI SCANNER ENGINE (ODO ONLY) ---
+        function triggerCamera() { document.getElementById('cameraInput').click(); }
+
+        async function processOdoImage(input) {
+            if (!input.files[0]) return;
+            const file = input.files[0];
+            
+            Swal.fire({ 
+                title: 'AI Scanning Nombor...', 
+                html: '<div class="text-[10px] text-blue-400 font-mono mt-2">Menapis masa & menajamkan digit odometer...</div>',
+                allowOutsideClick: false, didOpen: () => Swal.showLoading() 
+            });
+
+            const processedImage = await enhanceImage(file);
+
+            try {
+                const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', {
+                    tessedit_char_whitelist: '0123456789', 
+                    tessedit_pageseg_mode: '6' 
+                });
+
+                const rawNumbers = text.match(/\d+/g);
+                if (rawNumbers) {
+                    const odometerOnly = rawNumbers
+                        .filter(n => n.length >= 4 && n.length <= 7)
+                        .sort((a, b) => b.length - a.length);
+
+                    if (odometerOnly.length > 0) {
+                        const finalOdo = odometerOnly[0];
+                        document.getElementById('odoEnd').value = finalOdo;
+                        calcPreview();
+                        Swal.fire({ icon: 'success', title: 'Imbasan Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
+                    } else {
+                        Swal.fire('Imbasan Kabur', 'Sila pastikan gambar odometer jelas dan dekat tanpa cahaya silau.', 'warning');
+                    }
+                } else {
+                    Swal.fire('Gagal', 'Tiada nombor dikesan dalam gambar.', 'warning');
+                }
+            } catch (e) {
+                Swal.fire('Ralat AI', 'Gagal memproses data visual.', 'error');
             }
         }
 
-        // --- UTILS ---
-        function updateStats() {
-            const active = tasks.filter(t => !t.isDeleted);
-            document.getElementById('statTotal').innerText = active.length;
-            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
-            document.getElementById('statToday').innerText = active.filter(t => t.date === today).length;
+        function enhanceImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.getElementById('procCanvas');
+                        const ctx = canvas.getContext('2d');
+                        const scale = Math.min(1200 / img.width, 1200 / img.height);
+                        canvas.width = img.width * scale; canvas.height = img.height * scale;
+                        ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%) blur(0px)';
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.95));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            });
+        }
+
+        // --- GPS & LOGIC ---
+        function detectLocation() {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(async (pos) => {
+                    const { latitude, longitude } = pos.coords;
+                    try {
+                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
+                        const data = await res.json();
+                        document.getElementById('locationInput').value = data.address.suburb || data.address.city || data.display_name;
+                    } catch (e) { document.getElementById('locationInput').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`; }
+                }, () => {}, {enableHighAccuracy: true});
+            }
         }
 
         function setType(type) {
             window.currentType = type;
             ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
-            const btnMap = {tugas: 'btnTugas', log: 'btnLog', minyak: 'btnMinyak'};
-            document.getElementById(btnMap[type]).className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600 text-white`;
+            ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
+            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
+            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); detectLocation(); }
+            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
+        }
+
+        function calcPreview() {
+            const s = parseFloat(document.getElementById('odoStart').value) || 0;
+            const e = parseFloat(document.getElementById('odoEnd').value) || 0;
+            document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
+            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
+            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
+            document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+        }
+
+        async function saveEntry() {
+            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
+            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            const entry = {
+                id: Date.now(), type: window.currentType, date, day: getDayName(date),
+                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
+                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
+                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
+                location: document.getElementById('locationInput')?.value || '-',
+                note: document.getElementById('taskInput').value || '-',
+                isRead: false, isFav: false, status: 'active' // New Fields
+            };
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            calcPreview();
+        }
+
+        // --- NEW RENDER UI WITH SELECTION & FAV ---
+        function renderUI() {
+            const body = document.getElementById('activeBody'); 
+            const filter = document.getElementById('viewFilter').value;
+            body.innerHTML = '';
+            selectedIds = [];
+            updateBulkToolbar();
+
+            // Setup UI for Recycle Bin
+            if(filter === 'deleted') {
+                document.getElementById('bulkDeleteBtn').classList.add('hidden');
+                document.getElementById('bulkRestoreBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('bulkDeleteBtn').classList.remove('hidden');
+                document.getElementById('bulkRestoreBtn').classList.add('hidden');
+            }
+
+            let filtered = tasks.filter(t => {
+                if(filter === 'favourite') return t.isFav && t.status !== 'deleted';
+                if(filter === 'deleted') return t.status === 'deleted';
+                return (t.status === 'active' || !t.status);
+            });
+
+            let sorted = [...filtered].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
             
-            document.getElementById('odoFields').classList.toggle('hidden', type === 'tugas');
-            document.getElementById('locationField').classList.toggle('hidden', type === 'tugas');
+            sorted.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.className = `hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all ${t.isRead ? 'opacity-60' : ''}`;
+                tr.onclick = () => markRead(t.docId);
+                
+                tr.innerHTML = `
+                    <td>
+                        <input type="checkbox" value="${t.docId}" class="checkbox-custom row-checkbox" onclick="event.stopPropagation(); updateSelection()">
+                    </td>
+                    <td>
+                        <div class="flex items-center">
+                            ${!t.isRead ? '<span class="unread-dot"></span>' : ''}
+                            <div>
+                                <div class="font-bold text-xs text-white">${t.date}</div>
+                                <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
+                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
+                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <div class="flex items-center justify-end gap-3">
+                            <span onclick="event.stopPropagation(); toggleFav('${t.docId}', ${t.isFav})" class="fav-star ${t.isFav ? '' : 'inactive'}">
+                                ${t.isFav ? '★' : '☆'}
+                            </span>
+                            <button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button>
+                        </div>
+                    </td>`;
+                body.appendChild(tr);
+            });
         }
 
-        function getDayName(dateStr) { 
-            const p = dateStr.split('-'); 
-            return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; 
+        // --- SELECTION & BULK ACTIONS ---
+        function toggleSelectAll() {
+            const master = document.getElementById('selectAll');
+            const checks = document.querySelectorAll('.row-checkbox');
+            checks.forEach(c => c.checked = master.checked);
+            updateSelection();
         }
 
+        function updateSelection() {
+            const checks = document.querySelectorAll('.row-checkbox:checked');
+            selectedIds = Array.from(checks).map(c => c.value);
+            document.getElementById('selectedCount').innerText = `${selectedIds.length} TERPILIH`;
+            updateBulkToolbar();
+        }
+
+        function updateBulkToolbar() {
+            const bar = document.getElementById('bulkToolbar');
+            if(selectedIds.length > 0) bar.classList.remove('hidden');
+            else bar.classList.add('hidden');
+        }
+
+        async function bulkMarkRead() {
+            const batch = db.batch();
+            selectedIds.forEach(id => {
+                const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
+                batch.update(ref, { isRead: true });
+            });
+            await batch.commit();
+            Swal.fire('Berjaya', 'Data ditanda sebagai dibaca', 'success');
+        }
+
+        async function bulkAction(newStatus) {
+            const isFavAction = newStatus === 'favourite';
+            const batch = db.batch();
+            selectedIds.forEach(id => {
+                const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
+                if(isFavAction) batch.update(ref, { isFav: true });
+                else batch.update(ref, { status: newStatus });
+            });
+            await batch.commit();
+            Swal.fire('Berjaya', `Tindakan ${newStatus} selesai`, 'success');
+        }
+
+        async function toggleFav(docId, currentFav) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isFav: !currentFav });
+        }
+
+        async function markRead(docId) {
+            const t = tasks.find(x => x.docId === docId);
+            if(!t.isRead) await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isRead: true });
+            showDetails(t);
+        }
+
+        async function deleteEntry(docId) {
+            const res = await Swal.fire({
+                title: 'Padam Data?',
+                text: "Data akan dialihkan ke Recycle Bin.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444'
+            });
+            if(res.isConfirmed) {
+                await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ status: 'deleted' });
+            }
+        }
+
+        // --- UNIVERSAL EXPORT ---
+        function showExportOptions() {
+            Swal.fire({
+                title: 'PUSAT EKSPORT DATA UNIVERSAL',
+                html: `
+                    <div class="p-2 export-btn-grid">
+                        <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
+                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
+                        <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
+                        <button onclick="exportAccessCSV()" class="text-purple-400">🗄️<span>Access DB</span></button>
+                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PowerPoint</span></button>
+                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
+                        <button onclick="exportNotepadPlusPlus()" class="text-emerald-500">🧪<span>Notepad++</span></button>
+                        <button onclick="exportToNotes('ios')" class="text-orange-400">🍎<span>iOS Notes</span></button>
+                        <button onclick="exportToNotes('android')" class="text-green-400">🤖<span>Android</span></button>
+                    </div>
+                `,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
+            });
+        }
+
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
+            const logoJata = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png";
+            const logoDVS = "https://github.com/ttv4u1/KP/raw/main/DVS.svg";
+            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F');
+            try { doc.addImage(logoJata, 'PNG', 10, 5, 30, 25); doc.addImage(logoDVS, 'SVG', 255, 5, 30, 30); } catch(e) {}
+            doc.setTextColor(255); doc.setFontSize(16); doc.text("LAPORAN RASMI PILOT CLOUD MASTER v18.8", 50, 15);
+            doc.setFontSize(9); doc.text(`PEMANDU: ${currentUser.displayName.toUpperCase()} | JPV MALAYSIA`, 50, 22);
+            const activeTasks = tasks.filter(t => t.status !== 'deleted');
+            const data = activeTasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date)).map(t=>[t.date, t.day, t.tFrom, t.location, t.dist+" KM", "RM "+t.rmMinyak.toFixed(2), t.note]);
+            doc.autoTable({ head:[['TARIKH','HARI','MASA','LOKASI','JARAK','KOS','BUTIRAN']], body:data, startY:45, theme:'grid', styles:{fontSize:7} });
+            doc.save(`PILOT_RASMI_${Date.now()}.pdf`);
+        }
+
+        function exportExcel() {
+            const rows = tasks.filter(t => t.status !== 'deleted').map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
+            const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
+        }
+
+        function exportWord() {
+            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
+            tasks.filter(t => t.status !== 'deleted').forEach(t => html += `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
+            html += "</table></body></html>";
+            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
+        }
+
+        function exportNotepad() {
+            let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
+            tasks.filter(t => t.status !== 'deleted').forEach(t => txt += `[${t.date}] ${t.tFrom} | ${t.location} | ${t.note}\n`);
+            const blob = new Blob([txt], { type: 'text/plain' });
+            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Log.txt`; link.click();
+        }
+
+        function exportToNotes(p) {
+            let txt = `📋 LOG PILOT CLOUD\n`;
+            tasks.filter(t => t.status !== 'deleted').sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
+                txt += `📅 ${t.date}\n📍 ${t.location}\n⏰ ${t.tFrom} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
+            });
+            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
+        }
+
+        // --- UTILS ---
+        function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
+        function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
+        async function incrementVisitors() {
+            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            const ref = db.collection("system").doc("analytics");
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(ref);
+                if (!doc.exists) t.set(ref, { today: 1, month: 1, total: 1, lastDate: today });
+                else {
+                    let d = doc.data(); let u = { total: (d.total || 0) + 1 };
+                    if(d.lastDate !== today) { u.today = 1; u.lastDate = today; } else u.today = (d.today || 0) + 1;
+                    t.update(ref, u);
+                }
+            });
+        }
+        function animateValue(id, val) {
+            const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
+            const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
+        }
+        function showFullAnalytics() {
+            const activeOnly = tasks.filter(t => t.status !== 'deleted');
+            const months = [...new Set(activeOnly.map(t => t.monthYear))].sort((a,b) => {
+                const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
+                return new Date(y2, m2-1) - new Date(y1, m1-1);
+            });
+            let html = `<div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll text-left">`;
+            months.forEach(my => {
+                const mData = activeOnly.filter(t => t.monthYear === my).sort((a,b) => parseDate(b.date) - parseDate(a.date));
+                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4></div><div class="space-y-2">`;
+                mData.forEach(item => {
+                    html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-blue-600 cursor-pointer hover:bg-white/10 transition">
+                        <div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.date}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div>
+                        <div class="text-right text-[9px] font-mono-corp text-white">${item.dist > 0 ? item.dist+' KM' : ''}</div>
+                    </div>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+            Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
+        }
+        window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
+        function showDetails(t) {
+            Swal.fire({
+                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
+                html: `<div class="text-left space-y-3 py-2">
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
+                        <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
+                        <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20"><p class="text-[8px] text-emerald-500 font-bold uppercase">Odometer</p><p class="font-bold text-white text-sm">${t.dist} KM</p></div>
+                        <div class="p-2 bg-red-500/10 rounded-xl border border-red-500/20"><p class="text-[8px] text-red-500 font-bold uppercase">Minyak</p><p class="font-bold text-white text-sm">RM ${t.rmMinyak.toFixed(2)}</p></div>
+                    </div>
+                </div>`,
+                confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
+            });
+        }
         setInterval(() => {
             const n = new Date();
             document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
-            document.getElementById('realDay').textContent = ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][n.getDay()];
+            document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
+            document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
-
         flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K", defaultDate: new Date() });
-        
-        // Initial Trigger
-        setTimeout(() => { if(currentUser) migrateOldData(); }, 3000);
-
+        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        setType('tugas');
     </script>
 </body>
 </html>
