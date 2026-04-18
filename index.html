@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Pilot v24.0</title>
+    <title>PILOT Cloud Intelligent | v25 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -29,7 +29,6 @@
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
     <style>
         :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
@@ -37,38 +36,27 @@
         h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
         .font-mono-corp { font-family: 'Share Tech Mono', monospace; }
         .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
-        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; transition: all 0.2s; font-size: 0.9rem; }
+        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; transition: all 0.2s; font-size: 0.85rem; }
         .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
         .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
         .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.025em; }
         #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
         .table-container { overflow-x: auto; border-radius: 1rem; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
         th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; text-transform: uppercase; color: #64748b; text-align: left; }
         td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
         .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
         .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
+        .pulse-stat { animation: pulse-glow 2s infinite ease-in-out; }
+        @keyframes pulse-glow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
         
-        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
+        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
         .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; gap: 6px; }
         .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
-        .export-btn-grid span { font-size: 8px; font-weight: 800; text-transform: uppercase; text-align: center; }
-        .type-badge { font-size: 8px; padding: 2px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
-
-        #scanOverlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:2000; flex-direction:column; align-items:center; justify-content:center; }
-        .scanner-line { width: 100%; height: 2px; background: #2563eb; box-shadow: 0 0 15px #2563eb; position: absolute; animation: scan 2s infinite; }
-        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
+        .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
     </style>
 </head>
 <body class="p-4 md:p-8">
-
-    <!-- SCANNING OVERLAY -->
-    <div id="scanOverlay">
-        <div class="relative w-64 h-64 border-2 border-blue-500 rounded-lg overflow-hidden">
-            <div class="scanner-line"></div>
-        </div>
-        <p class="mt-4 font-mono-corp text-blue-400 animate-pulse text-center px-4">AI ODOMETER PRO SEDANG ANALISIS...<br><span class="text-[10px] text-slate-400">Mencari nombor di kedudukan paling bawah...</span></p>
-    </div>
 
     <!-- LOGIN SCREEN -->
     <div id="loginScreen">
@@ -77,8 +65,8 @@
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
-            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT Intelligent</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v24.0</p>
+            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v25</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -92,8 +80,9 @@
             <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-6">
                 <div class="flex items-center gap-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
+                    <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud</h1>
+                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud by ©FiR</h1>
                         <div class="flex items-center gap-2">
                             <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
                             <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">---</span>
@@ -107,10 +96,13 @@
                         <p id="realDate" class="text-sm font-medium text-slate-400">--/--/----</p>
                     </div>
                     <div class="h-10 w-[1px] bg-white/10"></div>
-                    <h1 id="realTime" class="text-2xl md:text-3xl lg:text-4xl font-mono-corp font-bold text-white tracking-tighter">00:00:00 AM</h1>
+                    <h1 id="realTime" class="text-2xl md:text-3xl lg:text-4xl font-mono-corp font-bold text-white tracking-tighter uppercase">00:00:00 AM</h1>
                 </div>
 
-                <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase">Log Keluar</button>
+                <div class="flex items-center gap-4">
+                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase hidden md:block">Log Keluar</button>
+                    <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-14">
+                </div>
             </div>
         </header>
 
@@ -125,53 +117,51 @@
                     </div>
 
                     <div class="space-y-4">
-                        <div id="datetimeSection">
-                            <div class="grid grid-cols-2 gap-2 mb-4">
-                                <div>
-                                    <label class="label-corp">📅 Tarikh Mula</label>
-                                    <input type="text" id="startDate" class="input-field w-full">
-                                </div>
-                                <div id="endDateContainer">
-                                    <label class="label-corp">📅 Tarikh Akhir</label>
-                                    <input type="text" id="endDate" class="input-field w-full">
-                                </div>
+                        <!-- NEW DATE & TIME SECTION -->
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="label-corp">📅 Tarikh Mula</label>
+                                <input type="text" id="dateStart" class="input-field w-full">
                             </div>
-                            <div class="grid grid-cols-2 gap-2">
-                                <div>
-                                    <label class="label-corp">🕒 Masa Mula</label>
-                                    <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
-                                </div>
-                                <div id="timeToContainer">
-                                    <label class="label-corp">🕒 Masa Akhir</label>
-                                    <input type="text" id="timeTo" class="input-field w-full font-mono-corp text-center">
-                                </div>
+                            <div>
+                                <label class="label-corp">📅 Tarikh Akhir</label>
+                                <input type="text" id="dateEnd" class="input-field w-full">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-4">
+                            <div>
+                                <label class="label-corp">⏰ Masa Mula</label>
+                                <input type="text" id="timeStart" class="input-field w-full font-mono-corp text-center">
+                            </div>
+                            <div>
+                                <label class="label-corp">⏰ Masa Akhir</label>
+                                <input type="text" id="timeEnd" class="input-field w-full font-mono-corp text-center">
                             </div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400">Odo AI Pro (Auto Bottom)</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold transition-all flex items-center gap-2">
-                                    <span>📸 SCAN ODO</span>
+                                <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
+                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">
+                                    <span>📸</span> SCAN ODO
                                 </button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
-                                <div>
-                                    <span class="text-[8px] text-slate-500 block mb-1">MULA (KM)</span>
-                                    <input type="number" id="odoStart" oninput="calcPreview()" class="input-field w-full" placeholder="0">
-                                </div>
-                                <div>
-                                    <span class="text-[8px] text-slate-500 block mb-1">AKHIR (KM)</span>
-                                    <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field w-full" placeholder="0">
-                                </div>
+                                <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
+                                <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
                             </div>
-                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest">0 KM</div>
+                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">AUTO-CALC: 0 KM</div>
                         </div>
 
                         <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                            <label class="label-corp text-red-400">Pengisian (RM)</label>
-                            <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field w-full" placeholder="RM">
+                            <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
+                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain">
+                            </div>
+                            <select id="fuelType" class="input-field w-full"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
                             <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
                         </div>
 
@@ -181,22 +171,22 @@
                         </div>
 
                         <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
-                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg">Sync Data Cloud ☁️</button>
+                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
-                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs text-white uppercase shadow-lg">📤 Eksport Laporan Rasmi</button>
+                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
             </div>
 
             <!-- TABLE SIDE -->
             <div class="lg:col-span-8">
-                <div class="glass-card flex flex-col h-full overflow-hidden">
+                <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
                     <div class="p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
-                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Realtime Database</h3>
-                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase">Analitik Sejarah 📊</button>
+                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
+                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
                     </div>
-                    <div class="table-container p-2 max-h-[600px] overflow-y-auto">
+                    <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
                         <table>
-                            <thead><tr><th>Masa & Jenis</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
+                            <thead><tr><th>Tarikh & Masa (Mula/Akhir)</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
                             <tbody id="activeBody"></tbody>
                         </table>
                     </div>
@@ -204,32 +194,66 @@
             </div>
         </main>
 
-        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10 text-center">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 items-center">
-                <div class="glass-card p-5 bg-white/5 mx-auto w-full max-w-xs">
+        <!-- FOOTER: REALTIME STATS & ADDRESS -->
+        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                
+                <div class="glass-card p-5 bg-white/5 border-none space-y-4">
+                    <div class="flex items-center gap-2">
+                        <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
+                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p>
+                    </div>
                     <div class="grid grid-cols-3 gap-2 text-center">
-                        <div><p class="text-[8px] text-slate-500 uppercase font-bold">Hari Ini</p><p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p></div>
-                        <div><p class="text-[8px] text-slate-500 uppercase font-bold">Bulan</p><p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p></div>
-                        <div><p class="text-[8px] text-slate-500 uppercase font-bold">Jumlah</p><p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p></div>
+                        <div>
+                            <p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p>
+                            <p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p>
+                        </div>
+                        <div class="border-x border-white/10">
+                            <p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p>
+                            <p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p>
+                        </div>
+                        <div>
+                            <p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p>
+                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p>
+                            <p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p>
+                        </div>
                     </div>
                 </div>
-                <div class="md:col-span-2">
-                    <p class="text-[11px] font-extrabold text-blue-500 uppercase">JABATAN PERKHIDMATAN VETERINAR MALAYSIA</p>
-                    <p class="text-[9px] text-slate-500">Wisma Tani, Blok 4G1 & 4G2, Presint 4,</p>
-                    <p class="text-[9px] text-slate-500">Pusat Pentadbiran Kerajaan Persekutuan, 62630 Putrajaya.</p>
-                    <p class="text-[9px] text-slate-400 mt-2 font-bold">Hakcipta Terpelihara © 2026 | v22.0</p>
+
+                <div class="lg:col-span-2 space-y-3 px-2">
+                    <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
+                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">
+                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
+                        Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya
+                    </p>
+                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase">
+                        <p>Tel: (603) 8870 2000 | Faks: (603) 8888 6021</p>
+                        <p>Emel: pro[at]dvs.gov.my</p>
+                    </div>
                 </div>
+
+                <div class="text-center md:text-right space-y-3">
+                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">
+                        Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent Veterinar Malaysia
+                    </p>
+                    <p class="text-[8px] text-slate-600 leading-tight">
+                        Paparan terbaik: Mozilla Firefox, Chrome,<br>dan Internet Explorer 11 ke atas.
+                    </p>
+                </div>
+
             </div>
         </footer>
     </div>
 
-    <!-- Hidden Canvas for Image Processing -->
     <canvas id="procCanvas" class="hidden"></canvas>
 
     <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // --- CONFIG & FIREBASE ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
@@ -237,13 +261,11 @@
 
         auth.onAuthStateChanged(user => {
             if (user) { 
-                currentUser = user; 
-                document.getElementById('loginScreen').style.display = 'none'; 
+                currentUser = user; document.getElementById('loginScreen').style.display = 'none'; 
                 document.getElementById('mainApp').classList.remove('hidden'); 
                 document.getElementById('userName').innerText = user.displayName; 
                 document.getElementById('userAvatar').src = user.photoURL; 
-                syncData(); 
-                incrementVisitors();
+                incrementVisitors(); syncData(); 
             } else { 
                 document.getElementById('loginScreen').style.display = 'flex'; 
                 document.getElementById('mainApp').classList.add('hidden'); 
@@ -261,386 +283,53 @@
             });
             db.collection("system").doc("analytics").onSnapshot(doc => {
                 if(doc.exists) {
-                    const d = doc.data(); 
-                    animateValue("statToday", d.today || 0);
-                    animateValue("statMonth", d.month || 0); 
-                    animateValue("statTotal", d.total || 0);
+                    const d = doc.data(); animateValue("statToday", d.today || 0);
+                    animateValue("statMonth", d.month || 0); animateValue("statTotal", d.total || 0);
                 }
             });
         }
 
-        function setType(type) {
-            window.currentType = type;
-            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
-            ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            
-            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
-            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
-            
-            const endDateCont = document.getElementById('endDateContainer');
-            const timeToCont = document.getElementById('timeToContainer');
+        // --- IMPROVED AI SCANNER ENGINE ---
+        function triggerCamera() { document.getElementById('cameraInput').click(); }
 
-            // PERUBAHAN: Tab Minyak kini tunjuk semua tarikh & masa
-            if(type === 'minyak') {
-                endDateCont.classList.remove('invisible');
-                timeToCont.classList.remove('invisible');
-                document.getElementById('odoFields').classList.remove('hidden'); 
-                document.getElementById('fuelFields').classList.remove('hidden'); 
-            } else {
-                endDateCont.classList.remove('invisible');
-                timeToCont.classList.remove('invisible');
-                if(type === 'log') {
-                    document.getElementById('odoFields').classList.remove('hidden'); 
-                    document.getElementById('locationField').classList.remove('hidden'); 
-                    detectLocation();
-                }
-            }
-        }
-
-        function triggerCamera() {
-            document.getElementById('cameraInput').click();
-        }
-
-        /**
-         * FUNGSI SCANNER ODOMETER PRO (AUTO DETECT BOTTOM NUMBER)
-         */
         async function processOdoImage(input) {
-            if (!input.files || !input.files[0]) return;
-            const overlay = document.getElementById('scanOverlay');
-            overlay.style.display = 'flex';
-            
+            if (!input.files[0]) return;
+            const file = input.files[0];
+            Swal.fire({ title: 'AI Scanning...', html: '<div class="text-[10px] text-blue-400 font-mono mt-2">Memproses imej...</div>', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const processedImage = await enhanceImage(file);
             try {
-                const file = input.files[0];
-                const imageBitmap = await createImageBitmap(file);
-                
-                const canvas = document.getElementById('procCanvas');
-                const ctx = canvas.getContext('2d');
-                
-                // Pra-pemprosesan optimum untuk OCR
-                canvas.width = imageBitmap.width;
-                canvas.height = imageBitmap.height;
-                ctx.filter = 'grayscale(100%) contrast(160%) brightness(110%)';
-                ctx.drawImage(imageBitmap, 0, 0);
-                
-                const worker = await Tesseract.createWorker('eng');
-                await worker.setParameters({
-                    tessedit_char_whitelist: '0123456789:', // Benarkan ":" untuk penapisan masa
-                });
-
-                const { data } = await worker.recognize(canvas);
-                await worker.terminate();
-
-                const words = data.words;
-                console.log("AI Detected Words:", words);
-
-                let odoCandidate = null;
-                let maxY = -1;
-
-                /**
-                 * LOGIK PRO:
-                 * 1. Abaikan nombor yang ada ":" (itu adalah JAM).
-                 * 2. Cari nombor 4-7 digit (biasanya odometer).
-                 * 3. Ambil nombor yang berada di posisi paling bawah (Y-coordinate tertinggi).
-                 */
-                words.forEach(w => {
-                    const text = w.text.trim();
-                    const cleanNum = text.replace(/[^0-9]/g, '');
-                    
-                    // Tapisan: Bukan masa (tiada :), panjang digit 4-7
-                    if (!text.includes(':') && cleanNum.length >= 4 && cleanNum.length <= 7) {
-                        // Cari yang paling bawah dalam gambar (Y0 koordinat paling besar)
-                        if (w.bbox.y0 > maxY) {
-                            maxY = w.bbox.y0;
-                            odoCandidate = cleanNum;
-                        }
-                    }
-                });
-
-                if (odoCandidate) {
-                    document.getElementById('odoEnd').value = odoCandidate;
-                    calcPreview();
-                    
-                    Swal.fire({ 
-                        icon:'success', 
-                        title:'Odo Pro Dikesan', 
-                        text: `Nilai Terbawah: ${odoCandidate} KM`, 
-                        timer:2500, 
-                        showConfirmButton:false, 
-                        customClass:{popup:'swal-corp'} 
-                    });
-                } else {
-                    Swal.fire({ 
-                        icon:'warning', 
-                        title:'Gagal Mengecam', 
-                        text:'AI tidak menemui odometer yang sah. Sila pastikan gambar tegak dan nombor tidak terlindung.', 
-                        customClass:{popup:'swal-corp'} 
-                    });
-                }
-            } catch (e) {
-                console.error(e);
-                Swal.fire('Ralat AI', 'Gagal memproses imej.', 'error');
-            } finally {
-                overlay.style.display = 'none';
-                input.value = '';
-            }
+                const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789', tessedit_pageseg_mode: '6' });
+                const rawNumbers = text.match(/\d+/g);
+                if (rawNumbers) {
+                    const odometerOnly = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length);
+                    if (odometerOnly.length > 0) {
+                        const finalOdo = odometerOnly[0];
+                        document.getElementById('odoEnd').value = finalOdo;
+                        calcPreview();
+                        Swal.fire({ icon: 'success', title: 'Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
+                    } else { Swal.fire('Gagal', 'Nombor tidak jelas.', 'warning'); }
+                } else { Swal.fire('Gagal', 'Tiada nombor dikesan.', 'warning'); }
+            } catch (e) { Swal.fire('Ralat', 'Gagal memproses visual.', 'error'); }
         }
 
-        function calcPreview() {
-            const s = parseFloat(document.getElementById('odoStart').value) || 0;
-            const e = parseFloat(document.getElementById('odoEnd').value) || 0;
-            document.getElementById('distPreview').innerText = `${e > s ? e - s : 0} KM`;
-            const r1 = parseFloat(document.getElementById('rmInitial')?.value) || 0;
-            if(document.getElementById('fuelPreview')) document.getElementById('fuelPreview').innerText = `Total: RM ${r1.toFixed(2)}`;
-        }
-
-        async function saveEntry() {
-            const dateS = document.getElementById('startDate').value;
-            const dateE = document.getElementById('endDate').value;
-            const timeF = document.getElementById('timeFrom').value;
-            const timeT = document.getElementById('timeTo').value;
-            
-            if(!dateS || !timeF) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
-            
-            const entry = {
-                id: Date.now(), 
-                type: window.currentType, 
-                date: dateS, 
-                dateEnd: dateE || dateS,
-                day: getDayName(dateS),
-                monthYear: dateS.split('-')[1] + '-' + dateS.split('-')[2],
-                tFrom: timeF,
-                tTo: timeT, 
-                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
-                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
-                rmMinyak: parseFloat(document.getElementById('rmInitial')?.value) || 0,
-                location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-'
-            };
-
-            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-            calcPreview();
-        }
-
-        function renderUI() {
-            const body = document.getElementById('activeBody'); body.innerHTML = '';
-            let sorted = [...tasks].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
-            sorted.forEach(t => {
-                const tr = document.createElement('tr');
-                tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
-                tr.onclick = () => showDetails(t);
-                
-                let typeColor = t.type === 'tugas' ? 'bg-blue-600' : t.type === 'log' ? 'bg-emerald-600' : 'bg-red-600';
-                let timeDisp = t.tFrom + (t.tTo ? ' - ' + t.tTo : '');
-                let dateDisp = t.date + (t.dateEnd && t.dateEnd !== t.date ? ' ⮕ ' + t.dateEnd : '');
-
-                tr.innerHTML = `
-                    <td>
-                        <div class="font-bold text-[10px] text-white">${dateDisp}</div>
-                        <span class="type-badge ${typeColor}">${t.type}</span>
-                        <span class="text-[9px] text-slate-500 uppercase">${timeDisp}</span>
-                    </td>
-                    <td>
-                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] text-slate-500 uppercase">📍 ${t.location} ${t.dist > 0 ? '| ' + t.dist + ' KM' : ''}</div>
-                    </td>
-                    <td class="text-right">
-                        <button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button>
-                    </td>`;
-                body.appendChild(tr);
+        function enhanceImage(file) {
+            return new Promise((resolve) => {
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    const img = new Image();
+                    img.onload = () => {
+                        const canvas = document.getElementById('procCanvas');
+                        const ctx = canvas.getContext('2d');
+                        const scale = Math.min(1200 / img.width, 1200 / img.height);
+                        canvas.width = img.width * scale; canvas.height = img.height * scale;
+                        ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%)';
+                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+                        resolve(canvas.toDataURL('image/jpeg', 0.95));
+                    };
+                    img.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
             });
-        }
-
-        async function deleteEntry(docId) {
-            const res = await Swal.fire({ title: 'Padam Rekod?', text: "Data ini akan dibuang dari cloud.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', confirmButtonText: 'Ya, Padam', customClass: { popup: 'swal-corp' } });
-            if(res.isConfirmed) {
-                await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
-                Swal.fire('Berjaya', 'Rekod telah dipadam.', 'success');
-            }
-        }
-
-        function showFullAnalytics() {
-            const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
-                const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
-                return new Date(y2, m2-1) - new Date(y1, m1-1);
-            });
-            
-            let html = `<div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 text-left">`;
-            months.forEach(my => {
-                const mData = tasks.filter(t => t.monthYear === my).sort((a,b) => parseDate(b.date) - parseDate(a.date));
-                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3">
-                    <h4 class="font-bold text-blue-400 uppercase text-xs mb-2">${my}</h4>
-                    <div class="space-y-2">`;
-                mData.forEach(item => {
-                    let typeIcon = item.type === 'tugas' ? '📝' : item.type === 'log' ? '🚗' : '⛽';
-                    html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg cursor-pointer hover:bg-white/10">
-                        <div>
-                            <p class="text-[8px] font-bold text-slate-500">${item.date} [${item.tFrom}]</p>
-                            <p class="text-[10px] text-slate-200 line-clamp-1">${typeIcon} ${item.note}</p>
-                        </div>
-                        <div class="text-right text-[9px] font-mono-corp text-white">
-                            ${item.dist > 0 ? item.dist+'KM' : ''} ${item.rmMinyak > 0 ? 'RM'+item.rmMinyak : ''}
-                        </div>
-                    </div>`;
-                });
-                html += `</div></div>`;
-            });
-            html += `</div>`;
-            Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
-        }
-
-        window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
-
-        function showDetails(t) {
-            let dateRange = t.date + (t.dateEnd && t.dateEnd !== t.date ? ` HINGGA ${t.dateEnd}` : "");
-            let timeRange = t.tFrom + (t.tTo ? ` HINGGA ${t.tTo}` : "");
-            let detailHtml = `
-                <div class="text-left space-y-3 py-2">
-                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
-                        <p class="text-[8px] text-slate-500 font-bold uppercase">📅 Tempoh Tarikh</p>
-                        <p class="text-[10px] text-white mb-2 font-mono-corp">${dateRange}</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase">🕒 Masa Pelaksanaan</p>
-                        <p class="text-[10px] text-emerald-400 mb-2 font-mono-corp">${timeRange}</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase">📍 Lokasi GPS</p>
-                        <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase">Butiran Perincian</p>
-                        <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
-                    </div>`;
-
-            if(t.type === 'log' || t.type === 'minyak') {
-                detailHtml += `
-                    <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="p-2 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                            <p class="text-[8px] text-blue-400 font-bold uppercase">Odo Mula</p>
-                            <p class="font-bold text-white text-xs">${t.odoStart}</p>
-                        </div>
-                        <div class="p-2 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                            <p class="text-[8px] text-blue-400 font-bold uppercase">Odo Akhir</p>
-                            <p class="font-bold text-white text-xs">${t.odoEnd}</p>
-                        </div>
-                        <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20">
-                            <p class="text-[8px] text-emerald-500 font-bold uppercase">Jarak</p>
-                            <p class="font-bold text-white text-xs">${t.dist} KM</p>
-                        </div>`;
-                if(t.type === 'minyak') {
-                    detailHtml += `<div class="p-2 bg-red-500/10 rounded-xl border border-red-500/20"><p class="text-[8px] text-red-500 font-bold uppercase">Kos</p><p class="font-bold text-white text-xs">RM ${t.rmMinyak.toFixed(2)}</p></div>`;
-                }
-                detailHtml += `</div>`;
-            }
-            detailHtml += `</div>`;
-
-            Swal.fire({ title: `<span class="text-md font-bold text-blue-500 uppercase">${t.type}</span>`, html: detailHtml, confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'} });
-        }
-
-        function showExportOptions() {
-            Swal.fire({
-                title: 'PUSAT EKSPORT DATA',
-                html: `
-                    <div class="p-2 export-btn-grid">
-                        <button onclick="exportPDF()" class="text-red-400">📄<span>PDF</span></button>
-                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
-                        <button onclick="exportAccessDB()" class="text-purple-400">🔑<span>AccessDB</span></button>
-                        <button onclick="exportWord()" class="text-blue-400">📝<span>Word</span></button>
-                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PPTX</span></button>
-                        <button onclick="exportNotepadPlus()" class="text-blue-300">🗒️<span>Notepad++</span></button>
-                        <button onclick="exportToNotes('ios')" class="text-white">🍎<span>iOS Notes</span></button>
-                    </div>
-                `,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
-            });
-        }
-
-        async function exportPDF() {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF('l', 'mm', 'a4');
-            doc.text("LAPORAN RASMI PILOT CLOUD v22.0", 14, 15);
-            const data = tasks.map(t=>[t.date, t.dateEnd, t.tFrom, t.tTo, t.type.toUpperCase(), t.dist+"KM", t.note]);
-            doc.autoTable({ head:[['MULA','AKHIR','JAM MULA','JAM AKHIR','JENIS','JARAK','NOTA']], body:data, startY:20 });
-            doc.save(`PILOT_REPORT_${Date.now()}.pdf`);
-        }
-
-        function exportExcel() {
-            const ws = XLSX.utils.json_to_sheet(tasks);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "PilotData");
-            XLSX.writeFile(wb, `PILOT_Data.xlsx`);
-        }
-
-        function exportAccessDB() {
-            let csvContent = "ID,StartDate,EndDate,StartTime,EndTime,Type,OdoStart,OdoEnd,Distance,FuelRM,Location,Notes\n";
-            tasks.forEach(t => {
-                csvContent += `"${t.id}","${t.date}","${t.dateEnd}","${t.tFrom}","${t.tTo}","${t.type}",${t.odoStart},${t.odoEnd},${t.dist},${t.rmMinyak},"${t.location}","${t.note}"\n`;
-            });
-            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-            const link = document.createElement("a");
-            link.href = URL.createObjectURL(blob);
-            link.download = `Pilot_AccessDB_Import.csv`;
-            link.click();
-            Swal.fire('Info Access', 'Fail .CSV telah disediakan. Gunakan "External Data -> Import Text File" di MS Access.', 'info');
-        }
-
-        function exportWord() {
-            let content = "LAPORAN LOG PILOT v22.0\n\n";
-            tasks.forEach(t => content += `[${t.date} - ${t.dateEnd}] | ${t.tFrom} - ${t.tTo} | ${t.type} | ${t.note}\n`);
-            const blob = new Blob([content], { type: 'application/msword' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Report.doc`; link.click();
-        }
-
-        function exportPowerPoint() {
-            let pptx = new PptxGenJS();
-            let slide = pptx.addSlide();
-            slide.addText("LAPORAN PILOT CLOUD v22.0", { x:1, y:1, fontSize:24 });
-            let rows = tasks.map(t => [t.date, t.type, t.dist + " KM", t.note]);
-            slide.addTable([['TARIKH','JENIS','JARAK','NOTA'], ...rows], { x:0.5, y:2, w:9 });
-            pptx.writeFile({ fileName: 'PILOT_Presentation.pptx' });
-        }
-
-        function exportNotepadPlus() {
-            let txt = "ID\tSTART_DATE\tEND_DATE\tSTART_TIME\tEND_TIME\tTYPE\tNOTE\n";
-            tasks.forEach(t => { txt += `${t.id}\t${t.date}\t${t.dateEnd}\t${t.tFrom}\t${t.tTo}\t${t.type}\t${t.note}\n`; });
-            const blob = new Blob([txt], { type: 'text/plain' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Pilot_Logs.txt"; link.click();
-        }
-
-        async function exportToNotes(platform) {
-            let content = "--- LAPORAN PILOT CLOUD v22.0 ---\n\n";
-            tasks.slice(0, 10).forEach(t => content += `[${t.date}] ${t.type}: ${t.note}\n`);
-            if (navigator.share) {
-                try { await navigator.share({ title: 'PILOT LOGS', text: content }); } catch (err) { console.log('Sharing failed', err); }
-            } else {
-                navigator.clipboard.writeText(content);
-                Swal.fire('Clipboard', 'Data disalin. Sila tampal dalam Notes anda.', 'info');
-            }
-        }
-
-        function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
-        function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
-        
-        function animateValue(id, val) {
-            const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
-            const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
-        }
-
-        async function incrementVisitors() {
-            const now = new Date();
-            const todayStr = now.toLocaleDateString('en-GB').replace(/\//g, '-');
-            const monthStr = (now.getMonth() + 1) + '-' + now.getFullYear();
-            const ref = db.collection("system").doc("analytics");
-            try {
-                await db.runTransaction(async (transaction) => {
-                    const doc = await transaction.get(ref);
-                    if (!doc.exists) { transaction.set(ref, { today: 1, month: 1, total: 1, lastDate: todayStr, lastMonth: monthStr }); }
-                    else {
-                        const d = doc.data();
-                        let update = { total: (d.total || 0) + 1 };
-                        if (d.lastDate !== todayStr) { update.today = 1; update.lastDate = todayStr; } else { update.today = (d.today || 0) + 1; }
-                        if (d.lastMonth !== monthStr) { update.month = 1; update.lastMonth = monthStr; } else { update.month = (d.month || 0) + 1; }
-                        transaction.update(ref, update);
-                    }
-                });
-            } catch (e) { console.error("Visitor count failed:", e); }
         }
 
         function detectLocation() {
@@ -656,17 +345,259 @@
             }
         }
 
+        function setType(type) {
+            window.currentType = type;
+            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
+            ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
+            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
+            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
+            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); detectLocation(); }
+            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
+        }
+
+        function calcPreview() {
+            const s = parseFloat(document.getElementById('odoStart').value) || 0;
+            const e = parseFloat(document.getElementById('odoEnd').value) || 0;
+            document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
+            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
+            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
+            document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+        }
+
+        async function saveEntry() {
+            const dStart = document.getElementById('dateStart').value;
+            const dEnd = document.getElementById('dateEnd').value;
+            const tStart = document.getElementById('timeStart').value;
+            const tEnd = document.getElementById('timeEnd').value;
+
+            // Membenarkan simpanan walaupun tak lengkap
+            const entry = {
+                id: Date.now(), 
+                type: window.currentType, 
+                date: dStart || dEnd || 'N/A', 
+                dateStart: dStart || '-',
+                dateEnd: dEnd || '-',
+                day: dStart ? getDayName(dStart) : '-',
+                monthYear: dStart ? (dStart.split('-')[1] + '-' + dStart.split('-')[2]) : '-',
+                tStart: tStart || '-',
+                tEnd: tEnd || '-',
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
+                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
+                location: document.getElementById('locationInput')?.value || '-',
+                note: document.getElementById('taskInput').value || '-'
+            };
+
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','timeEnd'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            calcPreview();
+        }
+
+        function renderUI() {
+            const body = document.getElementById('activeBody'); body.innerHTML = '';
+            let sorted = [...tasks].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
+            sorted.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
+                tr.onclick = () => showDetails(t);
+                tr.innerHTML = `
+                    <td>
+                        <div class="font-bold text-xs text-white">${t.dateStart} ${t.dateEnd !== '-' && t.dateEnd !== t.dateStart ? '→ ' + t.dateEnd : ''}</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tStart} - ${t.tEnd}</div>
+                    </td>
+                    <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
+                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
+                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
+                        </div></td>
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
+                body.appendChild(tr);
+            });
+        }
+
+        function showExportOptions() {
+            Swal.fire({
+                title: 'PUSAT EKSPORT DATA',
+                html: `
+                    <div class="p-2 export-btn-grid">
+                        <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
+                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
+                        <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
+                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
+                    </div>
+                `,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
+            });
+        }
+
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF('l', 'mm', 'a4');
+            const logoJata = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png";
+            const logoDVS = "https://github.com/ttv4u1/KP/raw/main/DVS.svg";
+            
+            doc.setFillColor(15, 23, 42); 
+            doc.rect(0, 0, 297, 40, 'F');
+            
+            try { 
+                doc.addImage(logoJata, 'PNG', 10, 5, 25, 22); 
+                doc.addImage(logoDVS, 'PNG', 260, 5, 25, 25); 
+            } catch(e) {}
+            
+            doc.setTextColor(255); 
+            doc.setFontSize(16); 
+            doc.text("LAPORAN LOG RASMI PILOT CLOUD", 50, 15);
+            doc.setFontSize(9); 
+            doc.text(`PEMANDU: ${currentUser.displayName.toUpperCase()} | JPV MALAYSIA`, 50, 22);
+            doc.text(`TARIKH CETAKAN: ${new Date().toLocaleString('ms-MY')}`, 50, 28);
+
+            const data = tasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date)).map(t=>[
+                `${t.dateStart}\n${t.dateEnd}`, 
+                t.day, 
+                `${t.tStart}\n${t.tEnd}`, 
+                t.location, 
+                t.dist+" KM", 
+                "RM "+t.rmMinyak.toFixed(2), 
+                t.note
+            ]);
+
+            doc.autoTable({ 
+                head:[['TARIKH (M/A)','HARI','MASA (M/A)','LOKASI','JARAK','KOS','BUTIRAN']], 
+                body:data, 
+                startY:45, 
+                theme:'grid', 
+                styles:{fontSize:7, cellPadding:2},
+                headStyles: {fillColor: [37, 99, 235]}
+            });
+            
+            doc.save(`PILOT_LAPORAN_${Date.now()}.pdf`);
+        }
+
+        function exportExcel() {
+            const rows = tasks.map(t => ({ 
+                "TARIKH MULA": t.dateStart, 
+                "TARIKH AKHIR": t.dateEnd, 
+                "HARI": t.day, 
+                "MASA MULA": t.tStart, 
+                "MASA AKHIR": t.tEnd, 
+                "LOKASI": t.location, 
+                "JARAK (KM)": t.dist, 
+                "KOS MINYAK (RM)": t.rmMinyak, 
+                "BUTIRAN": t.note 
+            }));
+            const ws = XLSX.utils.json_to_sheet(rows); 
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Database"); 
+            XLSX.writeFile(wb, `PILOT_Database.xlsx`);
+        }
+
+        function exportWord() {
+            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh Mula</th><th>Tarikh Akhir</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
+            tasks.forEach(t => html += `<tr><td>${t.dateStart}</td><td>${t.dateEnd}</td><td>${t.tStart}-${t.tEnd}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
+            html += "</table></body></html>";
+            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
+            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
+        }
+
+        function exportNotepad() {
+            let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
+            tasks.forEach(t => txt += `[${t.dateStart} - ${t.dateEnd}] ${t.tStart}-${t.tEnd} | ${t.location} | ${t.note}\n`);
+            const blob = new Blob([txt], { type: 'text/plain' });
+            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Log.txt`; link.click();
+        }
+
+        async function deleteEntry(docId) {
+            const result = await Swal.fire({ title: 'Padam Data?', text: "Tindakan ini tidak boleh dibatalkan!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#d33', cancelButtonColor: '#3085d6', confirmButtonText: 'Ya, Padam', customClass:{popup:'swal-corp'} });
+            if (result.isConfirmed) {
+                await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
+                Swal.fire('Dipadam!', 'Data telah dikeluarkan daripada cloud.', 'success');
+            }
+        }
+
+        // --- UTILS ---
+        function getDayName(dateStr) { 
+            if(!dateStr || dateStr === '-') return '-';
+            const p = dateStr.split('-'); 
+            return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; 
+        }
+        function parseDate(dateStr) { 
+            if(!dateStr || dateStr === 'N/A' || dateStr === '-') return 0;
+            const [d,m,y] = dateStr.split('-'); 
+            return new Date(y,m-1,d).getTime(); 
+        }
+        async function incrementVisitors() {
+            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            const ref = db.collection("system").doc("analytics");
+            await db.runTransaction(async (t) => {
+                const doc = await t.get(ref);
+                if (!doc.exists) t.set(ref, { today: 1, month: 1, total: 1, lastDate: today });
+                else {
+                    let d = doc.data(); let u = { total: (d.total || 0) + 1 };
+                    if(d.lastDate !== today) { u.today = 1; u.lastDate = today; } else u.today = (d.today || 0) + 1;
+                    t.update(ref, u);
+                }
+            });
+        }
+        function animateValue(id, val) {
+            const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
+            const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
+        }
+        function showFullAnalytics() {
+            const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
+                const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
+                return new Date(y2, m2-1) - new Date(y1, m1-1);
+            });
+            let html = `<div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll text-left">`;
+            months.forEach(my => {
+                const mData = tasks.filter(t => t.monthYear === my).sort((a,b) => parseDate(b.date) - parseDate(a.date));
+                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4></div><div class="space-y-2">`;
+                mData.forEach(item => {
+                    html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-blue-600 cursor-pointer hover:bg-white/10 transition">
+                        <div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.dateStart}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div>
+                        <div class="text-right text-[9px] font-mono-corp text-white">${item.dist > 0 ? item.dist+' KM' : ''}</div>
+                    </div>`;
+                });
+                html += `</div></div>`;
+            });
+            html += `</div>`;
+            Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
+        }
+        window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
+        function showDetails(t) {
+            Swal.fire({
+                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.dateStart}</span>`,
+                html: `<div class="text-left space-y-3 py-2">
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📅 Tarikh & Masa</p>
+                        <p class="text-[10px] text-blue-400 mb-2">${t.dateStart} ${t.dateEnd !== '-' ? 'sehingga ' + t.dateEnd : ''}</p>
+                        <p class="text-[10px] text-blue-400 mb-2">Jam: ${t.tStart} - ${t.tEnd}</p>
+                        <hr class="border-white/5 my-2">
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
+                        <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
+                        <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20"><p class="text-[8px] text-emerald-500 font-bold uppercase">Odometer</p><p class="font-bold text-white text-sm">${t.dist} KM</p></div>
+                        <div class="p-2 bg-red-500/10 rounded-xl border border-red-500/20"><p class="text-[8px] text-red-500 font-bold uppercase">Minyak</p><p class="font-bold text-white text-sm">RM ${t.rmMinyak.toFixed(2)}</p></div>
+                    </div>
+                </div>`,
+                confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
+            });
+        }
         setInterval(() => {
             const n = new Date();
             document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
             document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
             document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
-
-        flatpickr("#startDate", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#endDate", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K", defaultDate: new Date() });
-        flatpickr("#timeTo", { enableTime:true, noCalendar:true, dateFormat: "h:i K", defaultDate: new Date() });
+        
+        flatpickr("#dateStart", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#dateEnd", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#timeStart", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        flatpickr("#timeEnd", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
         
         setType('tugas');
     </script>
