@@ -1,5 +1,3 @@
---- START OF FILE Paste April 18, 2026 - 8:15PM ---
-
 <!DOCTYPE html>
 <html lang="ms">
 <head>
@@ -8,7 +6,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Master | v17.7 Official</title>
+    <title>PILOT Cloud Master | v17.8 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -33,22 +31,22 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
 
     <style>
-        :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.9); }
+        :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
         body { font-family: 'Inter', sans-serif; background: #0f172a; background-image: radial-gradient(circle at top right, #1e293b, #0f172a); color: #f8fafc; min-height: 100vh; }
         h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
         .font-mono-corp { font-family: 'Share Tech Mono', monospace; }
-        .glass-card { background: var(--glass); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
-        .input-field { background: rgba(0, 0, 0, 0.4) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; font-size: 1rem; transition: all 0.2s; }
+        .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
+        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; font-size: 1rem; transition: all 0.2s; }
         .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
-        .label-corp { font-size: 0.75rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
+        .label-corp { font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
         .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.025em; }
         #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
         .table-container { overflow-x: auto; border-radius: 1rem; }
         table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: rgba(0,0,0,0.3); padding: 1rem; font-size: 0.75rem; text-transform: uppercase; color: #64748b; }
+        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.7rem; text-transform: uppercase; color: #64748b; }
         td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .swal-corp { background: #1e293b !important; color: white !important; border-radius: 1.5rem !important; }
-        .custom-scroll::-webkit-scrollbar { width: 5px; }
+        .swal-corp { background: #111827 !important; color: white !important; border-radius: 1.5rem !important; }
+        .custom-scroll::-webkit-scrollbar { width: 4px; }
         .custom-scroll::-webkit-scrollbar-thumb { background: #334155; border-radius: 10px; }
     </style>
 </head>
@@ -56,12 +54,12 @@
 
     <div id="loginScreen">
         <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
-            <div class="flex justify-center gap-4 mb-6">
+            <div class="flex justify-center gap-6 mb-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-sm">Sistem Pengurusan Data Pemandu Veterinar v17.7</p>
+            <p class="text-slate-400 mb-8 font-medium text-sm">Sistem Pengurusan Data Pemandu Veterinar v17.8</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>LOG MASUK GOOGLE</span>
@@ -76,34 +74,32 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
                     <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight">PILOT v17.7</h1>
+                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight">PILOT v17.8</h1>
                         <div class="flex items-center gap-2">
-                            <img id="userAvatar" class="h-6 w-6 rounded-full ring-2 ring-blue-500/20">
+                            <img id="userAvatar" class="h-6 w-6 rounded-full">
                             <span id="userName" class="text-sm font-semibold text-blue-400">---</span>
                         </div>
                     </div>
                 </div>
 
-                <div class="flex items-center gap-6 bg-black/30 px-6 py-4 rounded-2xl border border-white/5 justify-center">
+                <div class="flex items-center gap-6 bg-black/40 px-6 py-4 rounded-2xl border border-white/5">
                     <div class="text-right">
                         <p id="realDay" class="text-xs font-bold text-blue-500 uppercase">---</p>
                         <p id="realDate" class="text-sm font-medium text-slate-400">--/--/----</p>
                     </div>
                     <div class="h-10 w-[1px] bg-white/10"></div>
-                    <h1 id="realTime" class="text-2xl md:text-4xl font-mono-corp font-bold text-white tracking-tighter">00:00:00 AM</h1>
+                    <h1 id="realTime" class="text-2xl md:text-4xl font-mono-corp font-bold text-white">00:00:00 AM</h1>
                 </div>
 
                 <div class="flex items-center gap-4">
-                    <div class="text-right hidden md:block">
-                        <button onclick="logout()" class="text-[10px] font-bold text-red-400 hover:text-red-300 uppercase tracking-widest block mb-1">Logout 🔒</button>
-                        <p class="text-[9px] text-slate-500 font-bold uppercase">Kerajaan Malaysia</p>
-                    </div>
+                    <button onclick="logout()" class="text-[10px] font-bold text-red-400 hover:text-red-300 uppercase tracking-widest hidden md:block">Logout 🔒</button>
                     <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-14">
                 </div>
             </div>
         </header>
 
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
+            <!-- INPUT PANEL -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
@@ -120,10 +116,10 @@
                             <div><label class="label-corp">Akhir</label><input type="text" id="timeTo" class="input-field w-full font-mono-corp text-center"></div>
                         </div>
 
-                        <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/5 rounded-xl border border-blue-500/10">
+                        <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
                                 <label class="label-corp text-blue-400">Odometer (KM)</label>
-                                <span id="distPreview" class="text-xs font-bold text-emerald-400 font-mono-corp">Auto: 0 KM</span>
+                                <span id="distPreview" class="text-xs font-bold text-emerald-400 font-mono-corp">0 KM</span>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Terakhir">
@@ -131,10 +127,10 @@
                             </div>
                         </div>
 
-                        <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/5 rounded-xl border border-red-500/10">
+                        <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
                             <div class="flex justify-between items-center">
                                 <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
-                                <span id="fuelPreview" class="text-xs font-bold text-red-400 font-mono-corp">Total: RM 0.00</span>
+                                <span id="fuelPreview" class="text-xs font-bold text-red-400 font-mono-corp">RM 0.00</span>
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
@@ -147,9 +143,10 @@
                         <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data ke Cloud ☁️</button>
                     </div>
                 </div>
-                <div class="glass-card p-6"><button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-sm transition shadow-lg flex items-center justify-center gap-3"><span>📤</span> EKSPORT DATA RASMI</button></div>
+                <div class="glass-card p-6"><button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-sm transition shadow-lg flex items-center justify-center gap-3"><span>📤</span> EKSPORT LAPORAN RASMI</button></div>
             </div>
 
+            <!-- DATABASE PANEL -->
             <div class="lg:col-span-8">
                 <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
                     <div class="p-6 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
@@ -159,7 +156,7 @@
                                 <option value="dateDesc" selected>Terbaru</option><option value="dateAsc">Lama</option>
                             </select>
                         </div>
-                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-xs font-bold text-white uppercase transition-all shadow-lg">Analitik Sejarah 📊</button>
+                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-xs font-bold text-white uppercase shadow-lg transition-all">Analitik Sejarah 📊</button>
                     </div>
                     <div class="table-container p-2">
                         <table>
@@ -176,6 +173,7 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <script>
+        // --- FIREBASE & AUTH ---
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
@@ -202,11 +200,11 @@
             const start = parseFloat(document.getElementById('odoStart').value) || 0;
             const end = parseFloat(document.getElementById('odoEnd').value) || 0;
             const dist = end > start ? (end - start) : 0;
-            document.getElementById('distPreview').innerText = `Auto: ${dist} KM`;
+            document.getElementById('distPreview').innerText = `${dist} KM`;
 
             const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
             const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-            document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+            document.getElementById('fuelPreview').innerText = `RM ${(r1 + r2).toFixed(2)}`;
         }
 
         function parseDate(dateStr) {
@@ -233,7 +231,7 @@
                             ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">● ${t.dist} KM</span>` : ''}
                             ${t.rmMinyak > 0 ? `<span class="text-red-500 font-bold">● RM ${t.rmMinyak.toFixed(2)}</span>` : ''}
                         </div></td>
-                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition-transform">🗑️</button></td>`;
                 body.appendChild(tr);
             });
         }
@@ -265,7 +263,7 @@
             return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()];
         }
 
-        // --- ANALYTICS SEJARAH (FIXED SUM) ---
+        // --- ANALYTICS SEJARAH ---
         function showFullAnalytics() {
             const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
                 const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
@@ -276,14 +274,14 @@
             const grandRM = tasks.reduce((s,t) => s + (t.rmMinyak || 0), 0);
 
             let html = `
-            <div class="mb-6 grid grid-cols-2 gap-3">
-                <div class="bg-blue-600/20 p-3 rounded-2xl border border-blue-500/30">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase">Total Jarak (Semua)</p>
-                    <p class="text-xl font-mono-corp font-bold text-emerald-400">${grandKM} KM</p>
+            <div class="mb-6 grid grid-cols-2 gap-4">
+                <div class="bg-blue-600/20 p-4 rounded-2xl border border-blue-500/30">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Total Jarak Sejarah</p>
+                    <p class="text-2xl font-mono-corp font-bold text-emerald-400">${grandKM} KM</p>
                 </div>
-                <div class="bg-blue-600/20 p-3 rounded-2xl border border-blue-500/30">
-                    <p class="text-[10px] text-slate-400 font-bold uppercase">Total Kos (Semua)</p>
-                    <p class="text-xl font-mono-corp font-bold text-red-400">RM ${grandRM.toFixed(2)}</p>
+                <div class="bg-red-600/20 p-4 rounded-2xl border border-red-500/30">
+                    <p class="text-[10px] text-slate-400 font-bold uppercase mb-1">Total Kos Sejarah</p>
+                    <p class="text-2xl font-mono-corp font-bold text-red-400">RM ${grandRM.toFixed(2)}</p>
                 </div>
             </div>
             <div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll">`;
@@ -299,7 +297,7 @@
                         <h4 class="font-heading font-extrabold text-blue-400 uppercase text-lg">${my}</h4>
                         <div class="text-right">
                             <span class="text-[10px] block text-slate-500 font-bold">JUMLAH BULANAN</span>
-                            <span class="text-xs font-mono-corp text-white">${mKM} KM | RM ${mRM.toFixed(2)}</span>
+                            <span class="text-sm font-mono-corp text-white">${mKM} KM | RM ${mRM.toFixed(2)}</span>
                         </div>
                     </div>
                     <div class="space-y-2">`;
@@ -354,6 +352,7 @@
             });
         }
 
+        // --- EXPORTS ---
         async function exportPDF() {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF('p', 'mm', 'a4');
@@ -378,12 +377,30 @@
             doc.save(`PILOT_OFFICIAL_${Date.now()}.pdf`);
         }
 
+        function exportExcel() {
+            const branding = [
+                ["JABATAN PERKHIDMATAN VETERINAR MALAYSIA"],
+                ["LAPORAN LOG PEMANDU - PILOT CLOUD v17.8"],
+                [`PEMANDU: ${currentUser.displayName}`, "", "", "", "", "LOGO: DVS"],
+                [`TARIKH JANA: ${new Date().toLocaleString()}`],
+                []
+            ];
+            const headers = ["TARIKH", "HARI", "MASA", "TUGASAN/LALUAN", "JARAK (KM)", "KOS (RM)"];
+            const rows = tasks.sort((a,b) => parseDate(a.date) - parseDate(b.date)).map(t => [t.date, t.day, `${t.tFrom}-${t.tTo}`, t.note, t.dist, t.rmMinyak]);
+            const ws = XLSX.utils.aoa_to_sheet([...branding, headers, ...rows]);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Log Pilot");
+            XLSX.writeFile(wb, `PILOT_Office_${Date.now()}.xlsx`);
+        }
+
         function exportToNotes(p) {
-            let txt = `📋 PILOT CLOUD v17.7 - LOG RASMI\n\n`;
+            let txt = `📋 PILOT CLOUD v17.8 - LOG RASMI\n`;
+            txt += `Pemandu: ${currentUser.displayName}\n`;
+            txt += `Platform: ${p.toUpperCase()}\n---------------------------\n\n`;
             tasks.sort((a,b) => parseDate(a.date) - parseDate(b.date)).forEach(t => {
-                txt += `📅 ${t.date} (${t.day})\n📍 ${t.note}\n⏰ ${t.tFrom}-${t.tTo}\n🛣️ ${t.dist}KM | 💰 RM${t.rmMinyak.toFixed(2)}\n---------------------------\n`;
+                txt += `📅 ${t.date} (${t.day})\n📍 ${t.note}\n⏰ ${t.tFrom}-${t.tTo}\n🛣️ ${t.dist} KM | 💰 RM ${t.rmMinyak.toFixed(2)}\n---------------------------\n`;
             });
-            navigator.clipboard.writeText(txt).then(() => Swal.fire({ icon:'success', title:'Disalin!', customClass:{popup:'swal-corp'} }));
+            navigator.clipboard.writeText(txt).then(() => Swal.fire({ icon:'success', title:'Disalin!', text:`Sedia untuk Paste ke Notes ${p}.`, customClass:{popup:'swal-corp'} }));
         }
 
         function showExportOptions() {
@@ -391,7 +408,9 @@
                 title: 'PUSAT EKSPORT DATA',
                 html: `<div class="grid grid-cols-2 gap-4 p-2">
                     <button onclick="exportPDF()" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-red-400">📄 PDF RASMI</button>
-                    <button onclick="exportToNotes('copy')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-orange-400">📋 SALIN NOTA</button>
+                    <button onclick="exportExcel()" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-emerald-400">📊 MS EXCEL</button>
+                    <button onclick="exportToNotes('ios')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-orange-400">🍎 APPLE NOTES</button>
+                    <button onclick="exportToNotes('android')" class="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 text-green-400">🤖 KEEP NOTES</button>
                 </div>`,
                 showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
             });
