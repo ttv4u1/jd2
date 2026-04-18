@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | 27 Official</title>
+    <title>PILOT Cloud Intelligent | v28 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -66,7 +66,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v27</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v28</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -116,27 +116,14 @@
                         <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">MINYAK</button>
                     </div>
 
-                    <div class="grid grid-cols-2 gap-4">
-    <div>
-        <label class="label-corp">📅 Tarikh Mula</label>
-        <input type="text" id="dateStart" class="input-field w-full">
-    </div>
-    <div>
-        <label class="label-corp">📅 Tarikh Akhir</label>
-        <input type="text" id="dateEnd" class="input-field w-full">
-    </div>
-</div>
-
-<div class="grid grid-cols-2 gap-4">
-    <div>
-        <label class="label-corp">⏰ Masa Mula</label>
-        <input type="text" id="timeStart" class="input-field w-full font-mono-corp text-center">
-    </div>
-    <div>
-        <label class="label-corp">⏰ Masa Akhir</label>
-        <input type="text" id="timeEnd" class="input-field w-full font-mono-corp text-center">
-    </div>
-</div>
+                    <div class="space-y-4">
+                        <div>
+                            <label class="label-corp">Tarikh & Masa</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="datePicker" class="input-field w-full">
+                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
+                            </div>
+                        </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
@@ -389,72 +376,42 @@
         }
 
         async function saveEntry() {
-    const dStart = document.getElementById('dateStart').value;
-    const dEnd = document.getElementById('dateEnd').value;
-    const tStart = document.getElementById('timeStart').value;
-    const tEnd = document.getElementById('timeEnd').value;
-
-    if(!dStart || !tStart) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
-
-    const entry = {
-        id: Date.now(),
-        type: window.currentType,
-        dateStart: dStart,
-        dateEnd: dEnd || dStart, // Jika akhir kosong, guna tarikh mula
-        tFrom: tStart,
-        tUntil: tEnd || '-',
-        day: getDayName(dStart),
-        monthYear: dStart.split('-')[1] + '-' + dStart.split('-')[2],
-        odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-        odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
-        dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
-        rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
-        location: document.getElementById('locationInput')?.value || '-',
-        note: document.getElementById('taskInput').value || '-'
-    };
-
-    await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-    
-    Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-    
-    // Reset fields
-    ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','timeEnd'].forEach(id => { 
-        if(document.getElementById(id)) document.getElementById(id).value = ''; 
-    });
-    calcPreview();
-}
+            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
+            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            const entry = {
+                id: Date.now(), type: window.currentType, date, day: getDayName(date),
+                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
+                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
+                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
+                location: document.getElementById('locationInput')?.value || '-',
+                note: document.getElementById('taskInput').value || '-'
+            };
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            calcPreview();
+        }
 
         function renderUI() {
-    const body = document.getElementById('activeBody'); body.innerHTML = '';
-    let sorted = [...tasks].sort((a,b) => parseDate(b.dateStart) - parseDate(a.dateStart) || b.id - a.id);
-    
-    sorted.forEach(t => {
-        const tr = document.createElement('tr');
-        tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
-        tr.onclick = () => showDetails(t);
-        
-        // Format paparan tarikh & masa
-        const displayDate = (t.dateStart === t.dateEnd) ? t.dateStart : `${t.dateStart} → ${t.dateEnd}`;
-        const displayTime = `${t.tFrom} - ${t.tUntil}`;
-
-        tr.innerHTML = `
-            <td>
-                <div class="font-bold text-[10px] text-white">${displayDate}</div>
-                <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${displayTime}</div>
-            </td>
-            <td>
-                <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
-                    ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
-                    <span class="truncate max-w-[120px]">📍 ${t.location}</span>
-                </div>
-            </td>
-            <td class="text-right">
-                <button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button>
-            </td>`;
-        body.appendChild(tr);
-    });
-}
+            const body = document.getElementById('activeBody'); body.innerHTML = '';
+            let sorted = [...tasks].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
+            sorted.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
+                tr.onclick = () => showDetails(t);
+                tr.innerHTML = `
+                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
+                    <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
+                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
+                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
+                        </div></td>
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
+                body.appendChild(tr);
+            });
+        }
 
         // --- UNIVERSAL EXPORT ---
         function showExportOptions() {
@@ -601,18 +558,19 @@
         }
         window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
         function showDetails(t) {
-    Swal.fire({
-        title: `<span class="text-[12px] font-bold text-blue-500 uppercase">${t.dateStart} ${t.dateEnd !== t.dateStart ? ' hng ' + t.dateEnd : ''}</span>`,
-        html: `<div class="text-left space-y-3 py-2">
-            <div class="p-3 bg-white/5 rounded-xl border border-white/5">
-                <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">⏰ Tempoh Masa</p>
-                <p class="text-xs text-white mb-2">${t.tFrom} sehingga ${t.tUntil}</p>
-                <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
-                <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
-                <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
-                <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
-            </div>
-            ... // kod seterusnya sama
+            Swal.fire({
+                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
+                html: `<div class="text-left space-y-3 py-2">
+                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
+                        <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
+                        <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
+                    </div>
+                    <div class="grid grid-cols-2 gap-2 text-center">
+                        <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20"><p class="text-[8px] text-emerald-500 font-bold uppercase">Odometer</p><p class="font-bold text-white text-sm">${t.dist} KM</p></div>
+                        <div class="p-2 bg-red-500/10 rounded-xl border border-red-500/20"><p class="text-[8px] text-red-500 font-bold uppercase">Minyak</p><p class="font-bold text-white text-sm">RM ${t.rmMinyak.toFixed(2)}</p></div>
+                    </div>
                 </div>`,
                 confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
             });
@@ -623,11 +581,8 @@
             document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
             document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
-        // Init Flatpickr untuk ID baru
-flatpickr("#dateStart", { dateFormat: "d-m-Y", defaultDate: "today" });
-flatpickr("#dateEnd", { dateFormat: "d-m-Y", defaultDate: "today" });
-flatpickr("#timeStart", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
-flatpickr("#timeEnd", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
         setType('tugas');
     </script>
 </body>
