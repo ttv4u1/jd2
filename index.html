@@ -5,20 +5,20 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v18.9 Official</title>
+    <title>PILOT Cloud Intelligent | v19 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+    <!-- Export & AI Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -28,47 +28,38 @@
         :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
         body { font-family: 'Inter', sans-serif; background: #0f172a; background-image: radial-gradient(circle at top right, #1e293b, #0f172a); color: #f8fafc; min-height: 100vh; }
         .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
-        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; transition: all 0.2s; }
-        .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
-        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; }
+        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; font-size: 0.9rem; }
+        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: 0.2s; text-transform: uppercase; }
         
-        /* New States */
-        .row-unread { border-left: 4px solid #3b82f6; background: rgba(59, 130, 246, 0.05); }
-        .row-read { opacity: 0.6; }
-        .row-new { animation: highlight-pulse 2s infinite; }
-        @keyframes highlight-pulse { 0% { background: rgba(37, 99, 235, 0.2); } 50% { background: rgba(37, 99, 235, 0.05); } 100% { background: rgba(37, 99, 235, 0.2); } }
+        /* New Features Style */
+        .highlight-new { animation: highlight-fade 5s ease-out forwards; }
+        @keyframes highlight-fade { from { background: rgba(37, 99, 235, 0.3); } to { background: transparent; } }
         
-        .action-bar { display: none; position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%); z-index: 50; background: #1e293b; border: 1px solid #3b82f6; padding: 0.75rem 1.5rem; border-radius: 99px; box-shadow: 0 10px 25px -5px rgba(0,0,0,0.5); gap: 1rem; align-items: center; }
-        .action-bar.active { display: flex; }
+        .unread-row { border-left: 4px solid #2563eb !important; background: rgba(37, 99, 235, 0.05); }
+        .is-favourite { color: #fbbf24 !important; filter: drop-shadow(0 0 5px #fbbf24); }
+        .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
         
+        #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
         .table-container { overflow-x: auto; border-radius: 1rem; }
-        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; text-transform: uppercase; color: #64748b; text-align: left; }
-        td { padding: 0.75rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; color: #64748b; text-align: left; }
+        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); transition: 0.3s; }
         .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
-        .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
+        
+        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+        .export-btn-grid button { display: flex; flex-direction: column; align-items: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
-    <!-- ACTION BAR (Floating) -->
-    <div id="actionBar" class="action-bar animate-bounce">
-        <span id="selectedCount" class="text-[10px] font-bold text-blue-400 mr-2 uppercase">0 Dipilih</span>
-        <button onclick="batchStatus('read')" class="text-[10px] font-bold text-slate-300 hover:text-white uppercase">Selesai Baca</button>
-        <button onclick="batchStatus('fav')" class="text-[10px] font-bold text-yellow-500 hover:text-yellow-400 uppercase">⭐ Fav</button>
-        <button onclick="batchMoveToTrash()" id="trashBtn" class="text-[10px] font-bold text-red-500 hover:text-red-400 uppercase">Buang</button>
-        <button onclick="batchRestore()" id="restoreBtn" class="hidden text-[10px] font-bold text-emerald-500 hover:text-emerald-400 uppercase">Restore</button>
-        <button onclick="clearSelection()" class="text-[10px] font-bold text-slate-500">❌</button>
-    </div>
-
     <!-- LOGIN SCREEN -->
     <div id="loginScreen">
-        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl mx-auto mt-20">
+        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
             <div class="flex justify-center gap-6 mb-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-bold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 text-xs uppercase tracking-[0.3em]">Master Protocol v18.9</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v18.9</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -83,19 +74,24 @@
                 <div class="flex items-center gap-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
                     <div>
-                        <h1 class="text-xl md:text-2xl font-bold text-white">PILOT Cloud by ©FiR</h1>
+                        <h1 class="text-xl md:text-2xl font-extrabold tracking-tight text-white">PILOT Data Process Cloud v18.9</h1>
                         <div class="flex items-center gap-2">
-                            <img id="userAvatar" class="h-6 w-6 rounded-full">
+                            <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
                             <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase">---</span>
                         </div>
                     </div>
                 </div>
 
+                <div class="flex items-center gap-6 bg-black/40 px-6 py-4 rounded-2xl border border-white/5">
+                    <div class="text-right">
+                        <p id="realDay" class="text-[10px] font-bold text-blue-500 uppercase">---</p>
+                        <h1 id="realTime" class="text-2xl font-mono font-bold text-white tracking-tighter uppercase">00:00:00 AM</h1>
+                    </div>
+                </div>
+
                 <div class="flex items-center gap-4">
-                    <button onclick="toggleTrashView()" id="viewTrashBtn" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 rounded-lg text-[10px] font-bold text-white uppercase border border-white/5">
-                        Recycle Bin 🗑️
-                    </button>
-                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 border border-red-500/20 px-3 py-1 rounded-full uppercase">Log Keluar</button>
+                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase">Log Keluar</button>
+                    <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-14">
                 </div>
             </div>
         </header>
@@ -103,7 +99,7 @@
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
             <!-- INPUT COLUMN -->
             <div class="lg:col-span-4 space-y-6">
-                <div class="glass-card p-6 border-t-4 border-blue-600">
+                <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
                         <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGAS</button>
                         <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">GERAK</button>
@@ -112,52 +108,74 @@
 
                     <div class="space-y-4">
                         <div class="grid grid-cols-2 gap-2">
-                            <div><label class="label-corp">Tarikh</label><input type="text" id="datePicker" class="input-field w-full text-center"></div>
+                            <div><label class="label-corp">Tarikh</label><input type="text" id="datePicker" class="input-field w-full"></div>
                             <div><label class="label-corp">Masa</label><input type="text" id="timeFrom" class="input-field w-full text-center"></div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
-                            <button onclick="triggerCamera()" class="w-full py-2 bg-blue-600 rounded-lg text-[10px] font-bold text-white mb-2">📸 SCAN ODO</button>
-                            <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
+                            <div class="flex justify-between items-center">
+                                <label class="label-corp text-blue-400">Advanced Odo AI</label>
+                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 rounded-lg text-[9px] font-bold text-white">📸 SCAN</button>
+                                <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
+                            </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
                                 <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
                             </div>
+                            <div id="distPreview" class="text-center font-mono text-emerald-400 text-[10px] font-bold">AUTO-CALC: 0 KM</div>
                         </div>
 
                         <div id="locationField" class="hidden">
-                            <label class="label-corp">Lokasi</label>
-                            <input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi...">
+                            <label class="label-corp">📍 Lokasi Semasa</label>
+                            <input type="text" id="locationInput" class="input-field w-full text-[11px]">
                         </div>
 
-                        <textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea>
+                        <div><label class="label-corp">Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full"></textarea></div>
                         <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
+                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition uppercase tracking-widest text-white">📤 Eksport Data Rasmi</button>
             </div>
 
             <!-- TABLE SIDE -->
             <div class="lg:col-span-8">
-                <div class="glass-card flex flex-col h-full overflow-hidden">
-                    <div class="p-4 bg-white/5 border-b border-white/5 flex justify-between items-center">
-                        <div class="flex items-center gap-4">
-                            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="w-4 h-4 rounded border-gray-300">
-                            <h3 id="tableTitle" class="font-bold text-xs uppercase tracking-widest text-blue-400">Database Aktif</h3>
+                <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
+                    <!-- TOOLBAR -->
+                    <div class="p-4 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="selectAll" onclick="toggleSelectAll()" class="w-4 h-4 rounded border-white/20 bg-black">
+                            <button onclick="bulkDelete()" class="px-3 py-1.5 bg-red-500/20 text-red-500 rounded-lg text-[10px] font-bold border border-red-500/20 hover:bg-red-500 hover:text-white transition">DELETE SELECTED</button>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="emptyRecycleBin()" id="emptyTrashBtn" class="hidden px-4 py-2 bg-red-600 hover:bg-red-700 rounded-full text-[9px] font-bold text-white uppercase">Kosongkan Trash</button>
-                            <button onclick="showExportOptions()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-700 rounded-full text-[9px] font-bold text-white uppercase">Export</button>
+                        <div class="flex items-center gap-2">
+                            <button onclick="viewRecycleBin()" class="px-3 py-1.5 bg-slate-700 text-white rounded-lg text-[10px] font-bold">🗑️ RECYCLE BIN</button>
+                            <button onclick="showFullAnalytics()" class="px-3 py-1.5 bg-blue-600 text-white rounded-lg text-[10px] font-bold uppercase">History 📊</button>
                         </div>
                     </div>
-                    <div class="table-container p-2 max-h-[600px] overflow-y-auto">
+
+                    <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[600px]">
                         <table>
-                            <thead><tr><th width="40"></th><th>Tarikh & Masa</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
+                            <thead><tr><th width="40"></th><th>Masa/Info</th><th>Butiran</th><th class="text-right">Aksi</th></tr></thead>
                             <tbody id="activeBody"></tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </main>
+
+        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10 text-center md:text-left">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <p class="text-[10px] font-bold text-blue-500 uppercase">Statistik Cloud</p>
+                    <div class="flex gap-4 mt-2">
+                        <div><p class="text-[8px] text-slate-500 uppercase">Hari Ini</p><p id="statToday" class="text-xl font-mono text-emerald-400">0</p></div>
+                        <div><p class="text-[8px] text-slate-500 uppercase">Jumlah</p><p id="statTotal" class="text-xl font-mono text-orange-400">0</p></div>
+                    </div>
+                </div>
+                <div class="md:col-span-2 text-right">
+                    <p class="text-[10px] text-slate-400 uppercase">Hakcipta © 2026 PILOT Intelligent System | JPV Malaysia</p>
+                </div>
+            </div>
+        </footer>
     </div>
 
     <canvas id="procCanvas" class="hidden"></canvas>
@@ -170,8 +188,10 @@
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
         
-        let currentUser = null, tasks = [], selectedIds = [], isTrashView = false;
-        let lastAddedId = null;
+        let currentUser = null;
+        let tasks = [];
+        let selectedIds = new Set();
+        let sessionNewIds = new Set(); // To track highlight for current session
 
         auth.onAuthStateChanged(user => {
             if (user) { 
@@ -192,9 +212,11 @@
 
         function syncData() {
             if(!currentUser) return;
-            db.collection("users").doc(currentUser.uid).collection("logs").onSnapshot(snap => {
+            // Listen for data that is NOT deleted
+            db.collection("users").doc(currentUser.uid).collection("logs").orderBy("id", "desc").onSnapshot(snap => {
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
+                updateStats();
             });
         }
 
@@ -202,242 +224,225 @@
             const body = document.getElementById('activeBody'); 
             body.innerHTML = '';
             
-            // Filter based on Trash View
-            let filtered = tasks.filter(t => isTrashView ? t.status === 'trash' : t.status !== 'trash');
-            let sorted = filtered.sort((a,b) => b.id - a.id);
-
-            sorted.forEach(t => {
+            // Filter non-deleted tasks
+            const activeTasks = tasks.filter(t => !t.isDeleted);
+            
+            activeTasks.forEach(t => {
                 const tr = document.createElement('tr');
-                const isSelected = selectedIds.includes(t.docId);
-                const isRead = t.isRead === true;
-                const isFav = t.isFav === true;
-                const isNew = t.id === lastAddedId;
-
-                tr.className = `${isRead ? 'row-read' : 'row-unread'} ${isNew ? 'row-new' : ''} hover:bg-white/5 transition-all`;
+                const isNew = sessionNewIds.has(t.docId) ? 'highlight-new' : '';
+                const isUnread = !t.isRead ? 'unread-row' : '';
                 
+                tr.className = `hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all ${isNew} ${isUnread}`;
+                tr.onclick = () => markAsRead(t.docId);
+
                 tr.innerHTML = `
-                    <td><input type="checkbox" ${isSelected ? 'checked' : ''} onchange="toggleSelect('${t.docId}')" class="w-4 h-4 rounded"></td>
-                    <td onclick="showDetailsById('${t.id}')" class="cursor-pointer">
-                        <div class="font-bold text-xs text-white">${t.date}</div>
+                    <td onclick="event.stopPropagation()"><input type="checkbox" onchange="toggleSelect('${t.docId}')" ${selectedIds.has(t.docId) ? 'checked' : ''} class="w-4 h-4 rounded border-white/10 bg-black"></td>
+                    <td onclick="showDetails('${t.docId}')">
+                        <div class="font-bold text-[11px] text-white">${t.date}</div>
                         <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div>
                     </td>
-                    <td onclick="showDetailsById('${t.id}')" class="cursor-pointer">
-                        <div class="flex items-center gap-2">
-                            ${isFav ? '<span class="text-yellow-500 text-[10px]">⭐</span>' : ''}
-                            <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                    <td onclick="showDetails('${t.docId}')">
+                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] mt-1 text-slate-500 flex gap-2">
+                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
+                            <span class="truncate">📍 ${t.location}</span>
                         </div>
-                        <div class="text-[9px] mt-1 text-slate-500 uppercase">📍 ${t.location}</div>
                     </td>
                     <td class="text-right">
-                        ${isTrashView 
-                            ? `<button onclick="restoreSingle('${t.docId}')" class="p-1 text-emerald-500 text-xs">🔄</button>`
-                            : `<button onclick="moveToTrash('${t.docId}')" class="p-1 text-red-500 text-xs">🗑️</button>`
-                        }
-                    </td>`;
+                        <div class="flex justify-end gap-2">
+                            <button onclick="event.stopPropagation(); toggleFav('${t.docId}', ${t.isFav})" class="text-lg ${t.isFav ? 'is-favourite' : 'text-slate-600'}">★</button>
+                            <button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition">🗑️</button>
+                        </div>
+                    </td>
+                `;
                 body.appendChild(tr);
             });
-            updateActionBar();
         }
 
-        // --- SELECTION LOGIC ---
-        function toggleSelect(id) {
-            if (selectedIds.includes(id)) selectedIds = selectedIds.filter(x => x !== id);
-            else selectedIds.push(id);
-            renderUI();
-        }
-
-        function toggleSelectAll() {
-            const visibleTasks = tasks.filter(t => isTrashView ? t.status === 'trash' : t.status !== 'trash');
-            if (selectedIds.length === visibleTasks.length) selectedIds = [];
-            else selectedIds = visibleTasks.map(t => t.docId);
-            renderUI();
-        }
-
-        function clearSelection() { selectedIds = []; renderUI(); }
-
-        function updateActionBar() {
-            const bar = document.getElementById('actionBar');
-            const trashBtn = document.getElementById('trashBtn');
-            const restoreBtn = document.getElementById('restoreBtn');
-            
-            if (selectedIds.length > 0) {
-                bar.classList.add('active');
-                document.getElementById('selectedCount').innerText = `${selectedIds.length} Dipilih`;
-                if(isTrashView) {
-                    trashBtn.innerText = "Delete Permanen";
-                    restoreBtn.classList.remove('hidden');
-                } else {
-                    trashBtn.innerText = "Buang ke Trash";
-                    restoreBtn.classList.add('hidden');
-                }
-            } else {
-                bar.classList.remove('active');
-            }
-        }
-
-        // --- DATABASE ACTIONS ---
         async function saveEntry() {
-            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
+            const date = document.getElementById('datePicker').value;
+            const time = document.getElementById('timeFrom').value;
             if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
-            
-            const newId = Date.now();
+
             const entry = {
-                id: newId, status: 'active', isRead: false, isFav: false,
-                type: window.currentType, date, day: getDayName(date),
-                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                id: Date.now(),
+                type: window.currentType || 'tugas',
+                date,
+                day: getDayName(date),
+                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
+                tFrom: time,
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
                 odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
                 location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-'
+                note: document.getElementById('taskInput').value || '-',
+                isDeleted: false,
+                isRead: false,
+                isFav: false
             };
 
-            lastAddedId = newId;
-            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            
+            const docRef = await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            sessionNewIds.add(docRef.id);
+            setTimeout(() => { sessionNewIds.delete(docRef.id); renderUI(); }, 5000);
+
             // Clear inputs
             ['odoStart','odoEnd','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-            
-            // Remove highlight after 5 seconds
-            setTimeout(() => { lastAddedId = null; renderUI(); }, 5000);
+            Swal.fire({ icon:'success', title:'Berjaya Disimpan', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
         }
 
-        async function batchStatus(type) {
-            const batch = db.batch();
-            selectedIds.forEach(docId => {
-                const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(docId);
-                if(type === 'read') batch.update(ref, { isRead: true });
-                if(type === 'fav') batch.update(ref, { isFav: true });
-            });
-            await batch.commit();
-            selectedIds = [];
-            Swal.fire('Berjaya', 'Data telah dikemaskini', 'success');
+        // --- NEW MANAGEMENT FUNCTIONS ---
+
+        async function markAsRead(docId) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isRead: true });
         }
 
-        async function moveToTrash(docId) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ status: 'trash' });
+        async function toggleFav(docId, currentStatus) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isFav: !currentStatus });
         }
 
-        async function batchMoveToTrash() {
-            if(isTrashView) {
-                // Permanent Delete
-                Swal.fire({
-                    title: 'Padam Selamanya?',
-                    text: "Data ini tidak boleh dikembalikan!",
-                    icon: 'warning',
-                    showCancelButton: true,
-                    confirmButtonColor: '#d33'
-                }).then(async (result) => {
-                    if (result.isConfirmed) {
-                        const batch = db.batch();
-                        selectedIds.forEach(id => batch.delete(db.collection("users").doc(currentUser.uid).collection("logs").doc(id)));
-                        await batch.commit();
-                        selectedIds = [];
-                    }
-                });
-            } else {
-                const batch = db.batch();
-                selectedIds.forEach(id => batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { status: 'trash' }));
-                await batch.commit();
-                selectedIds = [];
-            }
+        function toggleSelect(id) {
+            if(selectedIds.has(id)) selectedIds.delete(id);
+            else selectedIds.add(id);
         }
 
-        async function batchRestore() {
-            const batch = db.batch();
-            selectedIds.forEach(id => batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { status: 'active' }));
-            await batch.commit();
-            selectedIds = [];
-        }
-
-        async function restoreSingle(docId) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ status: 'active' });
-        }
-
-        async function emptyRecycleBin() {
-            Swal.fire({
-                title: 'Kosongkan Recycle Bin?',
-                text: "Semua data dalam trash akan dipadam selamanya!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonText: 'Ya, Kosongkan!'
-            }).then(async (result) => {
-                if (result.isConfirmed) {
-                    const trashItems = tasks.filter(t => t.status === 'trash');
-                    const batch = db.batch();
-                    trashItems.forEach(t => batch.delete(db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId)));
-                    await batch.commit();
-                }
-            });
-        }
-
-        function toggleTrashView() {
-            isTrashView = !isTrashView;
-            selectedIds = [];
-            document.getElementById('viewTrashBtn').innerText = isTrashView ? "Database Aktif 📂" : "Recycle Bin 🗑️";
-            document.getElementById('tableTitle').innerText = isTrashView ? "Recycle Bin (Trash)" : "Database Aktif";
-            document.getElementById('emptyTrashBtn').classList.toggle('hidden', !isTrashView);
+        function toggleSelectAll() {
+            const activeTasks = tasks.filter(t => !t.isDeleted);
+            if(selectedIds.size === activeTasks.length) selectedIds.clear();
+            else activeTasks.forEach(t => selectedIds.add(t.docId));
             renderUI();
         }
 
-        // --- UTILS & ENGINE (AS BEFORE) ---
-        function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
-        
+        async function deleteEntry(docId) {
+            const result = await Swal.fire({
+                title: 'Pindah ke Tong Sampah?',
+                text: "Data boleh dipulihkan semula nanti.",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#ef4444',
+                confirmButtonText: 'Ya, Padam',
+                customClass: { popup: 'swal-corp' }
+            });
+
+            if (result.isConfirmed) {
+                await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isDeleted: true });
+            }
+        }
+
+        async function bulkDelete() {
+            if(selectedIds.size === 0) return;
+            const result = await Swal.fire({ title: `Padam ${selectedIds.size} item?`, icon: 'warning', showCancelButton: true, customClass: { popup: 'swal-corp' } });
+            if (result.isConfirmed) {
+                const batch = db.batch();
+                selectedIds.forEach(id => {
+                    const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
+                    batch.update(ref, { isDeleted: true });
+                });
+                await batch.commit();
+                selectedIds.clear();
+                Swal.fire('Selesai', 'Data dipindahkan ke Recycle Bin', 'success');
+            }
+        }
+
+        function viewRecycleBin() {
+            const deleted = tasks.filter(t => t.isDeleted);
+            let html = `<div class="space-y-2 text-left max-h-96 overflow-y-auto">`;
+            if(deleted.length === 0) html += `<p class="text-center text-slate-500 py-10">Tiada item dipadam.</p>`;
+            deleted.forEach(t => {
+                html += `
+                    <div class="flex items-center justify-between p-3 bg-white/5 rounded-lg border border-white/5">
+                        <div class="text-[10px]">
+                            <p class="font-bold text-white">${t.date} - ${t.tFrom}</p>
+                            <p class="text-slate-400 truncate w-40">${t.note}</p>
+                        </div>
+                        <div class="flex gap-2">
+                            <button onclick="restoreItem('${t.docId}')" class="px-2 py-1 bg-emerald-600 text-[9px] font-bold rounded">RESTORE</button>
+                            <button onclick="hardDeleteItem('${t.docId}')" class="px-2 py-1 bg-red-600 text-[9px] font-bold rounded">PURGE</button>
+                        </div>
+                    </div>
+                `;
+            });
+            html += `</div><button onclick="emptyBin()" class="w-full mt-4 py-2 bg-red-500/20 text-red-500 text-[10px] font-bold rounded-lg border border-red-500/20">KOSONGKAN TONG SAMPAH</button>`;
+
+            Swal.fire({ title: 'RECYCLE BIN', html, showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' } });
+        }
+
+        async function restoreItem(id) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).update({ isDeleted: false });
+            viewRecycleBin();
+        }
+
+        async function hardDeleteItem(id) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).delete();
+            viewRecycleBin();
+        }
+
+        async function emptyBin() {
+            const deleted = tasks.filter(t => t.isDeleted);
+            if(deleted.length === 0) return;
+            const result = await Swal.fire({ title: 'Kosongkan Semua?', text: "Tindakan ini kekal dan tidak boleh diundur!", icon: 'error', showCancelButton: true });
+            if(result.isConfirmed) {
+                const batch = db.batch();
+                deleted.forEach(t => {
+                    const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId);
+                    batch.delete(ref);
+                });
+                await batch.commit();
+                Swal.fire('Dibersihkan', 'Tong sampah kini kosong.', 'success');
+            }
+        }
+
+        // --- PREVIOUS DATA MIGRATION (MOCK DATA) ---
+        async function migrateOldData() {
+            const oldData = [
+                { date: "15-04-2026", day: "RABU", tFrom: "08:30 AM", location: "Pejabat Veterinar Putrajaya", note: "Mesyuarat mingguan sistem v18.7", dist: 0 },
+                { date: "16-04-2026", day: "KHAMIS", tFrom: "10:00 AM", location: "Ladang Ternakan Berkat", note: "Pemeriksaan kesihatan lembu siri 2", dist: 45 },
+                { date: "17-04-2026", day: "JUMAAT", tFrom: "02:30 PM", location: "Klinik Haiwan Kesayangan", note: "Audit stok vaksin tahunan", dist: 12 }
+            ];
+            
+            for(let data of oldData) {
+                const check = tasks.find(t => t.note === data.note);
+                if(!check) {
+                    await db.collection("users").doc(currentUser.uid).collection("logs").add({
+                        ...data, id: Date.now(), isDeleted: false, isRead: true, isFav: false, mYear: "04-2026", type: 'tugas'
+                    });
+                }
+            }
+        }
+
+        // --- UTILS ---
+        function updateStats() {
+            const active = tasks.filter(t => !t.isDeleted);
+            document.getElementById('statTotal').innerText = active.length;
+            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            document.getElementById('statToday').innerText = active.filter(t => t.date === today).length;
+        }
+
         function setType(type) {
             window.currentType = type;
             ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
-            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
-            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all text-white ${type==='tugas'?'bg-blue-600':type==='log'?'bg-emerald-600':'bg-red-600'}`;
+            const btnMap = {tugas: 'btnTugas', log: 'btnLog', minyak: 'btnMinyak'};
+            document.getElementById(btnMap[type]).className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600 text-white`;
+            
             document.getElementById('odoFields').classList.toggle('hidden', type === 'tugas');
             document.getElementById('locationField').classList.toggle('hidden', type === 'tugas');
-            if(type === 'log' || type === 'minyak') detectLocation();
         }
 
-        function detectLocation() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(async (pos) => {
-                    const { latitude, longitude } = pos.coords;
-                    document.getElementById('locationInput').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)} (Menjejak...)`;
-                    try {
-                        const res = await fetch(`https://nominatim.openstreetmap.org/reverse?format=json&lat=${latitude}&lon=${longitude}`);
-                        const data = await res.json();
-                        document.getElementById('locationInput').value = data.address.suburb || data.address.city || data.display_name;
-                    } catch (e) {}
-                });
-            }
+        function getDayName(dateStr) { 
+            const p = dateStr.split('-'); 
+            return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; 
         }
 
-        window.showDetailsById = (id) => {
-            const t = tasks.find(x => x.id == id);
-            if(!t) return;
-            // Mark as read automatically when opened
-            if(!t.isRead) db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId).update({ isRead: true });
-            
-            Swal.fire({
-                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.date}</span>`,
-                html: `<div class="text-left space-y-3 py-2">
-                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Lokasi & Butiran</p>
-                        <p class="text-[10px] text-blue-400 mb-2">📍 ${t.location}</p>
-                        <p class="text-xs text-slate-200">${t.note}</p>
-                    </div>
-                    ${t.dist > 0 ? `<div class="p-2 bg-emerald-500/10 rounded-xl text-center"><p class="text-[8px] text-emerald-500 font-bold uppercase">Jarak</p><p class="font-bold text-white">${t.dist} KM</p></div>` : ''}
-                </div>`,
-                confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
-            });
-        };
-
-        // Initialize
-        flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
-        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K", defaultDate: new Date() });
-        setType('tugas');
-
-        // Clock
         setInterval(() => {
             const n = new Date();
-            if(document.getElementById('realTime')) {
-                // Re-using same logic if element exists in original layout
-            }
+            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
+            document.getElementById('realDay').textContent = ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][n.getDay()];
         }, 1000);
+
+        flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K", defaultDate: new Date() });
+        
+        // Initial Trigger
+        setTimeout(() => { if(currentUser) migrateOldData(); }, 3000);
 
     </script>
 </body>
