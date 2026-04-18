@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Pilot v18.9</title>
+    <title>Intelligent Pilot v19.0</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -49,14 +49,27 @@
         .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
         .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
         
-        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
+        .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; }
         .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; gap: 6px; }
         .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
-        .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
+        .export-btn-grid span { font-size: 8px; font-weight: 800; text-transform: uppercase; text-align: center; }
         .type-badge { font-size: 8px; padding: 2px 6px; border-radius: 4px; font-weight: 800; text-transform: uppercase; }
+
+        /* Scanning Overlay */
+        #scanOverlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,0.8); z-index:2000; flex-direction:column; align-items:center; justify-content:center; }
+        .scanner-line { width: 100%; height: 2px; background: #2563eb; box-shadow: 0 0 15px #2563eb; position: absolute; animation: scan 2s infinite; }
+        @keyframes scan { 0% { top: 0; } 100% { top: 100%; } }
     </style>
 </head>
 <body class="p-4 md:p-8">
+
+    <!-- SCANNING OVERLAY -->
+    <div id="scanOverlay">
+        <div class="relative w-64 h-64 border-2 border-blue-500 rounded-lg overflow-hidden">
+            <div class="scanner-line"></div>
+        </div>
+        <p class="mt-4 font-mono-corp text-blue-400 animate-pulse">MEMPROSES ODOMETER AI...</p>
+    </div>
 
     <!-- LOGIN SCREEN -->
     <div id="loginScreen">
@@ -66,7 +79,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT Intelligent</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v18.9</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v19.0</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -124,8 +137,8 @@
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
                                 <label class="label-corp text-blue-400">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-bold">📸 SCAN</button>
-                                <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
+                                <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 rounded-lg text-[10px] font-bold">📸 SCAN ODO</button>
+                                <input type="file" id="cameraInput" accept="image/*" capture="environment" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
@@ -179,8 +192,10 @@
                     </div>
                 </div>
                 <div class="lg:col-span-2 px-2">
-                    <p class="text-[11px] font-extrabold text-blue-500 uppercase">JABATAN PERKHIDMATAN VETERINAR</p>
-                    <p class="text-[9px] text-slate-500">Putrajaya, Malaysia. Hakcipta Terpelihara © 2026</p>
+                    <p class="text-[11px] font-extrabold text-blue-500 uppercase">JABATAN PERKHIDMATAN VETERINAR MALAYSIA</p>
+                    <p class="text-[9px] text-slate-500">Wisma Tani, Blok 4G1 & 4G2, Presint 4,</p>
+                    <p class="text-[9px] text-slate-500">Pusat Pentadbiran Kerajaan Persekutuan, 62630 Putrajaya.</p>
+                    <p class="text-[9px] text-slate-400 mt-2 font-bold">Hakcipta Terpelihara © 2026 | v19.0</p>
                 </div>
             </div>
         </footer>
@@ -221,6 +236,7 @@
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
             });
+            // Realtime Visitors Update
             db.collection("system").doc("analytics").onSnapshot(doc => {
                 if(doc.exists) {
                     const d = doc.data(); 
@@ -242,12 +258,46 @@
             if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
         }
 
+        function triggerCamera() {
+            document.getElementById('cameraInput').click();
+        }
+
+        async function processOdoImage(input) {
+            if (!input.files || !input.files[0]) return;
+            const overlay = document.getElementById('scanOverlay');
+            overlay.style.display = 'flex';
+            
+            try {
+                const result = await Tesseract.recognize(input.files[0], 'eng', { logger: m => console.log(m) });
+                const text = result.data.text;
+                
+                // Pengecaman Nombor Sahaja (Odometer biasanya 5-7 digit)
+                // Kita tapis supaya tidak ambil nombor masa (format 00:00) atau tarikh
+                const matches = text.match(/\b\d{4,7}\b/g); 
+                
+                if (matches && matches.length > 0) {
+                    // Ambil nombor yang paling panjang yang dijumpai (kebiasaannya odo)
+                    const bestMatch = matches.sort((a, b) => b.length - a.length)[0];
+                    document.getElementById('odoEnd').value = bestMatch;
+                    calcPreview();
+                    Swal.fire({ icon:'success', title:'Odometer Dikesan', text: `Nilai: ${bestMatch}`, timer:1500, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+                } else {
+                    Swal.fire({ icon:'warning', title:'Gagal', text:'Sila pastikan gambar odometer jelas.', customClass:{popup:'swal-corp'} });
+                }
+            } catch (e) {
+                console.error(e);
+            } finally {
+                overlay.style.display = 'none';
+                input.value = '';
+            }
+        }
+
         function calcPreview() {
             const s = parseFloat(document.getElementById('odoStart').value) || 0;
             const e = parseFloat(document.getElementById('odoEnd').value) || 0;
             document.getElementById('distPreview').innerText = `${e > s ? e - s : 0} KM`;
-            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
-            document.getElementById('fuelPreview').innerText = `Total: RM ${r1.toFixed(2)}`;
+            const r1 = parseFloat(document.getElementById('rmInitial')?.value) || 0;
+            if(document.getElementById('fuelPreview')) document.getElementById('fuelPreview').innerText = `Total: RM ${r1.toFixed(2)}`;
         }
 
         async function saveEntry() {
@@ -406,8 +456,9 @@
                         <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
                         <button onclick="exportWord()" class="text-blue-400">📝<span>Word</span></button>
                         <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PPTX</span></button>
-                        <button onclick="exportAccessCSV()" class="text-purple-400">🗄️<span>Access</span></button>
-                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
+                        <button onclick="exportNotepadPlus()" class="text-blue-300">🗒️<span>Notepad++</span></button>
+                        <button onclick="exportToNotes('ios')" class="text-white">🍎<span>iOS Notes</span></button>
+                        <button onclick="exportToNotes('android')" class="text-emerald-500">🤖<span>Android Notes</span></button>
                     </div>
                 `,
                 showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
@@ -446,17 +497,27 @@
             pptx.writeFile({ fileName: 'PILOT_Presentation.pptx' });
         }
 
-        function exportAccessCSV() {
-            const headers = "ID,Date,Time,Type,Location,Dist,Fuel,Note\n";
-            const rows = tasks.map(t => `${t.id},${t.date},${t.tFrom},${t.type},"${t.location}",${t.dist},${t.rmMinyak},"${t.note}"`).join("\n");
-            const blob = new Blob([headers + rows], { type: 'text/csv' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Pilot_Access_DB.csv"; link.click();
+        function exportNotepadPlus() {
+            // Notepad++ format (TSV styling)
+            let txt = "ID\tDATE\tTIME\tTYPE\tNOTE\tLOCATION\n";
+            tasks.forEach(t => { txt += `${t.id}\t${t.date}\t${t.tFrom}\t${t.type}\t${t.note}\t${t.location}\n`; });
+            const blob = new Blob([txt], { type: 'text/plain' });
+            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Pilot_Logs.txt"; link.click();
         }
 
-        function exportNotepad() {
-            let txt = tasks.map(t => `[${t.date}] ${t.type}: ${t.note}`).join("\n");
-            const blob = new Blob([txt], { type: 'text/plain' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = "Pilot_Log.txt"; link.click();
+        async function exportToNotes(platform) {
+            let content = "--- LAPORAN PILOT CLOUD ---\n\n";
+            tasks.slice(0, 10).forEach(t => content += `[${t.date}] ${t.type}: ${t.note}\n`);
+            
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'PILOT LOGS', text: content });
+                } catch (err) { console.log('Sharing failed', err); }
+            } else {
+                // Fallback: Copy to clipboard
+                navigator.clipboard.writeText(content);
+                Swal.fire('Clipboard', 'Data disalin. Sila tampal (paste) dalam Notes anda.', 'info');
+            }
         }
 
         // --- UTILS ---
@@ -469,15 +530,26 @@
         }
 
         async function incrementVisitors() {
-            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
+            const now = new Date();
+            const todayStr = now.toLocaleDateString('en-GB').replace(/\//g, '-');
+            const monthStr = (now.getMonth() + 1) + '-' + now.getFullYear();
             const ref = db.collection("system").doc("analytics");
+            
             await db.runTransaction(async (t) => {
                 const doc = await t.get(ref);
-                if (!doc.exists) t.set(ref, { today: 1, month: 1, total: 1, lastDate: today });
-                else {
-                    let d = doc.data(); let u = { total: (d.total || 0) + 1 };
-                    if(d.lastDate !== today) { u.today = 1; u.lastDate = today; } else u.today = (d.today || 0) + 1;
-                    t.update(ref, u);
+                if (!doc.exists) {
+                    t.set(ref, { today: 1, month: 1, total: 1, lastDate: todayStr, lastMonth: monthStr });
+                } else {
+                    let d = doc.data(); 
+                    let update = { total: (d.total || 0) + 1 };
+                    
+                    if(d.lastDate !== todayStr) { update.today = 1; update.lastDate = todayStr; } 
+                    else { update.today = (d.today || 0) + 1; }
+                    
+                    if(d.lastMonth !== monthStr) { update.month = 1; update.lastMonth = monthStr; } 
+                    else { update.month = (d.month || 0) + 1; }
+                    
+                    t.update(ref, update);
                 }
             });
         }
