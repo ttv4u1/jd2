@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v20 Official</title>
+    <title>PILOT Cloud Intelligent | v19.0 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -29,7 +29,6 @@
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
     <style>
         :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
@@ -56,10 +55,13 @@
         .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
         .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
 
-        /* Custom Additions */
-        .row-selected { background: rgba(37, 99, 235, 0.1) !important; }
-        .unread-indicator { width: 8px; height: 8px; background: #2563eb; border-radius: 50%; display: inline-block; margin-right: 5px; }
-        .is-fav { color: #fbbf24 !important; }
+        /* New Version 19.0 Styles */
+        .is-unread { border-left: 4px solid #3b82f6 !important; background: rgba(59, 130, 246, 0.05); }
+        .fav-star { color: #f59e0b !important; }
+        .action-bar { display: none; background: #2563eb; color: white; padding: 10px 20px; border-radius: 12px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.5); align-items: center; gap: 15px; }
+        .row-checkbox { width: 18px; height: 18px; accent-color: #2563eb; cursor: pointer; }
+        .filter-tab { cursor: pointer; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
+        .filter-tab.active { background: #2563eb; color: white; }
     </style>
 </head>
 <body class="p-4 md:p-8">
@@ -72,7 +74,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v18.8</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v19.0</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -174,27 +176,23 @@
                     <div class="p-6 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
                         <div class="flex items-center gap-4">
                             <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
-                            <select id="viewMode" onchange="renderUI()" class="bg-black/40 text-[10px] font-bold text-white border border-white/10 rounded-lg px-2 py-1 outline-none">
-                                <option value="all">SEMUA DATA</option>
-                                <option value="fav">KEGEMARAN ⭐</option>
-                                <option value="trash">RECYCLE BIN 🗑️</option>
-                            </select>
+                            <div class="flex gap-2">
+                                <span onclick="setFilter('all')" id="filterAll" class="filter-tab active">Utama</span>
+                                <span onclick="setFilter('fav')" id="filterFav" class="filter-tab">⭐ Fav</span>
+                                <span onclick="setFilter('trash')" id="filterTrash" class="filter-tab">🗑️ Trash</span>
+                            </div>
                         </div>
-                        <div class="flex gap-2">
-                            <button onclick="bulkAction('read')" class="px-3 py-1.5 bg-slate-700 hover:bg-slate-600 rounded text-[9px] font-bold text-white uppercase">Mark Read</button>
-                            <button onclick="bulkAction('fav')" class="px-3 py-1.5 bg-orange-600 hover:bg-orange-500 rounded text-[9px] font-bold text-white uppercase">Add Fav</button>
-                            <button id="deleteBtnAction" onclick="bulkAction('delete')" class="px-3 py-1.5 bg-red-700 hover:bg-red-600 rounded text-[9px] font-bold text-white uppercase">Delete</button>
-                            <button id="restoreBtnAction" onclick="bulkAction('restore')" class="hidden px-3 py-1.5 bg-emerald-600 hover:bg-emerald-500 rounded text-[9px] font-bold text-white uppercase">Restore</button>
-                        </div>
+                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
                     </div>
+
                     <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
                         <table>
                             <thead>
                                 <tr>
-                                    <th width="40"><input type="checkbox" id="selectAll" onclick="toggleSelectAll(this)"></th>
+                                    <th style="width: 40px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="row-checkbox"></th>
                                     <th>Tarikh & Masa</th>
                                     <th>Butiran & Lokasi</th>
-                                    <th class="text-right">Aksi</th>
+                                    <th class="text-right">Status</th>
                                 </tr>
                             </thead>
                             <tbody id="activeBody"></tbody>
@@ -204,10 +202,19 @@
             </div>
         </main>
 
+        <!-- BULK ACTION BAR -->
+        <div id="bulkActionBar" class="action-bar flex">
+            <span id="selectedCount" class="font-bold text-xs">0 Dipilih</span>
+            <div class="h-4 w-[1px] bg-white/20"></div>
+            <button onclick="bulkMarkRead()" title="Tanda Dibaca">👁️</button>
+            <button onclick="bulkFav()" title="Tambah Kegemaran">⭐</button>
+            <button onclick="bulkDelete()" id="bulkDeleteBtn" title="Buang">🗑️</button>
+            <button onclick="bulkRestore()" id="bulkRestoreBtn" title="Pulihkan" class="hidden">🔄</button>
+        </div>
+
         <!-- FOOTER: REALTIME STATS & ADDRESS -->
         <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
                 <div class="glass-card p-5 bg-white/5 border-none space-y-4">
                     <div class="flex items-center gap-2">
                         <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
@@ -252,7 +259,6 @@
                         Paparan terbaik: Mozilla Firefox, Chrome,<br>dan Internet Explorer 11 ke atas.
                     </p>
                 </div>
-
             </div>
         </footer>
     </div>
@@ -267,7 +273,7 @@
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
-        let currentUser = null, tasks = [], selectedIds = [];
+        let currentUser = null, tasks = [], selectedIds = [], currentFilter = 'all';
 
         auth.onAuthStateChanged(user => {
             if (user) { 
@@ -299,13 +305,170 @@
             });
         }
 
-        // --- CAMERA & AI ODO ---
-        function triggerCamera() { document.getElementById('cameraInput').click(); }
+        // --- NEW v19.0 FUNCTIONS ---
+        function setFilter(filter) {
+            currentFilter = filter;
+            document.querySelectorAll('.filter-tab').forEach(el => el.classList.remove('active'));
+            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
+            
+            // UI adjustment for trash mode
+            if(filter === 'trash') {
+                document.getElementById('bulkDeleteBtn').title = "Padam Kekal";
+                document.getElementById('bulkRestoreBtn').classList.remove('hidden');
+            } else {
+                document.getElementById('bulkDeleteBtn').title = "Buang";
+                document.getElementById('bulkRestoreBtn').classList.add('hidden');
+            }
+            renderUI();
+        }
 
+        function toggleSelectAll(master) {
+            const checkboxes = document.querySelectorAll('.row-checkbox-item');
+            selectedIds = [];
+            checkboxes.forEach(cb => {
+                cb.checked = master.checked;
+                if(master.checked) selectedIds.push(cb.getAttribute('data-id'));
+            });
+            updateActionBar();
+        }
+
+        function toggleSelect(id) {
+            if(selectedIds.includes(id)) {
+                selectedIds = selectedIds.filter(x => x !== id);
+            } else {
+                selectedIds.push(id);
+            }
+            updateActionBar();
+        }
+
+        function updateActionBar() {
+            const bar = document.getElementById('bulkActionBar');
+            const count = document.getElementById('selectedCount');
+            if(selectedIds.length > 0) {
+                bar.style.display = 'flex';
+                count.innerText = `${selectedIds.length} Dipilih`;
+            } else {
+                bar.style.display = 'none';
+                document.getElementById('selectAll').checked = false;
+            }
+        }
+
+        async function bulkMarkRead() {
+            const batch = db.batch();
+            selectedIds.forEach(id => {
+                batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { isRead: true });
+            });
+            await batch.commit();
+            selectedIds = []; updateActionBar();
+        }
+
+        async function bulkFav() {
+            const batch = db.batch();
+            selectedIds.forEach(id => {
+                const item = tasks.find(t => t.docId === id);
+                batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { isFav: !item.isFav });
+            });
+            await batch.commit();
+            selectedIds = []; updateActionBar();
+        }
+
+        async function bulkDelete() {
+            const isTrash = currentFilter === 'trash';
+            const title = isTrash ? 'Padam Kekal?' : 'Pindah ke Tong Sampah?';
+            const confirm = await Swal.fire({ title, text: "Tindakan ini tidak boleh dibatalkan.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
+            
+            if(confirm.isConfirmed) {
+                const batch = db.batch();
+                selectedIds.forEach(id => {
+                    const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
+                    if(isTrash) batch.delete(ref);
+                    else batch.update(ref, { isDeleted: true });
+                });
+                await batch.commit();
+                selectedIds = []; updateActionBar();
+            }
+        }
+
+        async function bulkRestore() {
+            const batch = db.batch();
+            selectedIds.forEach(id => {
+                batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { isDeleted: false });
+            });
+            await batch.commit();
+            selectedIds = []; updateActionBar();
+        }
+
+        // --- CORE LOGIC UPDATED ---
+        async function saveEntry() {
+            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
+            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            const entry = {
+                id: Date.now(), type: window.currentType, date, day: getDayName(date),
+                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
+                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
+                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
+                location: document.getElementById('locationInput')?.value || '-',
+                note: document.getElementById('taskInput').value || '-',
+                isRead: false, isFav: false, isDeleted: false // New Flags v19.0
+            };
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            calcPreview();
+        }
+
+        function renderUI() {
+            const body = document.getElementById('activeBody'); body.innerHTML = '';
+            
+            // Apply Filters
+            let filtered = tasks.filter(t => {
+                if(currentFilter === 'trash') return t.isDeleted === true;
+                if(currentFilter === 'fav') return t.isFav === true && !t.isDeleted;
+                return !t.isDeleted;
+            });
+
+            let sorted = filtered.sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
+            
+            sorted.forEach(t => {
+                const tr = document.createElement('tr');
+                const isUnread = !t.isRead ? 'is-unread' : '';
+                tr.className = `hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all ${isUnread}`;
+                tr.onclick = () => {
+                    db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId).update({isRead: true});
+                    showDetails(t);
+                };
+                
+                tr.innerHTML = `
+                    <td onclick="event.stopPropagation()">
+                        <input type="checkbox" data-id="${t.docId}" onchange="toggleSelect('${t.docId}')" class="row-checkbox row-checkbox-item" ${selectedIds.includes(t.docId) ? 'checked' : ''}>
+                    </td>
+                    <td>
+                        <div class="font-bold text-xs text-white">${t.date}</div>
+                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div>
+                    </td>
+                    <td>
+                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
+                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
+                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
+                        </div>
+                    </td>
+                    <td class="text-right">
+                        <span class="text-lg ${t.isFav ? 'fav-star' : 'text-white/10'}">★</span>
+                    </td>`;
+                body.appendChild(tr);
+            });
+            updateActionBar();
+        }
+
+        // --- PREVIOUS ENGINE (KEKALKAN) ---
+        function triggerCamera() { document.getElementById('cameraInput').click(); }
         async function processOdoImage(input) {
             if (!input.files[0]) return;
             const file = input.files[0];
-            Swal.fire({ title: 'AI Scanning Nombor...', html: '<div class="text-[10px] text-blue-400 font-mono mt-2">Menajamkan digit...</div>', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'AI Scanning Nombor...', html: '<div class="text-[10px] text-blue-400 font-mono mt-2">Menapis masa & menajamkan digit odometer...</div>', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
             const processedImage = await enhanceImage(file);
             try {
                 const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789', tessedit_pageseg_mode: '6' });
@@ -314,8 +477,7 @@
                     const odometerOnly = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length);
                     if (odometerOnly.length > 0) {
                         const finalOdo = odometerOnly[0];
-                        document.getElementById('odoEnd').value = finalOdo;
-                        calcPreview();
+                        document.getElementById('odoEnd').value = finalOdo; calcPreview();
                         Swal.fire({ icon: 'success', title: 'Imbasan Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
                     } else { Swal.fire('Imbasan Kabur', 'Sila pastikan gambar odometer jelas.', 'warning'); }
                 } else { Swal.fire('Gagal', 'Tiada nombor dikesan.', 'warning'); }
@@ -328,8 +490,7 @@
                 reader.onload = (e) => {
                     const img = new Image();
                     img.onload = () => {
-                        const canvas = document.getElementById('procCanvas');
-                        const ctx = canvas.getContext('2d');
+                        const canvas = document.getElementById('procCanvas'); const ctx = canvas.getContext('2d');
                         const scale = Math.min(1200 / img.width, 1200 / img.height);
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
                         ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%)';
@@ -342,7 +503,6 @@
             });
         }
 
-        // --- GPS & LOGIC ---
         function detectLocation() {
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(async (pos) => {
@@ -375,192 +535,42 @@
             document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
         }
 
-        async function saveEntry() {
-            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
-            const entry = {
-                id: Date.now(), type: window.currentType, date, day: getDayName(date),
-                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
-                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
-                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
-                location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-',
-                isRead: false, isFav: false, isTrash: false
-            };
-            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-            calcPreview();
-        }
-
-        // --- BULK ACTION HELPERS ---
-        function toggleSelectAll(master) {
-            const checks = document.querySelectorAll('.row-check');
-            checks.forEach(c => c.checked = master.checked);
-        }
-
-        function getSelectedIds() {
-            return Array.from(document.querySelectorAll('.row-check:checked')).map(c => c.value);
-        }
-
-        async function bulkAction(type) {
-            const ids = getSelectedIds();
-            if (ids.length === 0) return Swal.fire('Info', 'Sila pilih sekurang-kurangnya satu data.', 'info');
-            
-            Swal.fire({ title: 'Memproses...', didOpen: () => Swal.showLoading() });
-            const batch = db.batch();
-            ids.forEach(id => {
-                const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
-                if (type === 'read') batch.update(ref, { isRead: true });
-                if (type === 'fav') batch.update(ref, { isFav: true });
-                if (type === 'delete') batch.update(ref, { isTrash: true });
-                if (type === 'restore') batch.update(ref, { isTrash: false });
-            });
-            await batch.commit();
-            Swal.fire('Berjaya', 'Data telah dikemaskini.', 'success');
-        }
-
-        function renderUI() {
-            const body = document.getElementById('activeBody'); 
-            const mode = document.getElementById('viewMode').value;
-            body.innerHTML = '';
-            
-            document.getElementById('deleteBtnAction').classList.toggle('hidden', mode === 'trash');
-            document.getElementById('restoreBtnAction').classList.toggle('hidden', mode !== 'trash');
-
-            let filtered = tasks.filter(t => {
-                if (mode === 'trash') return t.isTrash === true;
-                if (mode === 'fav') return t.isFav === true && !t.isTrash;
-                return !t.isTrash;
-            });
-
-            let sorted = [...filtered].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
-            
-            sorted.forEach(t => {
-                const tr = document.createElement('tr');
-                tr.className = `hover:bg-white/5 border-b border-white/5 transition-all ${t.isRead ? 'opacity-50' : ''}`;
-                tr.innerHTML = `
-                    <td><input type="checkbox" class="row-check" value="${t.docId}" onclick="event.stopPropagation()"></td>
-                    <td onclick="showDetailsById('${t.id}')" class="cursor-pointer">
-                        <div class="flex items-center">
-                            ${!t.isRead ? '<span class="unread-indicator"></span>' : ''}
-                            <div>
-                                <div class="font-bold text-xs text-white">${t.date}</div>
-                                <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div>
-                            </div>
-                        </div>
-                    </td>
-                    <td onclick="showDetailsById('${t.id}')" class="cursor-pointer">
-                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
-                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
-                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
-                            ${t.isFav ? '<span class="text-orange-400">★ FAV</span>' : ''}
-                        </div>
-                    </td>
-                    <td class="text-right">
-                        <button onclick="deleteSingle('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition">🗑️</button>
-                    </td>`;
-                body.appendChild(tr);
-            });
-        }
-
-        async function deleteSingle(docId) {
-            await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).update({ isTrash: true });
-        }
-
-        // --- IMPROVED UNIVERSAL EXPORT ---
+        // --- UNIVERSAL EXPORT ---
         function showExportOptions() {
             Swal.fire({
                 title: 'PUSAT EKSPORT DATA UNIVERSAL',
-                html: `
-                    <div class="p-2 export-btn-grid">
-                        <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
-                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
-                        <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
-                        <button onclick="exportAccessCSV()" class="text-purple-400">🗄️<span>Access DB</span></button>
-                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PowerPoint</span></button>
-                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
-                        <button onclick="exportNotepadPlusPlus()" class="text-emerald-500">🧪<span>Notepad++</span></button>
-                        <button onclick="exportToNotes('ios')" class="text-orange-400">🍎<span>iOS Notes</span></button>
-                        <button onclick="exportToNotes('android')" class="text-green-400">🤖<span>Android</span></button>
-                    </div>
-                `,
+                html: `<div class="p-2 export-btn-grid">
+                    <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
+                    <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
+                    <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
+                    <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
+                    <button onclick="exportToNotes()" class="text-orange-400">📋<span>Copy Logs</span></button>
+                </div>`,
                 showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
             });
         }
 
-        // --- EXPORT FUNCTIONS ---
         async function exportPDF() {
             const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
-            const data = tasks.filter(t => !t.isTrash).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).map(t=>[t.date, t.day, t.tFrom, t.location, t.dist, t.rmMinyak.toFixed(2), t.note]);
-            doc.setFontSize(14); doc.text("LAPORAN RASMI PILOT CLOUD", 14, 15);
-            doc.autoTable({ head:[['TARIKH','HARI','MASA','LOKASI','KM','RM','BUTIRAN']], body:data, startY:20, theme:'grid', styles:{fontSize:7} });
+            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F');
+            doc.setTextColor(255); doc.setFontSize(16); doc.text("LAPORAN RASMI PILOT CLOUD MASTER v19.0", 50, 15);
+            const data = tasks.filter(t => !t.isDeleted).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).map(t=>[t.date, t.day, t.tFrom, t.location, t.dist+" KM", "RM "+t.rmMinyak.toFixed(2), t.note]);
+            doc.autoTable({ head:[['TARIKH','HARI','MASA','LOKASI','JARAK','KOS','BUTIRAN']], body:data, startY:45, theme:'grid', styles:{fontSize:7} });
             doc.save(`PILOT_RASMI_${Date.now()}.pdf`);
         }
 
         function exportExcel() {
-            const rows = tasks.filter(t => !t.isTrash).map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
+            const rows = tasks.filter(t => !t.isDeleted).map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
             const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Data.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
         }
 
-        function exportWord() {
-            let content = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word'><head><meta charset='utf-8'><title>Laporan</title><style>table{border-collapse:collapse;width:100%} th,td{border:1px solid black;padding:5px;font-family:Arial;font-size:10pt}</style></head><body>`;
-            content += `<h2>LAPORAN PILOT CLOUD: ${currentUser.displayName}</h2><table><tr><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>KM</th><th>Catatan</th></tr>`;
-            tasks.filter(t => !t.isTrash).forEach(t => { content += `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.dist}</td><td>${t.note}</td></tr>`; });
-            content += `</table></body></html>`;
-            const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Laporan.doc`; link.click();
-        }
-
-        function exportAccessCSV() {
-            const headers = "ID,Date,Day,Time,Location,Distance,FuelRM,Note\n";
-            const rows = tasks.filter(t => !t.isTrash).map(t => `${t.id},${t.date},${t.day},${t.tFrom},"${t.location}",${t.dist},${t.rmMinyak},"${t.note}"`).join("\n");
-            const blob = new Blob([headers + rows], { type: 'text/csv' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_AccessDB.csv`; link.click();
-        }
-
-        function exportPowerPoint() {
-            let pptx = new PptxGenJS();
-            let slide = pptx.addSlide();
-            slide.addText("LAPORAN DATA PILOT CLOUD", { x:1, y:1, fontSize:24, color:'363636', bold:true });
-            slide.addText(`Pemandu: ${currentUser.displayName}`, { x:1, y:1.5, fontSize:14 });
-            
-            const tableData = [["Tarikh", "Masa", "Lokasi", "KM", "Butiran"]];
-            tasks.filter(t => !t.isTrash).slice(0, 10).forEach(t => tableData.push([t.date, t.tFrom, t.location, t.dist.toString(), t.note]));
-            
-            slide.addTable(tableData, { x:0.5, y:2.5, w:9, fontSize:9, border:{pt:'1', color:'cccccc'} });
-            pptx.writeFile({ fileName: `PILOT_Slide.pptx` });
-        }
-
-        function exportNotepad() {
-            let txt = `PILOT LOG - ${currentUser.displayName}\n==================================\n\n`;
-            tasks.filter(t => !t.isTrash).forEach(t => txt += `[${t.date} ${t.tFrom}] LOKASI: ${t.location} | KM: ${t.dist} | NOTA: ${t.note}\n`);
-            const blob = new Blob([txt], { type: 'text/plain' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Notepad.txt`; link.click();
-        }
-
-        function exportNotepadPlusPlus() {
-            let xml = `<?xml version="1.0" encoding="UTF-8" ?>\n<PilotLogs driver="${currentUser.displayName}">\n`;
-            tasks.filter(t => !t.isTrash).forEach(t => {
-                xml += `  <Log id="${t.id}">\n    <Date>${t.date}</Date>\n    <Location>${t.location}</Location>\n    <Note>${t.note}</Note>\n  </Log>\n`;
+        function exportToNotes() {
+            let txt = `📋 LOG PILOT CLOUD\n`;
+            tasks.filter(t => !t.isDeleted).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
+                txt += `📅 ${t.date}\n📍 ${t.location}\n⏰ ${t.tFrom} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
             });
-            xml += `</PilotLogs>`;
-            const blob = new Blob([xml], { type: 'application/xml' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Data.xml`; link.click();
-        }
-
-        function exportToNotes(platform) {
-            let summary = `📋 LOG PILOT CLOUD\nDriver: ${currentUser.displayName}\n\n`;
-            tasks.filter(t => !t.isTrash).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
-                summary += `📅 ${t.date} (${t.tFrom})\n📍 ${t.location}\n🛣️ ${t.dist} KM | 📝 ${t.note}\n-----------------\n`;
-            });
-            navigator.clipboard.writeText(summary).then(() => {
-                Swal.fire('Berjaya!', 'Log disalin ke Clipboard. Sila "Paste" ke dalam aplikasi Notes anda.', 'success');
-            });
+            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
         }
 
         // --- UTILS ---
@@ -590,7 +600,7 @@
             });
             let html = `<div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll text-left">`;
             months.forEach(my => {
-                const mData = tasks.filter(t => t.monthYear === my).sort((a,b) => parseDate(b.date) - parseDate(a.date));
+                const mData = tasks.filter(t => t.monthYear === my && !t.isDeleted).sort((a,b) => parseDate(b.date) - parseDate(a.date));
                 html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4></div><div class="space-y-2">`;
                 mData.forEach(item => {
                     html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-blue-600 cursor-pointer hover:bg-white/10 transition">
@@ -603,13 +613,7 @@
             html += `</div>`;
             Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
         }
-        window.showDetailsById = async (id) => { 
-            const t = tasks.find(x => x.id == id); 
-            if(t) {
-                if (!t.isRead) await db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId).update({ isRead: true });
-                showDetails(t); 
-            }
-        };
+        window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
         function showDetails(t) {
             Swal.fire({
                 title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
