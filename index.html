@@ -5,16 +5,16 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v34 Official</title>
+    <title>PILOT Cloud Intelligent | v35 Rasmi</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
-    <!-- Fonts -->
+    <!-- Fon Rasmi -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700;800&family=Share+Tech+Mono&display=swap" rel="stylesheet">
 
-    <!-- Frameworks -->
+    <!-- Rangka Kerja & Pustaka -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" type="text/css" href="https://npmcdn.com/flatpickr/dist/themes/dark.css">
@@ -24,7 +24,7 @@
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 
-    <!-- Export & AI Libraries -->
+    <!-- Pustaka AI & Eksport -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js"></script>
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
@@ -63,18 +63,20 @@
         .ai-fab:hover { transform: scale(1.1) rotate(15deg); background: #1d4ed8; }
         .ai-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 800; }
 
-        /* CHAT BUBBLES */
-        .chat-container { height: 300px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 10px; }
-        .chat-bubble { max-width: 80%; padding: 8px 12px; border-radius: 15px; font-size: 11px; line-height: 1.4; }
+        /* KOTAK SEMBANG */
+        .chat-container { height: 350px; overflow-y: auto; padding: 10px; display: flex; flex-direction: column; gap: 10px; background: rgba(0,0,0,0.2); border-radius: 10px; margin-bottom: 10px; }
+        .chat-bubble { max-width: 85%; padding: 10px 14px; border-radius: 15px; font-size: 11px; line-height: 1.5; }
         .bubble-ai { background: #1e293b; color: #e2e8f0; align-self: flex-start; border-bottom-left-radius: 2px; border: 1px solid #334155; }
         .bubble-user { background: #2563eb; color: white; align-self: flex-end; border-bottom-right-radius: 2px; }
+        .ai-cmd-btn { padding: 4px 8px; background: rgba(37, 99, 235, 0.2); border: 1px solid rgba(37, 99, 235, 0.4); border-radius: 6px; font-size: 9px; color: #60a5fa; cursor: pointer; transition: 0.2s; }
+        .ai-cmd-btn:hover { background: #2563eb; color: white; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <div class="ai-fab" onclick="openAIHelper()">
         <span>🤖</span>
-        <div class="ai-badge">LIVE</div>
+        <div class="ai-badge">AKTIF</div>
     </div>
 
     <div id="loginScreen">
@@ -84,10 +86,10 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v34</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Protokol Induk v35</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
-                <span>PENGESAHAN GOOGLE</span>
+                <span>PENGESAHAN AKAUN GOOGLE</span>
             </button>
         </div>
     </div>
@@ -99,7 +101,7 @@
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
                     <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud by ©FiR</h1>
+                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">Sistem Data PILOT ©FiR</h1>
                         <div class="flex items-center gap-2">
                             <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
                             <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">---</span>
@@ -127,9 +129,9 @@
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
-                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGAS</button>
-                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">GERAK</button>
-                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">MINYAK</button>
+                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGASAN</button>
+                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">PERGERAKAN</button>
+                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">PETROL</button>
                     </div>
 
                     <div class="space-y-4">
@@ -141,37 +143,37 @@
                         </div>
                         <div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div><label class="label-corp">Tarikh Akhir</label><input type="text" id="endDate" class="input-field w-full"></div>
-                                <div><label class="label-corp">Masa Akhir</label><input type="text" id="endTime" class="input-field w-full font-mono-corp text-center"></div>
+                                <div><label class="label-corp">Tarikh Tamat</label><input type="text" id="endDate" class="input-field w-full"></div>
+                                <div><label class="label-corp">Masa Tamat</label><input type="text" id="endTime" class="input-field w-full font-mono-corp text-center"></div>
                             </div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">📸 SCAN ODO</button>
+                                <label class="label-corp text-blue-400 font-bold uppercase">Imbasan Odo AI</label>
+                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">📸 SCAN</button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
                                 <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
                             </div>
-                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">AUTO-CALC: 0 KM</div>
+                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">JARAK: 0 KM</div>
                         </div>
 
                         <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                            <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
+                            <label class="label-corp text-red-400">Pengisian Petrol (RM)</label>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
-                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain">
+                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain-lain">
                             </div>
                             <select id="fuelType" class="input-field w-full"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
-                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
+                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Jumlah: RM 0.00</p>
                         </div>
 
-                        <div id="locationField" class="hidden"><label class="label-corp">📍 Geolocation GPS</label><input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi..."></div>
-                        <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
-                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
+                        <div id="locationField" class="hidden"><label class="label-corp">📍 Koordinat GPS</label><input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak lokasi semasa..."></div>
+                        <div><label class="label-corp">Perincian Tugasan Rasmi</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Sila masukkan butiran laporan tugasan..."></textarea></div>
+                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sela Masa Data Awan ☁️</button>
                     </div>
                 </div>
                 <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
@@ -180,12 +182,12 @@
             <div class="lg:col-span-8">
                 <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
                     <div class="p-6 bg-white/5 border-b border-white/5 flex justify-between items-center">
-                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
-                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
+                        <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Pangkalan Data Real-Time</h3>
+                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analisis Sejarah 📊</button>
                     </div>
                     <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
                         <table>
-                            <thead><tr><th>Tarikh & Masa</th><th>Butiran & Lokasi</th><th class="text-right">Aksi</th></tr></thead>
+                            <thead><tr><th>Tarikh & Masa</th><th>Butiran & Lokasi</th><th class="text-right">Tindakan</th></tr></thead>
                             <tbody id="activeBody"></tbody>
                         </table>
                     </div>
@@ -196,7 +198,7 @@
         <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
                 <div class="glass-card p-5 bg-white/5 border-none space-y-4">
-                    <div class="flex items-center gap-2"><span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span><p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p></div>
+                    <div class="flex items-center gap-2"><span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span><p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Status Sistem</p></div>
                     <div class="grid grid-cols-3 gap-2 text-center">
                         <div><p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p><p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p></div>
                         <div class="border-x border-white/10"><p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p><p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p></div>
@@ -208,7 +210,7 @@
                     <p class="text-[10px] text-slate-400 leading-relaxed font-medium">Kementerian Pertanian Dan Keterjaminan Makanan, Blok Podium, Lot 4G1, Presint 4, 62624 Putrajaya</p>
                     <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase"><p>Tel: (603) 8870 2000</p><p>Emel: pro[at]dvs.gov.my</p></div>
                 </div>
-                <div class="text-center md:text-right space-y-3"><p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent</p></div>
+                <div class="text-center md:text-right space-y-3"><p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Hak Cipta Terpelihara © 2026<br>Portal Rasmi PILOT Cloud Intelligent</p></div>
             </div>
         </footer>
     </div>
@@ -254,28 +256,28 @@
             });
         }
 
-        // --- ENHANCED AI HELPER WITH INTELLIGENT CHAT ---
+        // --- PILOT AI ENHANCED LOGIC ---
         function openAIHelper() {
             Swal.fire({
-                title: '🤖 PILOT AI ASSISTANT',
+                title: '🤖 PEMBANTU PILOT AI',
                 html: `
                     <div id="aiChatBox" class="chat-container text-left custom-scroll">
-                        <div class="chat-bubble bubble-ai">Sila pilih fasa atau tanya saya apa-apa tentang sistem ini.</div>
+                        <div class="chat-bubble bubble-ai">Selamat sejahtera. Saya adalah <b>PILOT AI</b>. Saya boleh membantu anda mengisi data, memadam rekod, atau mencadangkan ayat rasmi. Apa yang boleh saya bantu?</div>
                     </div>
-                    <div class="flex gap-2 mb-3">
-                         <button onclick="showAITip('pra')" class="flex-1 py-1.5 bg-blue-600/20 text-[9px] font-bold rounded-lg border border-blue-500/30">🛡️ PRA</button>
-                         <button onclick="showAITip('semasa')" class="flex-1 py-1.5 bg-emerald-600/20 text-[9px] font-bold rounded-lg border border-emerald-500/30">🛣️ SEMASA</button>
-                         <button onclick="showAITip('tamat')" class="flex-1 py-1.5 bg-red-600/20 text-[9px] font-bold rounded-lg border border-red-500/30">🏁 TAMAT</button>
+                    <div class="flex flex-wrap gap-2 mb-3 justify-center">
+                         <button onclick="aiFillAction('lawatan')" class="ai-cmd-btn">📝 ISI LAWATAN</button>
+                         <button onclick="aiFillAction('pejabat')" class="ai-cmd-btn">🏢 ISI TUGAS PEJABAT</button>
+                         <button onclick="aiFillAction('bersih')" class="ai-cmd-btn">🧹 PADAM SEMUA INPUT</button>
+                         <button onclick="aiFillAction('cadang')" class="ai-cmd-btn">✨ AYAT RASMI</button>
                     </div>
                     <div class="flex gap-2">
-                        <input type="text" id="aiInput" class="input-field flex-1 text-[11px]" placeholder="Tanya sesuatu...">
+                        <input type="text" id="aiInput" class="input-field flex-1 text-[11px]" placeholder="Contoh: 'Isi tugasan ke Putrajaya' atau 'Padam data'...">
                         <button onclick="processAIChat()" class="bg-blue-600 px-4 rounded-xl">🚀</button>
                     </div>
                 `,
                 showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
             });
 
-            // Allow enter key
             setTimeout(() => {
                 document.getElementById('aiInput').addEventListener('keypress', function (e) {
                     if (e.key === 'Enter') processAIChat();
@@ -283,93 +285,93 @@
             }, 500);
         }
 
+        function aiFillAction(cmd) {
+            const chatBox = document.getElementById('aiChatBox');
+            if(cmd === 'lawatan') {
+                document.getElementById('taskInput').value = "Menjalankan lawatan pemeriksaan rutin ke premis penternakan bagi memastikan pematuhan biosekuriti.";
+                chatBox.innerHTML += `<div class="chat-bubble bubble-ai">Selesai! Saya telah mengisi perincian untuk <b>Lawatan Pemeriksaan</b>.</div>`;
+            } else if(cmd === 'pejabat') {
+                document.getElementById('taskInput').value = "Menyelesaikan tugasan pentadbiran, penyelarasan fail jabatan dan menyediakan laporan bulanan.";
+                chatBox.innerHTML += `<div class="chat-bubble bubble-ai">Selesai! Saya telah mengisi perincian untuk <b>Tugasan Pejabat</b>.</div>`;
+            } else if(cmd === 'bersih') {
+                ['taskInput','locationInput','odoStart','odoEnd','rmInitial','rmOffice'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+                chatBox.innerHTML += `<div class="chat-bubble bubble-ai">Semua borang input telah dikosongkan.</div>`;
+            } else if(cmd === 'cadang') {
+                const list = [
+                    "Menghadiri mesyuarat penyelarasan teknikal peringkat jabatan.",
+                    "Melaksanakan pemantauan berkala di kawasan zon merah penyakit.",
+                    "Menguruskan logistik dan agihan bekalan vaksin kepada unit daerah.",
+                    "Memberikan khidmat nasihat teknikal kepada penternak tempatan."
+                ];
+                const pick = list[Math.floor(Math.random()*list.length)];
+                document.getElementById('taskInput').value = pick;
+                chatBox.innerHTML += `<div class="chat-bubble bubble-ai">Cadangan ayat korporat: <br><i>"${pick}"</i> telah dimasukkan.</div>`;
+            }
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
         async function processAIChat() {
             const input = document.getElementById('aiInput');
             const chatBox = document.getElementById('aiChatBox');
-            const query = input.value.trim();
+            const query = input.value.trim().toLowerCase();
             if (!query) return;
 
-            // User bubble
-            chatBox.innerHTML += `<div class="chat-bubble bubble-user">${query}</div>`;
+            chatBox.innerHTML += `<div class="chat-bubble bubble-user">${input.value}</div>`;
             input.value = '';
             chatBox.scrollTop = chatBox.scrollHeight;
 
-            // AI Loading
             const loadingId = 'ai-loading-' + Date.now();
-            chatBox.innerHTML += `<div id="${loadingId}" class="chat-bubble bubble-ai animate-pulse">Berfikir...</div>`;
+            chatBox.innerHTML += `<div id="${loadingId}" class="chat-bubble bubble-ai animate-pulse">Sedang memproses...</div>`;
             
-            // AI Response Logic
-            setTimeout(() => {
-                const response = getIntelligentResponse(query);
+            setTimeout(async () => {
                 document.getElementById(loadingId).remove();
+                let response = "";
+
+                // AI Action Logic
+                if (query.includes("isi") || query.includes("tulis")) {
+                    if(query.includes("mesyuarat")) {
+                        document.getElementById('taskInput').value = "Menghadiri mesyuarat rasmi bagi membincangkan hal hal berbangkit dan perancangan strategik.";
+                        response = "Baik, saya telah mengisi perincian tugasan mesyuarat untuk anda.";
+                    } else {
+                        document.getElementById('taskInput').value = "Melaksanakan tugasan rasmi jabatan mengikut arahan pihak atasan.";
+                        response = "Perincian tugasan am telah diisi.";
+                    }
+                } else if (query.includes("padam") || query.includes("buang") || query.includes("hapus")) {
+                    if (tasks.length > 0) {
+                        const lastId = tasks[0].docId;
+                        await deleteEntry(lastId);
+                        response = "Rekod paling atas (terkini) telah berjaya dipadamkan dari sistem.";
+                    } else {
+                        response = "Tiada rekod ditemui untuk dipadamkan.";
+                    }
+                } else if (query.includes("helo") || query.includes("hi") || query.includes("apa khabar")) {
+                    response = "Khabar baik. Saya sedia membantu menguruskan log data jabatan anda. Perlukan cadangan ayat korporat?";
+                } else if (query.includes("statistik") || query.includes("jumlah")) {
+                    response = `Anda mempunyai <b>${tasks.length}</b> rekod dalam cloud. Teruskan usaha anda!`;
+                } else {
+                    response = "Saya faham. Sila gunakan butang pintasan di atas untuk pengisian pantas atau tanya saya tentang tugasan spesifik.";
+                }
+
                 chatBox.innerHTML += `<div class="chat-bubble bubble-ai">${response}</div>`;
                 chatBox.scrollTop = chatBox.scrollHeight;
             }, 800);
         }
 
-        function getIntelligentResponse(query) {
-            const q = query.toLowerCase();
-            const stats = {
-                total: tasks.length,
-                totalKm: tasks.reduce((acc, t) => acc + (t.dist || 0), 0),
-                totalMinyak: tasks.reduce((acc, t) => acc + (t.rmMinyak || 0), 0)
-            };
-
-            if (q.includes("halo") || q.includes("hi") || q.includes("siapa")) {
-                return `Selamat datang! Saya adalah <b>PILOT AI</b>, pembantu digital anda untuk sistem log Jabatan Perkhidmatan Veterinar. Bagaimana saya boleh bantu anda hari ini?`;
-            }
-            if (q.includes("statistik") || q.includes("jumlah") || q.includes("banyak")) {
-                return `Berdasarkan data cloud anda: <br>• Anda mempunyai <b>${stats.total}</b> rekod.<br>• Jumlah perjalanan: <b>${stats.totalKm} KM</b>.<br>• Kos minyak terkumpul: <b>RM ${stats.totalMinyak.toFixed(2)}</b>.`;
-            }
-            if (q.includes("eksport") || q.includes("simpan") || q.includes("pdf")) {
-                return `Untuk menyimpan data, klik butang hijau <b>"Eksport Data Rasmi"</b> di menu utama. Anda boleh memilih format PDF, Excel atau Word.`;
-            }
-            if (q.includes("odometer") || q.includes("scan")) {
-                return `Gunakan fungsi <b>"Scan Odo"</b> dengan mengambil gambar yang jelas pada paparan odometer kenderaan. Pastikan tiada silauan cahaya untuk ketepatan AI 99.9%.`;
-            }
-            if (q.includes("rosak") || q.includes("masalah")) {
-                return `Jika terdapat kerosakan teknikal pada kenderaan, sila rekodkan dalam 'Butiran Perincian' dan segera maklumkan kepada Unit Pentadbiran/Kenderaan DVS.`;
-            }
-            if (q.includes("makan") || q.includes("lapar")) {
-                return `Sebagai AI, saya tidak makan, tapi pastikan anda berehat di R&R jika memandu jauh! Keselamatan adalah keutamaan.`;
-            }
-            
-            // Default "Smart" Fallback
-            return `Soalan yang menarik. Mengenai "${query}", saya syorkan anda menyemak Protokol v33 dalam manual sistem atau memastikan data diselaraskan (sync) ke cloud untuk analisis tepat. Ada lagi yang boleh saya bantu?`;
-        }
-
-        window.showAITip = (fasa) => {
-            let title = "", content = "", color = "";
-            if(fasa === 'pra') {
-                title = "🛡️ PRA-PERJALANAN"; color = "#3b82f6";
-                content = "• Periksa paras minyak & air radiator.<br>• Pastikan tekanan tayar mencukupi.<br>• Uji lampu utama & isyarat (signal).<br>• Bersihkan cermin depan & sisi.";
-            } else if(fasa === 'semasa') {
-                title = "🛣️ SEMASA TUGAS"; color = "#10b981";
-                content = "• Patuhi had laju jalan raya.<br>• Elakkan guna telefon bimbit.<br>• Amalkan pemanduan berhemah.<br>• Rehat di R&R jika mengantuk.";
-            } else {
-                title = "🏁 TAMAT TUGAS"; color = "#ef4444";
-                content = "• Rekod bacaan odometer akhir.<br>• Pastikan kenderaan dikunci rapi.<br>• Buang sampah & bersihkan kabin.<br>• Lapor jika ada kerosakan teknikal.";
-            }
-
-            const chatBox = document.getElementById('aiChatBox');
-            if (chatBox) {
-                chatBox.innerHTML += `<div class="chat-bubble bubble-ai"><b style="color:${color}">${title}</b><br>${content}</div>`;
-                chatBox.scrollTop = chatBox.scrollHeight;
-            } else {
-                Swal.fire({
-                    title: `<span style="color:${color}">${title}</span>`,
-                    html: `<div class="text-left text-xs leading-relaxed text-slate-300 font-medium">${content}</div>`,
-                    confirmButtonText: 'FAHAM', customClass: { popup: 'swal-corp' }
-                });
-            }
-        }
-
-        // --- ALL ORIGINAL FUNCTIONS PRESERVED ---
+        // --- ORIGINAL FUNCTIONS WITH BM TRANSLATION ---
         async function deleteEntry(docId) {
-            const result = await Swal.fire({ title: 'Padam Data?', text: "Rekod akan dibuang secara kekal!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'YA, PADAM', customClass: { popup: 'swal-corp' } });
+            const result = await Swal.fire({ 
+                title: 'Padam Rekod?', 
+                text: "Adakah anda pasti? Tindakan ini tidak boleh dibatalkan!", 
+                icon: 'warning', 
+                showCancelButton: true, 
+                confirmButtonColor: '#ef4444', 
+                confirmButtonText: 'YA, PADAM', 
+                cancelButtonText: 'BATAL',
+                customClass: { popup: 'swal-corp' } 
+            });
             if (result.isConfirmed) {
                 await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
-                Swal.fire({ icon:'success', title:'Dihapuskan', timer:800, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+                Swal.fire({ icon:'success', title:'Berjaya Dipadam', timer:800, showConfirmButton:false, customClass:{popup:'swal-corp'} });
             }
         }
 
@@ -377,7 +379,7 @@
 
         async function processOdoImage(input) {
             if (!input.files[0]) return;
-            Swal.fire({ title: 'AI Scanning Nombor...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            Swal.fire({ title: 'AI Mengimbas Nombor...', allowOutsideClick: false, didOpen: () => Swal.showLoading(), customClass:{popup:'swal-corp'} });
             const processedImage = await enhanceImage(input.files[0]);
             try {
                 const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789', tessedit_pageseg_mode: '6' });
@@ -386,10 +388,10 @@
                     const finalOdo = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length)[0];
                     if (finalOdo) {
                         document.getElementById('odoEnd').value = finalOdo; calcPreview();
-                        Swal.fire({ icon: 'success', title: 'Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
-                    } else Swal.fire('Imbasan Kabur', 'Sila pastikan gambar odometer jelas.', 'warning');
+                        Swal.fire({ icon: 'success', title: 'Imbasan Berjaya', text: `Bacaan: ${finalOdo} KM`, timer: 2000, customClass:{popup:'swal-corp'} });
+                    } else Swal.fire({icon:'warning', title:'Gagal Membaca', text:'Pastikan gambar jelas.', customClass:{popup:'swal-corp'}});
                 }
-            } catch (e) { Swal.fire('Ralat AI', 'Gagal memproses data visual.', 'error'); }
+            } catch (e) { Swal.fire('Ralat Sistem', 'Gagal memproses imej.', 'error'); }
         }
 
         function enhanceImage(file) {
@@ -438,16 +440,16 @@
         function calcPreview() {
             const s = parseFloat(document.getElementById('odoStart').value) || 0;
             const e = parseFloat(document.getElementById('odoEnd').value) || 0;
-            document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
+            document.getElementById('distPreview').innerText = `JARAK: ${e > s ? e - s : 0} KM`;
             const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
             const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-            if(document.getElementById('fuelPreview')) document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+            if(document.getElementById('fuelPreview')) document.getElementById('fuelPreview').innerText = `Jumlah: RM ${(r1 + r2).toFixed(2)}`;
         }
 
         async function saveEntry() {
             const startDate = document.getElementById('startDate').value;
             const startTime = document.getElementById('startTime').value;
-            if(!startDate || !startTime) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            if(!startDate || !startTime) return Swal.fire('Perhatian', 'Tarikh & Masa adalah mandatori.', 'error');
             const entryId = Date.now();
             const entry = {
                 id: entryId, type: window.currentType, date: startDate, endDate: document.getElementById('endDate').value || startDate,
@@ -460,7 +462,7 @@
             };
             newlyAddedId = entryId;
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Sync Berjaya', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            Swal.fire({ icon:'success', title:'Data Diselaraskan', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
             ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','endDate','endTime'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
             calcPreview();
         }
@@ -480,19 +482,19 @@
                 tr.innerHTML = `
                     <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] ${entryDate > now ? 'text-amber-500' : 'text-blue-500'} font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
                     <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div><div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}<span class="truncate max-w-[120px]">📍 ${t.location}</span></div></td>
-                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition">🗑️</button></td>`;
                 body.appendChild(tr);
             });
         }
 
         function showExportOptions() {
             Swal.fire({
-                title: 'PUSAT EKSPORT DATA',
+                title: 'PUSAT PENGEKSPORTAN DATA',
                 html: `<div class="p-2 export-btn-grid">
                     <button onclick="exportPDF()" class="text-red-400">📄<span>PDF</span></button>
                     <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
                     <button onclick="exportWord()" class="text-blue-400">📝<span>Word</span></button>
-                    <button onclick="exportToNotes('ios')" class="text-orange-400">🍎<span>Notes</span></button>
+                    <button onclick="exportToNotes()" class="text-orange-400">📋<span>Nota</span></button>
                 </div>`,
                 showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
             });
@@ -501,21 +503,21 @@
         async function exportPDF() {
             const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
             doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F'); doc.setTextColor(255, 255, 255);
-            doc.text("LAPORAN RASMI PILOT CLOUD", 15, 20);
+            doc.text("LAPORAN RASMI LOG HARIAN PILOT CLOUD", 15, 20);
             const data = tasks.sort((a, b) => parseDate(a.date) - parseDate(b.date)).map(t => [t.date, t.day, t.tFrom + '-' + t.tUntil, t.location, t.dist + " KM", t.note]);
             doc.autoTable({ head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'BUTIRAN']], body: data, startY: 45, theme: 'grid' });
-            doc.save(`PILOT_LOG.pdf`);
+            doc.save(`PILOT_LOG_RASMI.pdf`);
         }
 
         function exportExcel() {
             const ws = XLSX.utils.json_to_sheet(tasks); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Logs"); XLSX.writeFile(wb, `PILOT_Data.xlsx`);
+            XLSX.utils.book_append_sheet(wb, ws, "Log_Data"); XLSX.writeFile(wb, `PILOT_Data_Rasmi.xlsx`);
         }
 
         function exportToNotes() {
-            let txt = `📋 LOG PILOT CLOUD\n`;
-            tasks.forEach(t => txt += `📅 ${t.date} | 📍 ${t.location} | 📝 ${t.note}\n`);
-            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', 'Sila paste ke Notes.', 'success'));
+            let txt = `📋 LOG TUGASAN RASMI PILOT CLOUD\n\n`;
+            tasks.forEach(t => txt += `📅 ${t.date} (${t.day})\n📍 Lokasi: ${t.location}\n📝 Tugasan: ${t.note}\n-----------------\n`);
+            navigator.clipboard.writeText(txt).then(() => Swal.fire({title:'Salinan Berjaya', text:'Data telah disalin ke papan klip (clipboard).', icon:'success', customClass:{popup:'swal-corp'}}));
         }
 
         function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
@@ -547,11 +549,11 @@
                 mData.forEach(item => { html += `<div onclick="window.showDetailsById('${item.id}')" class="p-2 bg-white/5 rounded border-l-2 border-blue-500 mb-1 text-[10px] cursor-pointer">${item.date}: ${item.note}</div>`; });
                 html += `</div>`;
             });
-            Swal.fire({ title:'SEJARAH', html, showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
+            Swal.fire({ title:'SEJARAH TUGASAN', html, showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
         }
         window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
         function showDetails(t) {
-            Swal.fire({ title: `${t.day} | ${t.date}`, html: `<div class="text-left text-xs p-3 bg-white/5 rounded-xl border border-white/5"><p class="text-blue-400 font-bold mb-1">LOKASI:</p><p class="mb-2">${t.location}</p><p class="text-blue-400 font-bold mb-1">BUTIRAN:</p><p class="leading-relaxed">${t.note}</p><div class="grid grid-cols-2 gap-2 mt-4"><div class="p-2 bg-emerald-500/10 rounded">ODO: ${t.dist}KM</div><div class="p-2 bg-red-500/10 rounded">KOS: RM${t.rmMinyak.toFixed(2)}</div></div></div>`, confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'} });
+            Swal.fire({ title: `${t.day} | ${t.date}`, html: `<div class="text-left text-xs p-3 bg-white/5 rounded-xl border border-white/5"><p class="text-blue-400 font-bold mb-1 uppercase">Lokasi:</p><p class="mb-2">${t.location}</p><p class="text-blue-400 font-bold mb-1 uppercase">Perincian Tugasan:</p><p class="leading-relaxed">${t.note}</p><div class="grid grid-cols-2 gap-2 mt-4"><div class="p-2 bg-emerald-500/10 rounded">JARAK: ${t.dist}KM</div><div class="p-2 bg-red-500/10 rounded">KOS: RM${t.rmMinyak.toFixed(2)}</div></div></div>`, confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'} });
         }
 
         setInterval(() => {
