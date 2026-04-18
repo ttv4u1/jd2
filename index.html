@@ -29,52 +29,41 @@
     <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/gitbrent/pptxgenjs@3.12.0/dist/pptxgen.bundle.js"></script>
 
     <style>
         :root { --primary: #2563eb; --glass: rgba(15, 23, 42, 0.95); }
         body { font-family: 'Inter', sans-serif; background: #0f172a; background-image: radial-gradient(circle at top right, #1e293b, #0f172a); color: #f8fafc; min-height: 100vh; }
-        h1, h2, h3, .font-heading { font-family: 'Montserrat', sans-serif; }
-        .font-mono-corp { font-family: 'Share Tech Mono', monospace; }
         .glass-card { background: var(--glass); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 1.25rem; }
-        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; transition: all 0.2s; font-size: 0.9rem; }
-        .input-field:focus { border-color: var(--primary); outline: none; box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2); }
+        .input-field { background: rgba(0, 0, 0, 0.5) !important; border: 1px solid rgba(255, 255, 255, 0.2); border-radius: 0.75rem; padding: 0.75rem; color: white !important; font-size: 0.9rem; }
         .label-corp { font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; color: #94a3b8; margin-bottom: 0.35rem; display: block; }
-        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; letter-spacing: 0.025em; }
-        #loginScreen { position: fixed; inset: 0; z-index: 1000; background: #000; display: flex; align-items: center; justify-content: center; }
-        .table-container { overflow-x: auto; border-radius: 1rem; }
-        table { width: 100%; border-collapse: collapse; min-width: 600px; }
-        th { background: rgba(0,0,0,0.4); padding: 1rem; font-size: 0.65rem; text-transform: uppercase; color: #64748b; text-align: left; }
-        td { padding: 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
-        .swal-corp { background: #0f172a !important; color: white !important; border-radius: 1.5rem !important; }
-        .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
-        .pulse-stat { animation: pulse-glow 2s infinite ease-in-out; }
-        @keyframes pulse-glow { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.7; transform: scale(0.95); } }
+        .btn-primary { background: #2563eb; color: white; font-weight: 700; padding: 0.8rem 1.5rem; border-radius: 0.75rem; transition: all 0.2s; text-transform: uppercase; }
         
+        /* Table Styles */
+        .unread { border-left: 4px solid #ef4444 !important; background: rgba(239, 68, 68, 0.05); }
+        .read { border-left: 4px solid #3b82f6 !important; opacity: 0.8; }
+        .selected-row { background: rgba(37, 99, 235, 0.2) !important; }
+        
+        /* Export Buttons */
         .export-btn-grid { display: grid; grid-template-cols: repeat(auto-fit, minmax(110px, 1fr)); gap: 10px; }
         .export-btn-grid button { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 12px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 12px; transition: 0.3s; gap: 6px; }
         .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
         .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
-
-        /* New Version 19.0 Styles */
-        .is-unread { border-left: 4px solid #3b82f6 !important; background: rgba(59, 130, 246, 0.05); }
-        .fav-star { color: #f59e0b !important; }
-        .action-bar { display: none; background: #2563eb; color: white; padding: 10px 20px; border-radius: 12px; position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%); z-index: 100; box-shadow: 0 10px 25px rgba(0,0,0,0.5); align-items: center; gap: 15px; }
-        .row-checkbox { width: 18px; height: 18px; accent-color: #2563eb; cursor: pointer; }
-        .filter-tab { cursor: pointer; padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; transition: 0.3s; }
-        .filter-tab.active { background: #2563eb; color: white; }
+        
+        .stat-glow { font-family: 'Share Tech Mono', monospace; text-shadow: 0 0 8px currentColor; }
     </style>
 </head>
 <body class="p-4 md:p-8">
 
     <!-- LOGIN SCREEN -->
     <div id="loginScreen">
-        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl">
+        <div class="glass-card p-10 max-w-md w-full text-center shadow-2xl mx-auto mt-20">
             <div class="flex justify-center gap-6 mb-8">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-16">
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
-            <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v19.0</p>
+            <h2 class="text-3xl font-bold mb-2 text-white">PILOT CLOUD</h2>
+            <p class="text-slate-400 mb-8 text-xs uppercase tracking-[0.3em]">Master Protocol v19.0</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -88,12 +77,11 @@
             <div class="glass-card p-6 flex flex-wrap justify-between items-center gap-6">
                 <div class="flex items-center gap-4">
                     <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png" class="h-14">
-                    <div class="hidden md:block h-10 w-[1px] bg-white/10"></div>
                     <div>
-                        <h1 class="text-xl md:text-2xl font-heading font-extrabold tracking-tight text-white">PILOT Data Process Cloud by ©FiR</h1>
+                        <h1 class="text-xl md:text-2xl font-bold text-white">PILOT Data Cloud v19.0</h1>
                         <div class="flex items-center gap-2">
                             <img id="userAvatar" class="h-6 w-6 rounded-full border border-blue-500/50">
-                            <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase tracking-wider">---</span>
+                            <span id="userName" class="text-[11px] font-bold text-blue-400 uppercase">---</span>
                         </div>
                     </div>
                 </div>
@@ -101,98 +89,85 @@
                 <div class="flex items-center gap-6 bg-black/40 px-6 py-4 rounded-2xl border border-white/5">
                     <div class="text-right">
                         <p id="realDay" class="text-[10px] font-bold text-blue-500 uppercase">---</p>
-                        <p id="realDate" class="text-sm font-medium text-slate-400">--/--/----</p>
+                        <h1 id="realTime" class="text-2xl font-mono text-white">00:00:00</h1>
                     </div>
-                    <div class="h-10 w-[1px] bg-white/10"></div>
-                    <h1 id="realTime" class="text-2xl md:text-3xl lg:text-4xl font-mono-corp font-bold text-white tracking-tighter uppercase">00:00:00 AM</h1>
-                </div>
-
-                <div class="flex items-center gap-4">
-                    <button onclick="logout()" class="text-[10px] font-bold text-red-500 hover:text-red-400 border border-red-500/20 px-3 py-1 rounded-full uppercase hidden md:block">Log Keluar</button>
                     <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-14">
                 </div>
             </div>
         </header>
 
         <main class="container mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8 mb-12">
-            <!-- INPUT COLUMN -->
+            <!-- INPUT SECTION -->
             <div class="lg:col-span-4 space-y-6">
                 <div class="glass-card p-6 border-t-4 border-blue-600 shadow-xl">
                     <div class="mb-6 flex bg-black/40 p-1 rounded-xl">
-                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all bg-blue-600">TUGAS</button>
-                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">GERAK</button>
-                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500">MINYAK</button>
+                        <button onclick="setType('tugas')" id="btnTugas" class="flex-1 py-3 text-xs font-bold rounded-lg bg-blue-600">TUGAS</button>
+                        <button onclick="setType('log')" id="btnLog" class="flex-1 py-3 text-xs font-bold rounded-lg text-slate-500">GERAK</button>
+                        <button onclick="setType('minyak')" id="btnMinyak" class="flex-1 py-3 text-xs font-bold rounded-lg text-slate-500">MINYAK</button>
                     </div>
 
                     <div class="space-y-4">
-                        <div>
-                            <label class="label-corp">Tarikh & Masa</label>
-                            <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="datePicker" class="input-field w-full">
-                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
-                            </div>
+                        <div class="grid grid-cols-2 gap-2">
+                            <div><label class="label-corp">Tarikh</label><input type="text" id="datePicker" class="input-field w-full"></div>
+                            <div><label class="label-corp">Masa</label><input type="text" id="timeFrom" class="input-field w-full text-center"></div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">
-                                    <span>📸</span> SCAN ODO (ALBUM/SNAP)
-                                </button>
+                                <label class="label-corp text-blue-400">Odometer AI</label>
+                                <button onclick="triggerCamera()" class="px-2 py-1 bg-blue-600 rounded text-[9px] font-bold">📸 SCAN</button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
                                 <input type="number" id="odoStart" oninput="calcPreview()" class="input-field" placeholder="Mula">
                                 <input type="number" id="odoEnd" oninput="calcPreview()" class="input-field" placeholder="Akhir">
                             </div>
-                            <div id="distPreview" class="text-center font-mono-corp text-emerald-400 text-sm font-bold tracking-widest animate-pulse">AUTO-CALC: 0 KM</div>
+                            <div id="distPreview" class="text-center font-mono text-emerald-400 text-xs">0 KM</div>
                         </div>
 
                         <div id="fuelFields" class="hidden space-y-3 p-4 bg-red-500/10 rounded-xl border border-red-500/20">
-                            <label class="label-corp text-red-400">Pengisian Minyak (RM)</label>
                             <div class="grid grid-cols-2 gap-3">
-                                <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="Isian">
-                                <input type="number" id="rmOffice" oninput="calcPreview()" class="input-field" placeholder="Lain">
+                                <input type="number" id="rmInitial" oninput="calcPreview()" class="input-field" placeholder="RM Isian">
+                                <select id="fuelType" class="input-field"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
                             </div>
-                            <select id="fuelType" class="input-field w-full"><option>RON 95</option><option>RON 97</option><option>DIESEL</option></select>
-                            <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
                         </div>
 
                         <div id="locationField" class="hidden">
-                            <label class="label-corp">📍 Geolocation GPS</label>
-                            <input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi...">
+                            <label class="label-corp">📍 Lokasi GPS</label>
+                            <input type="text" id="locationInput" class="input-field w-full" placeholder="Menjejak...">
                         </div>
 
-                        <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
-                        <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
+                        <textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Butiran tugas..."></textarea>
+                        <button onclick="saveEntry()" class="w-full btn-primary">Sync Data Cloud ☁️</button>
                     </div>
                 </div>
-                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase tracking-widest">📤 Eksport Data Rasmi</button>
+                <button onclick="showExportOptions()" class="w-full py-4 bg-emerald-600 hover:bg-emerald-700 rounded-xl font-bold text-xs transition shadow-lg flex items-center justify-center gap-2 uppercase">📤 Eksport Data Rasmi</button>
             </div>
 
-            <!-- TABLE SIDE -->
+            <!-- TABLE SECTION -->
             <div class="lg:col-span-8">
-                <div class="glass-card flex flex-col h-full overflow-hidden shadow-2xl">
-                    <div class="p-6 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
-                        <div class="flex items-center gap-4">
-                            <h3 class="font-heading font-bold text-xs uppercase tracking-widest text-blue-400">Database Realtime</h3>
-                            <div class="flex gap-2">
-                                <span onclick="setFilter('all')" id="filterAll" class="filter-tab active">Utama</span>
-                                <span onclick="setFilter('fav')" id="filterFav" class="filter-tab">⭐ Fav</span>
-                                <span onclick="setFilter('trash')" id="filterTrash" class="filter-tab">🗑️ Trash</span>
-                            </div>
+                <div class="glass-card flex flex-col h-[700px] overflow-hidden">
+                    <div class="p-4 bg-white/5 border-b border-white/5 flex flex-wrap justify-between items-center gap-4">
+                        <div class="flex items-center gap-3">
+                            <input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="w-4 h-4 rounded border-gray-300">
+                            <span class="text-[10px] font-bold text-slate-400 uppercase">Pilih Semua</span>
                         </div>
-                        <button onclick="showFullAnalytics()" class="px-5 py-2.5 bg-blue-600 hover:bg-blue-700 rounded-full text-[10px] font-bold text-white uppercase shadow-lg">Analitik Sejarah 📊</button>
+                        <div class="flex gap-2">
+                            <button onclick="bulkStatus(true)" class="px-3 py-1.5 bg-blue-600/20 text-blue-400 text-[9px] font-bold rounded uppercase">Mark Read</button>
+                            <button onclick="bulkStatus(false)" class="px-3 py-1.5 bg-red-600/20 text-red-400 text-[9px] font-bold rounded uppercase">Unread</button>
+                            <button onclick="bulkDelete()" class="px-3 py-1.5 bg-orange-600/20 text-orange-400 text-[9px] font-bold rounded uppercase">Delete</button>
+                            <button onclick="showTrash()" class="px-3 py-1.5 bg-slate-600 text-white text-[9px] font-bold rounded uppercase">🗑️ Trash</button>
+                        </div>
                     </div>
-
-                    <div class="table-container p-2 custom-scroll overflow-y-auto max-h-[650px]">
-                        <table>
-                            <thead>
+                    
+                    <div class="overflow-y-auto flex-1">
+                        <table class="w-full text-left">
+                            <thead class="sticky top-0 bg-slate-900 text-[10px] uppercase text-slate-500">
                                 <tr>
-                                    <th style="width: 40px;"><input type="checkbox" id="selectAll" onchange="toggleSelectAll(this)" class="row-checkbox"></th>
-                                    <th>Tarikh & Masa</th>
-                                    <th>Butiran & Lokasi</th>
-                                    <th class="text-right">Status</th>
+                                    <th class="p-4 w-10"></th>
+                                    <th class="p-4">Tarikh/Masa</th>
+                                    <th class="p-4">Butiran & Lokasi</th>
+                                    <th class="p-4 text-right">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody id="activeBody"></tbody>
@@ -201,66 +176,6 @@
                 </div>
             </div>
         </main>
-
-        <!-- BULK ACTION BAR -->
-        <div id="bulkActionBar" class="action-bar flex">
-            <span id="selectedCount" class="font-bold text-xs">0 Dipilih</span>
-            <div class="h-4 w-[1px] bg-white/20"></div>
-            <button onclick="bulkMarkRead()" title="Tanda Dibaca">👁️</button>
-            <button onclick="bulkFav()" title="Tambah Kegemaran">⭐</button>
-            <button onclick="bulkDelete()" id="bulkDeleteBtn" title="Buang">🗑️</button>
-            <button onclick="bulkRestore()" id="bulkRestoreBtn" title="Pulihkan" class="hidden">🔄</button>
-        </div>
-
-        <!-- FOOTER: REALTIME STATS & ADDRESS -->
-        <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="glass-card p-5 bg-white/5 border-none space-y-4">
-                    <div class="flex items-center gap-2">
-                        <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
-                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p>
-                    </div>
-                    <div class="grid grid-cols-3 gap-2 text-center">
-                        <div>
-                            <p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p>
-                            <p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p>
-                        </div>
-                        <div class="border-x border-white/10">
-                            <p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p>
-                            <p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p>
-                        </div>
-                        <div>
-                            <p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p>
-                            <p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="lg:col-span-2 space-y-3 px-2">
-                    <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
-                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">
-                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
-                        Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya
-                    </p>
-                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase">
-                        <p>Tel: (603) 8870 2000 | Faks: (603) 8888 6021</p>
-                        <p>Emel: pro[at]dvs.gov.my</p>
-                    </div>
-                </div>
-
-                <div class="text-center md:text-right space-y-3">
-                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">
-                        Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent Veterinar Malaysia
-                    </p>
-                    <p class="text-[8px] text-slate-600 leading-tight">
-                        Paparan terbaik: Mozilla Firefox, Chrome,<br>dan Internet Explorer 11 ke atas.
-                    </p>
-                </div>
-            </div>
-        </footer>
     </div>
 
     <canvas id="procCanvas" class="hidden"></canvas>
@@ -273,17 +188,18 @@
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
-        let currentUser = null, tasks = [], selectedIds = [], currentFilter = 'all';
+        let currentUser = null, tasks = [], selectedIds = [];
 
         auth.onAuthStateChanged(user => {
             if (user) { 
-                currentUser = user; document.getElementById('loginScreen').style.display = 'none'; 
+                currentUser = user; 
+                document.getElementById('loginScreen').style.display = 'none'; 
                 document.getElementById('mainApp').classList.remove('hidden'); 
                 document.getElementById('userName').innerText = user.displayName; 
                 document.getElementById('userAvatar').src = user.photoURL; 
-                incrementVisitors(); syncData(); 
+                syncData(); 
             } else { 
-                document.getElementById('loginScreen').style.display = 'flex'; 
+                document.getElementById('loginScreen').style.display = 'block'; 
                 document.getElementById('mainApp').classList.add('hidden'); 
             }
         });
@@ -297,210 +213,276 @@
                 tasks = snap.docs.map(doc => ({ docId: doc.id, ...doc.data() }));
                 renderUI();
             });
-            db.collection("system").doc("analytics").onSnapshot(doc => {
-                if(doc.exists) {
-                    const d = doc.data(); animateValue("statToday", d.today || 0);
-                    animateValue("statMonth", d.month || 0); animateValue("statTotal", d.total || 0);
-                }
-            });
         }
 
-        // --- NEW v19.0 FUNCTIONS ---
-        function setFilter(filter) {
-            currentFilter = filter;
-            document.querySelectorAll('.filter-tab').forEach(el => el.classList.remove('active'));
-            document.getElementById('filter' + filter.charAt(0).toUpperCase() + filter.slice(1)).classList.add('active');
+        // --- UI RENDERING & BULK ACTIONS ---
+        function renderUI() {
+            const body = document.getElementById('activeBody');
+            body.innerHTML = '';
+            const activeTasks = tasks.filter(t => !t.isDeleted).sort((a,b) => parseDate(b.date) - parseDate(a.date));
             
-            // UI adjustment for trash mode
-            if(filter === 'trash') {
-                document.getElementById('bulkDeleteBtn').title = "Padam Kekal";
-                document.getElementById('bulkRestoreBtn').classList.remove('hidden');
-            } else {
-                document.getElementById('bulkDeleteBtn').title = "Buang";
-                document.getElementById('bulkRestoreBtn').classList.add('hidden');
-            }
-            renderUI();
-        }
-
-        function toggleSelectAll(master) {
-            const checkboxes = document.querySelectorAll('.row-checkbox-item');
-            selectedIds = [];
-            checkboxes.forEach(cb => {
-                cb.checked = master.checked;
-                if(master.checked) selectedIds.push(cb.getAttribute('data-id'));
+            activeTasks.forEach(t => {
+                const tr = document.createElement('tr');
+                tr.className = `border-b border-white/5 transition-all ${t.isRead ? 'read' : 'unread'} ${selectedIds.includes(t.docId) ? 'selected-row' : ''}`;
+                tr.innerHTML = `
+                    <td class="p-4"><input type="checkbox" onchange="toggleSelect('${t.docId}')" ${selectedIds.includes(t.docId) ? 'checked' : ''}></td>
+                    <td class="p-4" onclick="showDetails('${t.docId}')">
+                        <div class="font-bold text-xs">${t.date}</div>
+                        <div class="text-[9px] text-blue-400 font-bold uppercase">${t.tFrom}</div>
+                    </td>
+                    <td class="p-4" onclick="showDetails('${t.docId}')">
+                        <div class="text-xs text-slate-200 line-clamp-1">${t.note}</div>
+                        <div class="text-[9px] text-slate-500 uppercase">📍 ${t.location}</div>
+                    </td>
+                    <td class="p-4 text-right">
+                        <button onclick="toggleRead('${t.docId}', ${!t.isRead})" class="text-blue-400 mr-2">👁️</button>
+                        <button onclick="softDelete('${t.docId}')" class="text-red-500">🗑️</button>
+                    </td>
+                `;
+                body.appendChild(tr);
             });
-            updateActionBar();
         }
 
         function toggleSelect(id) {
-            if(selectedIds.includes(id)) {
-                selectedIds = selectedIds.filter(x => x !== id);
-            } else {
-                selectedIds.push(id);
-            }
-            updateActionBar();
+            if (selectedIds.includes(id)) selectedIds = selectedIds.filter(i => i !== id);
+            else selectedIds.push(id);
+            renderUI();
         }
 
-        function updateActionBar() {
-            const bar = document.getElementById('bulkActionBar');
-            const count = document.getElementById('selectedCount');
-            if(selectedIds.length > 0) {
-                bar.style.display = 'flex';
-                count.innerText = `${selectedIds.length} Dipilih`;
-            } else {
-                bar.style.display = 'none';
-                document.getElementById('selectAll').checked = false;
-            }
+        function toggleSelectAll(el) {
+            if (el.checked) selectedIds = tasks.filter(t => !t.isDeleted).map(t => t.docId);
+            else selectedIds = [];
+            renderUI();
         }
 
-        async function bulkMarkRead() {
+        async function bulkStatus(status) {
+            if (selectedIds.length === 0) return;
             const batch = db.batch();
             selectedIds.forEach(id => {
-                batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { isRead: true });
+                const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
+                batch.update(ref, { isRead: status });
             });
             await batch.commit();
-            selectedIds = []; updateActionBar();
-        }
-
-        async function bulkFav() {
-            const batch = db.batch();
-            selectedIds.forEach(id => {
-                const item = tasks.find(t => t.docId === id);
-                batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { isFav: !item.isFav });
-            });
-            await batch.commit();
-            selectedIds = []; updateActionBar();
+            selectedIds = [];
         }
 
         async function bulkDelete() {
-            const isTrash = currentFilter === 'trash';
-            const title = isTrash ? 'Padam Kekal?' : 'Pindah ke Tong Sampah?';
-            const confirm = await Swal.fire({ title, text: "Tindakan ini tidak boleh dibatalkan.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
+            if (selectedIds.length === 0) return;
+            const batch = db.batch();
+            selectedIds.forEach(id => {
+                const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
+                batch.update(ref, { isDeleted: true });
+            });
+            await batch.commit();
+            selectedIds = [];
+        }
+
+        async function softDelete(id) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).update({ isDeleted: true });
+        }
+
+        async function toggleRead(id, status) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).update({ isRead: status });
+        }
+
+        function showTrash() {
+            const trashItems = tasks.filter(t => t.isDeleted);
+            let html = `<div class="text-left space-y-2 max-h-96 overflow-y-auto">`;
+            trashItems.forEach(t => {
+                html += `
+                    <div class="p-2 bg-white/5 rounded border border-white/10 flex justify-between items-center">
+                        <div><p class="text-[10px] font-bold">${t.date}</p><p class="text-[9px] line-clamp-1">${t.note}</p></div>
+                        <button onclick="restoreItem('${t.docId}')" class="text-emerald-400 text-[10px] font-bold">RESTORE</button>
+                    </div>`;
+            });
+            html += trashItems.length === 0 ? `<p class="text-center text-slate-500 py-4">Trash is empty</p>` : '';
+            html += `</div>`;
+            Swal.fire({ title: 'TONG SAMPAH', html, showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' } });
+        }
+
+        async function restoreItem(id) {
+            await db.collection("users").doc(currentUser.uid).collection("logs").doc(id).update({ isDeleted: false });
+            Swal.close();
+        }
+
+        // --- EXPORT ENGINE v19.0 ---
+        const IMG_JATA = "https://upload.wikimedia.org/wikipedia/commons/thumb/2/26/Coat_of_arms_of_Malaysia.svg/500px-Coat_of_arms_of_Malaysia.svg.png";
+        const IMG_DVS = "https://github.com/ttv4u1/KP/raw/main/DVS.svg";
+
+        function showExportOptions() {
+            Swal.fire({
+                title: 'UNIVERSAL EXPORT CENTER v19.0',
+                html: `
+                    <div class="p-2 export-btn-grid">
+                        <button onclick="exportPDF()" class="text-red-400">📄<span>PDF Official</span></button>
+                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel Sheet</span></button>
+                        <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
+                        <button onclick="exportPPT()" class="text-orange-500">📽️<span>PowerPoint</span></button>
+                        <button onclick="exportAccess()" class="text-purple-400">🗄️<span>Access DB</span></button>
+                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
+                        <button onclick="exportNotepadPlus()" class="text-emerald-500">🧪<span>Notepad++</span></button>
+                        <button onclick="shareToNotes('ios')" class="text-orange-300">🍎<span>iOS Notes</span></button>
+                        <button onclick="shareToNotes('android')" class="text-green-400">🤖<span>Android</span></button>
+                    </div>
+                `,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
+            });
+        }
+
+        async function exportPDF() {
+            const { jsPDF } = window.jspdf; 
+            const doc = new jsPDF('l', 'mm', 'a4');
+            const pageWidth = 297, pageHeight = 210;
+
+            // Header Background
+            doc.setFillColor(15, 23, 42);
+            doc.rect(0, 0, pageWidth, 45, 'F');
+
+            // Watermark Jata Negara
+            doc.saveGraphicsState();
+            doc.setGState(new doc.GState({ opacity: 0.1 }));
+            doc.addImage(IMG_JATA, 'PNG', pageWidth/2 - 50, pageHeight/2 - 50, 100, 90);
+            doc.restoreGraphicsState();
+
+            // Logos
+            doc.addImage(IMG_JATA, 'PNG', 10, 5, 35, 30);
+            doc.addImage(IMG_DVS, 'PNG', pageWidth - 45, 5, 35, 35);
+
+            // Titles
+            doc.setTextColor(255, 255, 255);
+            doc.setFontSize(18); doc.text("LAPORAN RASMI LOG PILOT VETERINAR", pageWidth/2, 20, { align: 'center' });
+            doc.setFontSize(10); doc.text(`PEMANDU: ${currentUser.displayName.toUpperCase()} | TARIKH CETAK: ${new Date().toLocaleString()}`, pageWidth/2, 28, { align: 'center' });
+
+            const data = tasks.filter(t => !t.isDeleted).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).map(t=>[t.date, t.day, t.tFrom, t.location, t.dist+" KM", "RM "+t.rmMinyak.toFixed(2), t.note]);
             
-            if(confirm.isConfirmed) {
-                const batch = db.batch();
-                selectedIds.forEach(id => {
-                    const ref = db.collection("users").doc(currentUser.uid).collection("logs").doc(id);
-                    if(isTrash) batch.delete(ref);
-                    else batch.update(ref, { isDeleted: true });
-                });
-                await batch.commit();
-                selectedIds = []; updateActionBar();
+            doc.autoTable({
+                head: [['TARIKH','HARI','MASA','LOKASI','JARAK','KOS','BUTIRAN']],
+                body: data,
+                startY: 50,
+                theme: 'grid',
+                headStyles: { fillColor: [37, 99, 235], fontSize: 8 },
+                styles: { fontSize: 7, cellPadding: 3 }
+            });
+
+            doc.save(`PILOT_RASMI_${Date.now()}.pdf`);
+        }
+
+        function exportExcel() {
+            const rows = tasks.filter(t => !t.isDeleted).map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
+            const ws = XLSX.utils.json_to_sheet(rows);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Logs");
+            XLSX.writeFile(wb, `PILOT_Data.xlsx`);
+        }
+
+        function exportWord() {
+            let content = `<html xmlns:o='urn:schemas-microsoft-com:office:office' xmlns:w='urn:schemas-microsoft-com:office:word' xmlns='http://www.w3.org/TR/REC-html40'>
+            <head><meta charset='utf-8'><title>Laporan PILOT</title></head><body style="font-family: Arial">
+            <div style="text-align:center">
+                <img src="${IMG_JATA}" width="80">
+                <h2>JABATAN PERKHIDMATAN VETERINAR</h2>
+                <p>LOG HARIAN PEMANDU: ${currentUser.displayName}</p>
+            </div>
+            <table border="1" style="width:100%; border-collapse:collapse">
+                <tr style="background:#eee"><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
+            tasks.filter(t => !t.isDeleted).forEach(t => {
+                content += `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.note}</td></tr>`;
+            });
+            content += `</table></body></html>`;
+            const blob = new Blob(['\ufeff', content], { type: 'application/msword' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Laporan_Pilot.doc";
+            link.click();
+        }
+
+        function exportPPT() {
+            let pptx = new PptxGenJS();
+            let slide = pptx.addSlide();
+            
+            slide.addImage({ path: IMG_JATA, x: 0.5, y: 0.2, w: 1, h: 0.8 });
+            slide.addText("LAPORAN LOG PILOT", { x: 1.6, y: 0.4, fontSize: 24, bold: true, color: '363636' });
+            
+            let data = [["Tarikh", "Lokasi", "Butiran"]];
+            tasks.filter(t => !t.isDeleted).slice(0,10).forEach(t => data.push([t.date, t.location, t.note]));
+            
+            slide.addTable(data, { x: 0.5, y: 1.5, w: 9, fontSize: 10, border: { pt: 1 } });
+            pptx.writeFile({ fileName: "PILOT_Presentation.pptx" });
+        }
+
+        function exportAccess() {
+            // MS Access accepts CSV for easy import
+            let csv = "ID,Date,Day,Time,Location,Distance,Cost,Note\n";
+            tasks.filter(t => !t.isDeleted).forEach(t => {
+                csv += `"${t.id}","${t.date}","${t.day}","${t.tFrom}","${t.location}","${t.dist}","${t.rmMinyak}","${t.note}"\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "PILOT_To_Access.csv";
+            link.click();
+        }
+
+        function exportNotepad() {
+            let txt = "LAPORAN PILOT CLOUD v19.0\n" + "=".repeat(30) + "\n\n";
+            tasks.filter(t => !t.isDeleted).forEach(t => {
+                txt += `[${t.date} | ${t.tFrom}]\nLOKASI: ${t.location}\nNOTA: ${t.note}\n` + "-".repeat(20) + "\n";
+            });
+            const blob = new Blob([txt], { type: 'text/plain' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Pilot_Log.txt";
+            link.click();
+        }
+
+        function exportNotepadPlus() {
+            // Notepad++ structured XML format
+            let xml = `<?xml version="1.0" encoding="UTF-8"?>\n<PilotLogs>\n`;
+            tasks.filter(t => !t.isDeleted).forEach(t => {
+                xml += `  <Log id="${t.id}">\n    <Date>${t.date}</Date>\n    <Location>${t.location}</Location>\n    <Note>${t.note}</Note>\n  </Log>\n`;
+            });
+            xml += `</PilotLogs>`;
+            const blob = new Blob([xml], { type: 'text/xml' });
+            const link = document.createElement("a");
+            link.href = URL.createObjectURL(blob);
+            link.download = "Pilot_Data.xml";
+            link.click();
+        }
+
+        async function shareToNotes(platform) {
+            let text = `📋 LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
+            tasks.filter(t => !t.isDeleted).forEach(t => {
+                text += `📅 ${t.date} (${t.tFrom})\n📍 ${t.location}\n📝 ${t.note}\n-----------------\n`;
+            });
+
+            if (navigator.share) {
+                try {
+                    await navigator.share({ title: 'Pilot Cloud Logs', text: text });
+                } catch (err) {
+                    copyToClipboard(text);
+                }
+            } else {
+                copyToClipboard(text);
             }
         }
 
-        async function bulkRestore() {
-            const batch = db.batch();
-            selectedIds.forEach(id => {
-                batch.update(db.collection("users").doc(currentUser.uid).collection("logs").doc(id), { isDeleted: false });
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                Swal.fire('Disalin!', 'Teks telah disalin. Sila buka Notes dan tampal (Paste).', 'success');
             });
-            await batch.commit();
-            selectedIds = []; updateActionBar();
         }
 
-        // --- CORE LOGIC UPDATED ---
-        async function saveEntry() {
-            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
-            const entry = {
-                id: Date.now(), type: window.currentType, date, day: getDayName(date),
-                monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
-                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
-                rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
-                location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-',
-                isRead: false, isFav: false, isDeleted: false // New Flags v19.0
-            };
-            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
-            calcPreview();
-        }
-
-        function renderUI() {
-            const body = document.getElementById('activeBody'); body.innerHTML = '';
+        // --- UTILS ---
+        function setType(type) {
+            window.currentType = type;
+            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg text-slate-500");
+            ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
             
-            // Apply Filters
-            let filtered = tasks.filter(t => {
-                if(currentFilter === 'trash') return t.isDeleted === true;
-                if(currentFilter === 'fav') return t.isFav === true && !t.isDeleted;
-                return !t.isDeleted;
-            });
-
-            let sorted = filtered.sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
+            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
+            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg ${type==='tugas'?'bg-blue-600':type==='log'?'bg-emerald-600':'bg-red-600'} text-white`;
             
-            sorted.forEach(t => {
-                const tr = document.createElement('tr');
-                const isUnread = !t.isRead ? 'is-unread' : '';
-                tr.className = `hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all ${isUnread}`;
-                tr.onclick = () => {
-                    db.collection("users").doc(currentUser.uid).collection("logs").doc(t.docId).update({isRead: true});
-                    showDetails(t);
-                };
-                
-                tr.innerHTML = `
-                    <td onclick="event.stopPropagation()">
-                        <input type="checkbox" data-id="${t.docId}" onchange="toggleSelect('${t.docId}')" class="row-checkbox row-checkbox-item" ${selectedIds.includes(t.docId) ? 'checked' : ''}>
-                    </td>
-                    <td>
-                        <div class="font-bold text-xs text-white">${t.date}</div>
-                        <div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div>
-                    </td>
-                    <td>
-                        <div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
-                        <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
-                            ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
-                            <span class="truncate max-w-[120px]">📍 ${t.location}</span>
-                        </div>
-                    </td>
-                    <td class="text-right">
-                        <span class="text-lg ${t.isFav ? 'fav-star' : 'text-white/10'}">★</span>
-                    </td>`;
-                body.appendChild(tr);
-            });
-            updateActionBar();
-        }
-
-        // --- PREVIOUS ENGINE (KEKALKAN) ---
-        function triggerCamera() { document.getElementById('cameraInput').click(); }
-        async function processOdoImage(input) {
-            if (!input.files[0]) return;
-            const file = input.files[0];
-            Swal.fire({ title: 'AI Scanning Nombor...', html: '<div class="text-[10px] text-blue-400 font-mono mt-2">Menapis masa & menajamkan digit odometer...</div>', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
-            const processedImage = await enhanceImage(file);
-            try {
-                const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789', tessedit_pageseg_mode: '6' });
-                const rawNumbers = text.match(/\d+/g);
-                if (rawNumbers) {
-                    const odometerOnly = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length);
-                    if (odometerOnly.length > 0) {
-                        const finalOdo = odometerOnly[0];
-                        document.getElementById('odoEnd').value = finalOdo; calcPreview();
-                        Swal.fire({ icon: 'success', title: 'Imbasan Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
-                    } else { Swal.fire('Imbasan Kabur', 'Sila pastikan gambar odometer jelas.', 'warning'); }
-                } else { Swal.fire('Gagal', 'Tiada nombor dikesan.', 'warning'); }
-            } catch (e) { Swal.fire('Ralat AI', 'Gagal memproses data.', 'error'); }
-        }
-
-        function enhanceImage(file) {
-            return new Promise((resolve) => {
-                const reader = new FileReader();
-                reader.onload = (e) => {
-                    const img = new Image();
-                    img.onload = () => {
-                        const canvas = document.getElementById('procCanvas'); const ctx = canvas.getContext('2d');
-                        const scale = Math.min(1200 / img.width, 1200 / img.height);
-                        canvas.width = img.width * scale; canvas.height = img.height * scale;
-                        ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%)';
-                        ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-                        resolve(canvas.toDataURL('image/jpeg', 0.95));
-                    };
-                    img.src = e.target.result;
-                };
-                reader.readAsDataURL(file);
-            });
+            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); detectLocation(); }
+            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
         }
 
         function detectLocation() {
@@ -512,135 +494,63 @@
                         const data = await res.json();
                         document.getElementById('locationInput').value = data.address.suburb || data.address.city || data.display_name;
                     } catch (e) { document.getElementById('locationInput').value = `${latitude.toFixed(4)}, ${longitude.toFixed(4)}`; }
-                }, () => {}, {enableHighAccuracy: true});
+                });
             }
-        }
-
-        function setType(type) {
-            window.currentType = type;
-            ['btnTugas', 'btnLog', 'btnMinyak'].forEach(id => document.getElementById(id).className = "flex-1 py-3 text-xs font-bold rounded-lg transition-all text-slate-500");
-            ['odoFields','fuelFields','locationField'].forEach(id => document.getElementById(id).classList.add('hidden'));
-            const btn = document.getElementById(type === 'tugas' ? 'btnTugas' : type === 'log' ? 'btnLog' : 'btnMinyak');
-            btn.className = `flex-1 py-3 text-xs font-bold rounded-lg transition-all ${type==='tugas'?'bg-blue-600 text-white':type==='log'?'bg-emerald-600 text-white':'bg-red-600 text-white'}`;
-            if(type === 'log') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('locationField').classList.remove('hidden'); detectLocation(); }
-            if(type === 'minyak') { document.getElementById('odoFields').classList.remove('hidden'); document.getElementById('fuelFields').classList.remove('hidden'); }
         }
 
         function calcPreview() {
             const s = parseFloat(document.getElementById('odoStart').value) || 0;
             const e = parseFloat(document.getElementById('odoEnd').value) || 0;
-            document.getElementById('distPreview').innerText = `AUTO-CALC: ${e > s ? e - s : 0} KM`;
-            const r1 = parseFloat(document.getElementById('rmInitial').value) || 0;
-            const r2 = parseFloat(document.getElementById('rmOffice').value) || 0;
-            document.getElementById('fuelPreview').innerText = `Total: RM ${(r1 + r2).toFixed(2)}`;
+            document.getElementById('distPreview').innerText = `${e > s ? e - s : 0} KM`;
         }
 
-        // --- UNIVERSAL EXPORT ---
-        function showExportOptions() {
-            Swal.fire({
-                title: 'PUSAT EKSPORT DATA UNIVERSAL',
-                html: `<div class="p-2 export-btn-grid">
-                    <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
-                    <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
-                    <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
-                    <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
-                    <button onclick="exportToNotes()" class="text-orange-400">📋<span>Copy Logs</span></button>
-                </div>`,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
-            });
+        async function saveEntry() {
+            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
+            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            
+            const entry = {
+                id: Date.now(), type: window.currentType, date, day: getDayName(date),
+                tFrom: time, 
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
+                rmMinyak: parseFloat(document.getElementById('rmInitial')?.value) || 0,
+                location: document.getElementById('locationInput')?.value || '-',
+                note: document.getElementById('taskInput').value || '-',
+                isRead: false,
+                isDeleted: false
+            };
+            await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
+            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false });
+            ['odoStart','odoEnd','rmInitial','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
         }
 
-        async function exportPDF() {
-            const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
-            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F');
-            doc.setTextColor(255); doc.setFontSize(16); doc.text("LAPORAN RASMI PILOT CLOUD MASTER v19.0", 50, 15);
-            const data = tasks.filter(t => !t.isDeleted).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).map(t=>[t.date, t.day, t.tFrom, t.location, t.dist+" KM", "RM "+t.rmMinyak.toFixed(2), t.note]);
-            doc.autoTable({ head:[['TARIKH','HARI','MASA','LOKASI','JARAK','KOS','BUTIRAN']], body:data, startY:45, theme:'grid', styles:{fontSize:7} });
-            doc.save(`PILOT_RASMI_${Date.now()}.pdf`);
-        }
-
-        function exportExcel() {
-            const rows = tasks.filter(t => !t.isDeleted).map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
-            const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
-        }
-
-        function exportToNotes() {
-            let txt = `📋 LOG PILOT CLOUD\n`;
-            tasks.filter(t => !t.isDeleted).sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
-                txt += `📅 ${t.date}\n📍 ${t.location}\n⏰ ${t.tFrom} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
-            });
-            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
-        }
-
-        // --- UTILS ---
         function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
         function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
-        async function incrementVisitors() {
-            const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
-            const ref = db.collection("system").doc("analytics");
-            await db.runTransaction(async (t) => {
-                const doc = await t.get(ref);
-                if (!doc.exists) t.set(ref, { today: 1, month: 1, total: 1, lastDate: today });
-                else {
-                    let d = doc.data(); let u = { total: (d.total || 0) + 1 };
-                    if(d.lastDate !== today) { u.today = 1; u.lastDate = today; } else u.today = (d.today || 0) + 1;
-                    t.update(ref, u);
-                }
-            });
-        }
-        function animateValue(id, val) {
-            const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
-            const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
-        }
-        function showFullAnalytics() {
-            const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
-                const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
-                return new Date(y2, m2-1) - new Date(y1, m1-1);
-            });
-            let html = `<div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll text-left">`;
-            months.forEach(my => {
-                const mData = tasks.filter(t => t.monthYear === my && !t.isDeleted).sort((a,b) => parseDate(b.date) - parseDate(a.date));
-                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4></div><div class="space-y-2">`;
-                mData.forEach(item => {
-                    html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-blue-600 cursor-pointer hover:bg-white/10 transition">
-                        <div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.date}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div>
-                        <div class="text-right text-[9px] font-mono-corp text-white">${item.dist > 0 ? item.dist+' KM' : ''}</div>
-                    </div>`;
-                });
-                html += `</div></div>`;
-            });
-            html += `</div>`;
-            Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
-        }
-        window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
-        function showDetails(t) {
-            Swal.fire({
-                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
-                html: `<div class="text-left space-y-3 py-2">
-                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
-                        <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
-                        <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20"><p class="text-[8px] text-emerald-500 font-bold uppercase">Odometer</p><p class="font-bold text-white text-sm">${t.dist} KM</p></div>
-                        <div class="p-2 bg-red-500/10 rounded-xl border border-red-500/20"><p class="text-[8px] text-red-500 font-bold uppercase">Minyak</p><p class="font-bold text-white text-sm">RM ${t.rmMinyak.toFixed(2)}</p></div>
-                    </div>
-                </div>`,
-                confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
-            });
-        }
+
         setInterval(() => {
             const n = new Date();
-            document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
-            document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
-            document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
+            document.getElementById('realTime').textContent = n.toLocaleTimeString();
+            document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","Sabtu"][n.getDay()];
         }, 1000);
+
         flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
         flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
         setType('tugas');
+
+        // --- OCR ENGINE (PREVIOUSLY DEFINED) ---
+        function triggerCamera() { document.getElementById('cameraInput').click(); }
+        async function processOdoImage(input) {
+            if (!input.files[0]) return;
+            Swal.fire({ title: 'AI Scanning...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const { data: { text } } = await Tesseract.recognize(input.files[0], 'eng');
+            const num = text.match(/\d+/g);
+            if(num) { 
+                const odo = num.sort((a,b)=>b.length-a.length)[0];
+                document.getElementById('odoEnd').value = odo; calcPreview();
+                Swal.fire('Berjaya', `Odometer dikesan: ${odo}`, 'success');
+            } else { Swal.fire('Gagal', 'Nombor tidak dikesan', 'warning'); }
+        }
     </script>
 </body>
 </html>
