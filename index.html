@@ -117,11 +117,21 @@
                     </div>
 
                     <div class="space-y-4">
+                        <!-- MULA SECTION -->
                         <div>
-                            <label class="label-corp">Tarikh & Masa</label>
+                            <label class="label-corp">Mula (Tarikh & Masa)</label>
                             <div class="grid grid-cols-2 gap-2">
-                                <input type="text" id="datePicker" class="input-field w-full">
-                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center">
+                                <input type="text" id="datePicker" class="input-field w-full" placeholder="Tarikh Mula">
+                                <input type="text" id="timeFrom" class="input-field w-full font-mono-corp text-center" placeholder="Masa Mula">
+                            </div>
+                        </div>
+
+                        <!-- AKHIR SECTION -->
+                        <div>
+                            <label class="label-corp">Akhir (Tarikh & Masa)</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <input type="text" id="datePickerEnd" class="input-field w-full" placeholder="Tarikh Akhir">
+                                <input type="text" id="timeTo" class="input-field w-full font-mono-corp text-center" placeholder="Masa Akhir">
                             </div>
                         </div>
 
@@ -287,7 +297,6 @@
                 allowOutsideClick: false, didOpen: () => Swal.showLoading() 
             });
 
-            // Pre-process for high sharpness
             const processedImage = await enhanceImage(file);
 
             try {
@@ -296,14 +305,11 @@
                     tessedit_pageseg_mode: '6' 
                 });
 
-                // Algorithm Fix: Clean text and only look for digit blocks
-                // We ignore numbers less than 4 digits (usually trip meter or time)
-                // We prioritize 5-7 digits
                 const rawNumbers = text.match(/\d+/g);
                 if (rawNumbers) {
                     const odometerOnly = rawNumbers
-                        .filter(n => n.length >= 4 && n.length <= 7) // Odometer range
-                        .sort((a, b) => b.length - a.length); // Pick longest sequence first
+                        .filter(n => n.length >= 4 && n.length <= 7) 
+                        .sort((a, b) => b.length - a.length); 
 
                     if (odometerOnly.length > 0) {
                         const finalOdo = odometerOnly[0];
@@ -331,7 +337,6 @@
                         const ctx = canvas.getContext('2d');
                         const scale = Math.min(1200 / img.width, 1200 / img.height);
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
-                        // High Contrast and Sharpening for digital dash
                         ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%) blur(0px)';
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         resolve(canvas.toDataURL('image/jpeg', 0.95));
@@ -376,12 +381,24 @@
         }
 
         async function saveEntry() {
-            const date = document.getElementById('datePicker').value, time = document.getElementById('timeFrom').value;
-            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
+            const date = document.getElementById('datePicker').value;
+            const dateEnd = document.getElementById('datePickerEnd').value;
+            const time = document.getElementById('timeFrom').value;
+            const timeEnd = document.getElementById('timeTo').value;
+
+            if(!date || !time) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
+            
             const entry = {
-                id: Date.now(), type: window.currentType, date, day: getDayName(date),
+                id: Date.now(), 
+                type: window.currentType, 
+                date, 
+                dateEnd: dateEnd || date,
+                day: getDayName(date),
+                dayEnd: dateEnd ? getDayName(dateEnd) : getDayName(date),
                 monthYear: date.split('-')[1] + '-' + date.split('-')[2],
-                tFrom: time, odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
+                tFrom: time,
+                tTo: timeEnd || '-',
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
                 odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
                 rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
@@ -390,7 +407,7 @@
             };
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
             Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
+            ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','datePickerEnd','timeTo'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
             calcPreview();
         }
 
@@ -402,7 +419,7 @@
                 tr.className = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
                 tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
-                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom}</div></td>
+                    <td><div class="font-bold text-xs text-white">${t.date}</div><div class="text-[9px] text-blue-500 font-bold uppercase">${t.day} | ${t.tFrom} - ${t.tTo}</div></td>
                     <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
                         <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
                             ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
@@ -413,7 +430,11 @@
             });
         }
 
-        // --- UNIVERSAL EXPORT ---
+        async function deleteEntry(docId) {
+            const res = await Swal.fire({ title: 'Hapus?', text: "Data akan dipadam dari cloud.", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444' });
+            if(res.isConfirmed) await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
+        }
+
         function showExportOptions() {
             Swal.fire({
                 title: 'PUSAT EKSPORT DATA UNIVERSAL',
@@ -435,124 +456,36 @@
         }
 
         async function exportPDF() {
-    try {
-        const { jsPDF } = window.jspdf;
-        const doc = new jsPDF('l', 'mm', 'a4');
-
-        // Header Background (Biru Gelap)
-        doc.setFillColor(15, 23, 42);
-        doc.rect(0, 0, 297, 40, 'F');
-
-        // Tajuk Laporan
-        doc.setTextColor(255, 255, 255);
-        doc.setFontSize(18);
-        doc.text("LAPORAN RASMI PILOT CLOUD MASTER v18.8", 15, 18);
-        
-        doc.setFontSize(10);
-        const userName = currentUser ? currentUser.displayName.toUpperCase() : 'PEMANDU';
-        doc.text(`PEMANDU: ${userName} | JABATAN PERKHIDMATAN VETERINAR (JPV)`, 15, 28);
-
-        // Susun Data untuk Table
-        const data = tasks
-            .sort((a, b) => parseDate(a.date) - parseDate(b.date))
-            .map(t => [
-                t.date || '-', 
-                t.day || '-', 
-                t.tFrom || '-', 
-                t.location || '-', 
-                (t.dist || 0) + " KM", 
-                "RM " + (t.rmMinyak || 0).toFixed(2), 
-                t.note || '-'
-            ]);
-
-        // Generate Table menggunakan autoTable
-        doc.autoTable({
-            head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'KOS', 'BUTIRAN']],
-            body: data,
-            startY: 45,
-            theme: 'grid',
-            styles: { fontSize: 8, cellPadding: 3 },
-            headStyles: { fillColor: [37, 99, 235], textColor: 255, fontStyle: 'bold' },
-            alternateRowStyles: { fillColor: [245, 247, 250] },
-            margin: { left: 15, right: 15 }
-        });
-
-        // Simpan File
-        doc.save(`PILOT_RASMI_${new Date().getTime()}.pdf`);
-        
-        Swal.fire({ icon: 'success', title: 'PDF Berjaya Dijana', timer: 1500, showConfirmButton: false });
-    } catch (error) {
-        console.error("PDF Export Error:", error);
-        Swal.fire('Ralat PDF', 'Gagal menjana PDF. Sila pastikan data anda wujud.', 'error');
-    }
-}
+            try {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF('l', 'mm', 'a4');
+                doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F');
+                doc.setTextColor(255, 255, 255); doc.setFontSize(18); doc.text("LAPORAN RASMI PILOT CLOUD MASTER v28", 15, 18);
+                doc.setFontSize(10); const userName = currentUser ? currentUser.displayName.toUpperCase() : 'PEMANDU';
+                doc.text(`PEMANDU: ${userName} | JABATAN PERKHIDMATAN VETERINAR (JPV)`, 15, 28);
+                const data = tasks.sort((a, b) => parseDate(a.date) - parseDate(b.date)).map(t => [t.date, t.day, `${t.tFrom}-${t.tTo}`, t.location, (t.dist || 0) + " KM", "RM " + (t.rmMinyak || 0).toFixed(2), t.note]);
+                doc.autoTable({ head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'KOS', 'BUTIRAN']], body: data, startY: 45, theme: 'grid', styles: { fontSize: 8 }, headStyles: { fillColor: [37, 99, 235] } });
+                doc.save(`PILOT_RASMI_${new Date().getTime()}.pdf`);
+            } catch (error) { Swal.fire('Ralat PDF', 'Gagal menjana PDF.', 'error'); }
+        }
 
         function exportExcel() {
-            const rows = tasks.map(t => ({ "TARIKH": t.date, "HARI": t.day, "MASA": t.tFrom, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
+            const rows = tasks.map(t => ({ "TARIKH MULA": t.date, "HARI MULA": t.day, "TARIKH AKHIR": t.dateEnd, "HARI AKHIR": t.dayEnd, "MASA MULA": t.tFrom, "MASA AKHIR": t.tTo, "LOKASI": t.location, "JARAK (KM)": t.dist, "KOS (RM)": t.rmMinyak, "BUTIRAN": t.note }));
             const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
             XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
         }
 
         function exportWord() {
-            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
-            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.tFrom}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
+            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh Mula</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
+            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.tFrom} - ${t.tTo}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
             html += "</table></body></html>";
             const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
         }
-        // --- FUNGSI EKSPORT KE ACCESS (VIA OPTIMIZED CSV) ---
-function exportAccessCSV() {
-    if (tasks.length === 0) {
-        Swal.fire('Tiada Data', 'Tiada data untuk dieksport ke Access.', 'warning');
-        return;
-    }
-
-    // Header yang bersih (tanpa simbol pelik) supaya Microsoft Access mudah cam jenis field
-    const headers = ["ID", "Tarikh", "Hari", "Masa", "Jenis_Log", "Lokasi", "Jarak_KM", "Kos_RM", "Butiran"];
-    
-    // Tukar data kepada baris CSV
-    const csvRows = tasks.map(t => {
-        return [
-            t.id,
-            `"${t.date}"`, // Gunakan quotes untuk kekalkan format tarikh
-            `"${t.day}"`,
-            `"${t.tFrom}"`,
-            `"${t.type.toUpperCase()}"`,
-            `"${t.location.replace(/"/g, '""')}"`, // Escape double quotes
-            t.dist || 0,
-            t.rmMinyak || 0,
-            `"${t.note.replace(/"/g, '""')}"`
-        ].join(",");
-    });
-
-    // Gabungkan Header dan Baris
-    const csvContent = headers.join(",") + "\n" + csvRows.join("\n");
-    
-    // Cipta fail Blob
-    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
-    const link = document.createElement("a");
-    
-    if (link.download !== undefined) {
-        const url = URL.createObjectURL(blob);
-        link.setAttribute("href", url);
-        link.setAttribute("download", `PILOT_TO_ACCESS_${Date.now()}.csv`);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        
-        Swal.fire({
-            icon: 'success',
-            title: 'Sedia Untuk Access',
-            html: 'Fail .CSV telah dijana.<br><br><small>Di Microsoft Access: Pilih <b>External Data</b> > <b>New Data Source</b> > <b>From File</b> > <b>Text File</b>.</small>',
-            confirmButtonColor: '#2563eb'
-        });
-    }
-}
 
         function exportNotepad() {
             let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
-            tasks.forEach(t => txt += `[${t.date}] ${t.tFrom} | ${t.location} | ${t.note}\n`);
+            tasks.forEach(t => txt += `[${t.date}] ${t.tFrom}-${t.tTo} | ${t.location} | ${t.note}\n`);
             const blob = new Blob([txt], { type: 'text/plain' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Log.txt`; link.click();
         }
@@ -560,14 +493,14 @@ function exportAccessCSV() {
         function exportToNotes(p) {
             let txt = `📋 LOG PILOT CLOUD\n`;
             tasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
-                txt += `📅 ${t.date}\n📍 ${t.location}\n⏰ ${t.tFrom} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
+                txt += `📅 ${t.date} (${t.day}) -> ${t.dateEnd} (${t.dayEnd})\n📍 ${t.location}\n⏰ ${t.tFrom} - ${t.tTo} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
             });
             navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
         }
 
-        // --- UTILS ---
         function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
         function parseDate(dateStr) { const [d,m,y] = dateStr.split('-'); return new Date(y,m-1,d).getTime(); }
+        
         async function incrementVisitors() {
             const today = new Date().toLocaleDateString('en-GB').replace(/\//g, '-');
             const ref = db.collection("system").doc("analytics");
@@ -581,10 +514,12 @@ function exportAccessCSV() {
                 }
             });
         }
+
         function animateValue(id, val) {
             const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
             const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
         }
+
         function showFullAnalytics() {
             const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
                 const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
@@ -605,12 +540,19 @@ function exportAccessCSV() {
             html += `</div>`;
             Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
         }
+
         window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
+
         function showDetails(t) {
             Swal.fire({
-                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
+                title: `<span class="text-md font-bold text-blue-500 uppercase">INFO DATA</span>`,
                 html: `<div class="text-left space-y-3 py-2">
                     <div class="p-3 bg-white/5 rounded-xl border border-white/5">
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Mula</p>
+                        <p class="text-[10px] text-white mb-2">${t.day}, ${t.date} @ ${t.tFrom}</p>
+                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Akhir</p>
+                        <p class="text-[10px] text-white mb-2">${t.dayEnd}, ${t.dateEnd} @ ${t.tTo}</p>
+                        <hr class="border-white/10 my-2">
                         <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
                         <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
                         <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
@@ -624,14 +566,19 @@ function exportAccessCSV() {
                 confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
             });
         }
+
         setInterval(() => {
             const n = new Date();
             document.getElementById('realTime').textContent = n.toLocaleTimeString('en-US', { hour:'2-digit', minute:'2-digit', second:'2-digit', hour12:true }).toUpperCase();
             document.getElementById('realDate').textContent = n.toLocaleDateString('ms-MY', { day:'2-digit', month:'2-digit', year:'numeric' });
             document.getElementById('realDay').textContent = ["Ahad","Isnin","Selasa","Rabu","Khamis","Jumaat","SABTU"][n.getDay()];
         }, 1000);
+
         flatpickr("#datePicker", { dateFormat: "d-m-Y", defaultDate: "today" });
+        flatpickr("#datePickerEnd", { dateFormat: "d-m-Y", defaultDate: "today" });
         flatpickr("#timeFrom", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        flatpickr("#timeTo", { enableTime:true, noCalendar:true, dateFormat: "h:i K" });
+        
         setType('tugas');
     </script>
 </body>
