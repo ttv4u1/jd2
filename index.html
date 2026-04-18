@@ -1,4 +1,4 @@
---- START OF FILE Paste April 18, 2026 - 5:50PM ---
+--- START OF FILE Paste April 18, 2026 - 5:55PM ---
 
 <!DOCTYPE html>
 <html lang="ms">
@@ -8,7 +8,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Master | v17.1 Official</title>
+    <title>PILOT Cloud Master | v17.2 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -114,6 +114,15 @@
         .hidden { display: none !important; }
         ::-webkit-scrollbar { width: 5px; }
         ::-webkit-scrollbar-thumb { background: var(--neon-blue); border-radius: 10px; }
+        
+        /* Custom Swall Glass */
+        .swal-glass {
+            background: rgba(15, 23, 42, 0.9) !important;
+            backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            color: white !important;
+            border-radius: 24px !important;
+        }
     </style>
 </head>
 <body class="p-3 md:p-6">
@@ -127,7 +136,7 @@
             <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-24 mx-auto mb-6 drop-shadow-2xl">
             <h2 class="text-2xl font-extrabold uppercase tracking-widest mb-1">PILOT CLOUD</h2>
             <p class="text-[10px] text-blue-400 mb-10 uppercase tracking-widest font-bold">Pemandu Veterinar Malaysia</p>
-            <p class="text-[9px] text-blue-400 mb-10 uppercase tracking-widest font-bold">The Intelligent Pilot Data Process V17.1</p>
+            <p class="text-[9px] text-blue-400 mb-10 uppercase tracking-widest font-bold">The Intelligent Pilot Data Process V17.2</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-2xl font-bold text-sm border border-white/10 bg-white/5 hover:bg-white/10 transition shadow-xl text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>MASUK DENGAN GOOGLE</span>
@@ -143,7 +152,7 @@
                 <div class="flex items-center gap-4 text-left">
                     <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-10 lg:h-14 rounded-lg">
                     <div class="flex flex-col">
-                        <h1 class="text-white text-sm lg:text-lg font-extrabold uppercase leading-none tracking-tight">PILOT Intelligent v17.1</h1>
+                        <h1 class="text-white text-sm lg:text-lg font-extrabold uppercase leading-none tracking-tight">PILOT Intelligent v17.2</h1>
                         <div class="flex items-center gap-2 mt-1.5">
                             <img id="userAvatar" class="h-5 w-5 rounded-full border border-white/20">
                             <span id="userName" class="text-[10px] text-blue-400 font-bold uppercase">---</span>
@@ -525,12 +534,45 @@
         ['#timeFrom','#timeSemasa','#timeTo'].forEach(id => flatpickr(id, { enableTime:true, noCalendar:true, dateFormat: "h:i K" }));
         
         function showDaySummary(date) {
-            const dayRecords = tasks.filter(t => t.date === date);
+            const dayRecords = tasks.filter(t => t.date === date).reverse();
             const tKM = dayRecords.reduce((s,t) => s + (t.dist || 0), 0);
             const tRM = dayRecords.reduce((s,t) => s + (t.rmMinyak || 0), 0);
+
+            let detailsHTML = `<div class="text-left space-y-3 mt-4 max-h-[400px] overflow-y-auto pr-2">`;
+            dayRecords.forEach(r => {
+                const color = r.type === 'tugas' ? 'blue' : (r.type === 'log' ? 'green' : 'red');
+                const typeLabel = r.type === 'tugas' ? 'TUGAS' : (r.type === 'log' ? 'GERAK' : 'MINYAK');
+                
+                detailsHTML += `
+                    <div class="p-3 bg-white/5 rounded-xl border-l-4 border-${color}-500">
+                        <div class="flex justify-between items-start mb-1">
+                            <span class="text-[9px] font-black text-${color}-400 uppercase tracking-tighter">${typeLabel}</span>
+                            <span class="text-[9px] font-digital text-white/40">${r.tFrom} - ${r.tTo}</span>
+                        </div>
+                        <p class="text-[11px] leading-tight text-white/80">${r.note}</p>
+                        <div class="mt-2 flex gap-3 text-[9px] font-bold">
+                            ${r.dist > 0 ? `<span class="text-green-500 uppercase">Jarak: +${r.dist} KM</span>` : ''}
+                            ${r.rmMinyak > 0 ? `<span class="text-red-400 uppercase">Kos: RM ${r.rmMinyak.toFixed(2)} (${r.fuelType})</span>` : ''}
+                        </div>
+                    </div>`;
+            });
+            detailsHTML += `</div>`;
+
             Swal.fire({
-                customClass:{popup:'swal-glass'}, title:`Summary: ${date} (${dayRecords[0].day})`,
-                html:`<div class="grid grid-cols-2 gap-3 mb-6"><div class="bg-red-500/10 p-4 rounded-xl text-center"><p class="text-[9px] uppercase font-bold text-red-400">Total RM</p><p class="text-xl font-bold">RM ${tRM.toFixed(2)}</p></div><div class="bg-green-500/10 p-4 rounded-xl text-center"><p class="text-[9px] uppercase font-bold text-green-400">Total KM</p><p class="text-xl font-bold">${tKM} KM</p></div></div>`
+                customClass:{popup:'swal-glass'}, 
+                title:`<span class="text-blue-400 font-black uppercase text-sm">Summary: ${date} (${dayRecords[0].day})</span>`,
+                html:`
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-red-500/10 p-4 rounded-xl text-center border border-red-500/20">
+                        <p class="text-[8px] uppercase font-bold text-red-400 mb-1">Total Kos</p>
+                        <p class="text-xl font-black">RM ${tRM.toFixed(2)}</p>
+                    </div>
+                    <div class="bg-green-500/10 p-4 rounded-xl text-center border border-green-500/20">
+                        <p class="text-[8px] uppercase font-bold text-green-400 mb-1">Total Jarak</p>
+                        <p class="text-xl font-black">${tKM} KM</p>
+                    </div>
+                </div>
+                ${detailsHTML}`
             });
         }
 
@@ -539,9 +581,39 @@
             const monthData = tasks.filter(t => t.monthYear === curMY);
             const tRM = monthData.reduce((s,t) => s + (t.rmMinyak || 0), 0);
             const tKM = monthData.reduce((s,t) => s + (t.dist || 0), 0);
+            
+            const countTugas = monthData.filter(x => x.type === 'tugas').length;
+            const countLog = monthData.filter(x => x.type === 'log').length;
+            const countMinyak = monthData.filter(x => x.type === 'minyak').length;
+
             Swal.fire({
-                customClass:{popup:'swal-glass'}, title:`Analitik Bulanan`,
-                html:`<div class="grid grid-cols-2 gap-3 mb-4"><div class="bg-red-500/20 p-5 rounded-2xl"><p class="text-[9px] font-bold text-red-400 uppercase">RM Minyak</p><p class="text-2xl font-bold">${tRM.toFixed(2)}</p></div><div class="bg-green-500/20 p-5 rounded-2xl"><p class="text-[9px] font-bold text-green-400 uppercase">Jarak KM</p><p class="text-2xl font-bold">${tKM}</p></div></div>`
+                customClass:{popup:'swal-glass'}, 
+                title:`<span class="text-yellow-500 font-black uppercase text-sm">Analitik Bulanan (${curMY})</span>`,
+                html:`
+                <div class="grid grid-cols-2 gap-3 mb-4">
+                    <div class="bg-red-500/20 p-5 rounded-2xl border border-red-500/30">
+                        <p class="text-[9px] font-bold text-red-400 uppercase mb-1">Jumlah Kos</p>
+                        <p class="text-2xl font-black">RM ${tRM.toFixed(2)}</p>
+                    </div>
+                    <div class="bg-green-500/20 p-5 rounded-2xl border border-green-500/30">
+                        <p class="text-[9px] font-bold text-green-400 uppercase mb-1">Jumlah Jarak</p>
+                        <p class="text-2xl font-black">${tKM} KM</p>
+                    </div>
+                </div>
+                <div class="space-y-2 text-left mt-6">
+                    <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/10">
+                        <span class="text-[10px] font-bold uppercase text-blue-400">Bilangan Tugasan</span>
+                        <span class="text-sm font-black">${countTugas}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/10">
+                        <span class="text-[10px] font-bold uppercase text-green-400">Bilangan Perjalanan</span>
+                        <span class="text-sm font-black">${countLog}</span>
+                    </div>
+                    <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl border border-white/10">
+                        <span class="text-[10px] font-bold uppercase text-red-400">Bilangan Isian Minyak</span>
+                        <span class="text-sm font-black">${countMinyak}</span>
+                    </div>
+                </div>`
             });
         }
 
