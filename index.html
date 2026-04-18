@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PILOT Cloud Intelligent | v32 Official</title>
+    <title>PILOT Cloud Intelligent | v33 Official</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -55,17 +55,24 @@
         .export-btn-grid button:hover { background: rgba(255,255,255,0.1); transform: scale(1.05); }
         .export-btn-grid span { font-size: 9px; font-weight: 800; text-transform: uppercase; }
 
-        /* NEW HIGHLIGHT STYLES */
-        .row-newly-added { background: rgba(37, 99, 235, 0.15) !important; animation: highlight-fade 3s infinite alternate; }
+        /* HIGHLIGHT STYLES */
+        .row-newly-added { background: rgba(37, 99, 235, 0.2) !important; animation: pulse-new 2s infinite; }
         .row-future-task { background: rgba(245, 158, 11, 0.15) !important; border-left: 4px solid #f59e0b !important; }
-        @keyframes highlight-fade { from { opacity: 1; } to { opacity: 0.6; } }
-        
-        /* TIPS STYLES */
-        .tip-box { transition: all 0.3s; border: 1px solid rgba(255,255,255,0.05); }
-        .tip-box:hover { transform: translateY(-5px); background: rgba(255,255,255,0.05); }
+        @keyframes pulse-new { 0% { background: rgba(37, 99, 235, 0.1); } 50% { background: rgba(37, 99, 235, 0.3); } 100% { background: rgba(37, 99, 235, 0.1); } }
+
+        /* AI HELPER UI */
+        .ai-fab { position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; border-radius: 50%; background: #2563eb; color: white; display: flex; align-items: center; justify-content: center; font-size: 24px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.5); cursor: pointer; z-index: 999; transition: 0.3s; border: 2px solid rgba(255,255,255,0.2); }
+        .ai-fab:hover { transform: scale(1.1) rotate(15deg); background: #1d4ed8; }
+        .ai-badge { position: absolute; top: -5px; right: -5px; background: #ef4444; color: white; font-size: 9px; padding: 2px 6px; border-radius: 10px; font-weight: 800; }
     </style>
 </head>
 <body class="p-4 md:p-8">
+
+    <!-- AI HELPER BUTTON -->
+    <div class="ai-fab" onclick="openAIHelper()">
+        <span>🤖</span>
+        <div class="ai-badge">LIVE</div>
+    </div>
 
     <!-- LOGIN SCREEN -->
     <div id="loginScreen">
@@ -75,7 +82,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT CLOUD</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v32</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v33</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -128,36 +135,21 @@
                     <div class="space-y-4">
                         <div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="label-corp">Tarikh Mula</label>
-                                    <input type="text" id="startDate" class="input-field w-full">
-                                </div>
-                                <div>
-                                    <label class="label-corp">Masa Mula</label>
-                                    <input type="text" id="startTime" class="input-field w-full font-mono-corp text-center">
-                                </div>
+                                <div><label class="label-corp">Tarikh Mula</label><input type="text" id="startDate" class="input-field w-full"></div>
+                                <div><label class="label-corp">Masa Mula</label><input type="text" id="startTime" class="input-field w-full font-mono-corp text-center"></div>
                             </div>
                         </div>
-
                         <div>
                             <div class="grid grid-cols-2 gap-4">
-                                <div>
-                                    <label class="label-corp">Tarikh Akhir</label>
-                                    <input type="text" id="endDate" class="input-field w-full">
-                                </div>
-                                <div>
-                                    <label class="label-corp">Masa Akhir</label>
-                                    <input type="text" id="endTime" class="input-field w-full font-mono-corp text-center">
-                                </div>
+                                <div><label class="label-corp">Tarikh Akhir</label><input type="text" id="endDate" class="input-field w-full"></div>
+                                <div><label class="label-corp">Masa Akhir</label><input type="text" id="endTime" class="input-field w-full font-mono-corp text-center"></div>
                             </div>
                         </div>
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
                                 <label class="label-corp text-blue-400 font-bold uppercase">Advanced Odo AI</label>
-                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">
-                                    <span>📸</span> SCAN ODO (ALBUM/SNAP)
-                                </button>
+                                <button onclick="triggerCamera()" class="px-3 py-1.5 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold text-white flex items-center gap-2 transition shadow-lg">📸 SCAN ODO</button>
                                 <input type="file" id="cameraInput" accept="image/*" class="hidden" onchange="processOdoImage(this)">
                             </div>
                             <div class="grid grid-cols-2 gap-3">
@@ -177,11 +169,7 @@
                             <p id="fuelPreview" class="text-center font-mono-corp text-red-400 text-sm font-bold">Total: RM 0.00</p>
                         </div>
 
-                        <div id="locationField" class="hidden">
-                            <label class="label-corp">📍 Geolocation GPS</label>
-                            <input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi...">
-                        </div>
-
+                        <div id="locationField" class="hidden"><label class="label-corp">📍 Geolocation GPS</label><input type="text" id="locationInput" class="input-field w-full text-[11px]" placeholder="Menjejak Lokasi..."></div>
                         <div><label class="label-corp">Butiran Perincian</label><textarea id="taskInput" rows="3" class="input-field w-full" placeholder="Masukkan butiran..."></textarea></div>
                         <button onclick="saveEntry()" class="w-full btn-primary py-4 shadow-lg shadow-blue-500/20">Sync Data Cloud ☁️</button>
                     </div>
@@ -203,89 +191,25 @@
                         </table>
                     </div>
                 </div>
-
-                <!-- DRIVER TIPS SECTION -->
-                <div class="mt-8 grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div class="glass-card p-4 tip-box border-l-4 border-blue-500">
-                        <h4 class="text-[10px] font-bold text-blue-400 uppercase mb-2">🛡️ SEBELUM GERAK</h4>
-                        <ul class="text-[9px] text-slate-300 space-y-1">
-                            <li>• Periksa paras minyak & air radiator.</li>
-                            <li>• Pastikan tekanan tayar mencukupi.</li>
-                            <li>• Uji lampu utama & isyarat (signal).</li>
-                            <li>• Bersihkan cermin depan & sisi.</li>
-                        </ul>
-                    </div>
-                    <div class="glass-card p-4 tip-box border-l-4 border-emerald-500">
-                        <h4 class="text-[10px] font-bold text-emerald-400 uppercase mb-2">🛣️ SEMASA PERJALANAN</h4>
-                        <ul class="text-[9px] text-slate-300 space-y-1">
-                            <li>• Patuhi had laju jalan raya.</li>
-                            <li>• Elakkan guna telefon bimbit.</li>
-                            <li>• Amalkan pemanduan berhemah.</li>
-                            <li>• Rehat di R&R jika mengantuk.</li>
-                        </ul>
-                    </div>
-                    <div class="glass-card p-4 tip-box border-l-4 border-red-500">
-                        <h4 class="text-[10px] font-bold text-red-400 uppercase mb-2">🏁 TAMAT TUGAS</h4>
-                        <ul class="text-[9px] text-slate-300 space-y-1">
-                            <li>• Rekod bacaan odometer akhir.</li>
-                            <li>• Pastikan kenderaan dikunci rapi.</li>
-                            <li>• Buang sampah & bersihkan kabin.</li>
-                            <li>• Lapor jika ada kerosakan teknikal.</li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </main>
 
-        <!-- FOOTER: REALTIME STATS & ADDRESS -->
         <footer class="container mx-auto pb-10 border-t border-white/10 pt-10">
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                
                 <div class="glass-card p-5 bg-white/5 border-none space-y-4">
-                    <div class="flex items-center gap-2">
-                        <span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span>
-                        <p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p>
-                    </div>
+                    <div class="flex items-center gap-2"><span class="h-2 w-2 bg-blue-500 rounded-full animate-pulse"></span><p class="text-[10px] font-extrabold text-slate-400 uppercase tracking-tighter">Live Pulse</p></div>
                     <div class="grid grid-cols-3 gap-2 text-center">
-                        <div>
-                            <p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p>
-                            <p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p>
-                        </div>
-                        <div class="border-x border-white/10">
-                            <p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p>
-                            <p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p>
-                        </div>
-                        <div>
-                            <p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p>
-                            <p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p>
-                            <p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p>
-                        </div>
+                        <div><p class="stat-icon text-[14px] pulse-stat text-emerald-400">🟢</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Hari Ini</p><p id="statToday" class="stat-glow text-xs font-bold text-emerald-400">0</p></div>
+                        <div class="border-x border-white/10"><p class="stat-icon text-[14px] pulse-stat text-blue-400">🔵</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Bulan</p><p id="statMonth" class="stat-glow text-xs font-bold text-blue-400">0</p></div>
+                        <div><p class="stat-icon text-[14px] pulse-stat text-orange-400">🟠</p><p class="text-[8px] text-slate-500 uppercase font-bold mt-1">Jumlah</p><p id="statTotal" class="stat-glow text-xs font-bold text-orange-400">0</p></div>
                     </div>
                 </div>
-
                 <div class="lg:col-span-2 space-y-3 px-2">
                     <p class="text-[11px] font-extrabold text-blue-500 uppercase tracking-tighter">JABATAN PERKHIDMATAN VETERINAR</p>
-                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">
-                        Kementerian Pertanian Dan Keterjaminan Makanan,<br>
-                        Blok Podium, Lot 4G1, Presint 4 Pusat Pentadbiran Kerajaan Persekutuan, 62624 Putrajaya
-                    </p>
-                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase">
-                        <p>Tel: (603) 8870 2000 | Faks: (603) 8888 6021</p>
-                        <p>Emel: pro[at]dvs.gov.my</p>
-                    </div>
+                    <p class="text-[10px] text-slate-400 leading-relaxed font-medium">Kementerian Pertanian Dan Keterjaminan Makanan, Blok Podium, Lot 4G1, Presint 4, 62624 Putrajaya</p>
+                    <div class="flex gap-4 text-[9px] text-slate-500 font-bold uppercase"><p>Tel: (603) 8870 2000</p><p>Emel: pro[at]dvs.gov.my</p></div>
                 </div>
-
-                <div class="text-center md:text-right space-y-3">
-                    <p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">
-                        Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent Veterinar Malaysia
-                    </p>
-                    <p class="text-[8px] text-slate-600 leading-tight">
-                        Paparan terbaik: Mozilla Firefox, Chrome,<br>dan Internet Explorer 11 ke atas.
-                    </p>
-                </div>
-
+                <div class="text-center md:text-right space-y-3"><p class="text-[9px] text-slate-500 font-bold uppercase tracking-tight">Hakcipta Terpelihara © 2026<br>Portal Rasmi Pilot Intelligent</p></div>
             </div>
         </footer>
     </div>
@@ -300,7 +224,7 @@
         const firebaseConfig = { apiKey: "AIzaSyBCV-68YWkZkDjIodxWmn6z-d9H7ZS8bDs", authDomain: "bpk-cloud-system.firebaseapp.com", projectId: "bpk-cloud-system", storageBucket: "bpk-cloud-system.firebasestorage.app", messagingSenderId: "690773145817", appId: "1:690773145817:web:4a6638d25d572499fb66c8" };
         if (!firebase.apps.length) firebase.initializeApp(firebaseConfig);
         const auth = firebase.auth(), db = firebase.firestore(), provider = new firebase.auth.GoogleAuthProvider();
-        let currentUser = null, tasks = [], lastAddedId = null;
+        let currentUser = null, tasks = [], newlyAddedId = null;
 
         auth.onAuthStateChanged(user => {
             if (user) { 
@@ -332,26 +256,67 @@
             });
         }
 
-        async function deleteEntry(docId) {
-            const result = await Swal.fire({
-                title: 'Padam Data?',
-                text: "Rekod ini akan dibuang secara kekal!",
-                icon: 'warning',
-                showCancelButton: true,
-                confirmButtonColor: '#ef4444',
-                cancelButtonColor: '#3b82f6',
-                confirmButtonText: 'YA, PADAM',
-                cancelButtonText: 'BATAL',
-                customClass: { popup: 'swal-corp' }
+        // --- AI HELPER FUNCTION ---
+        function openAIHelper() {
+            Swal.fire({
+                title: '🤖 PILOT AI ASSISTANT',
+                html: `
+                    <div class="text-left space-y-4">
+                        <p class="text-[10px] text-blue-400 font-bold uppercase tracking-widest border-b border-white/10 pb-2">Sila Pilih Fasa Tugas:</p>
+                        <div class="grid grid-cols-1 gap-2">
+                            <button onclick="showAITip('pra')" class="p-3 bg-blue-500/10 hover:bg-blue-500/20 rounded-xl border border-blue-500/20 flex items-center gap-3 transition">
+                                <span class="text-xl">🛡️</span>
+                                <div class="text-left">
+                                    <p class="text-[11px] font-bold text-white uppercase">Protokol Pra-Perjalanan</p>
+                                    <p class="text-[9px] text-slate-400">Pemeriksaan kenderaan sebelum gerak.</p>
+                                </div>
+                            </button>
+                            <button onclick="showAITip('semasa')" class="p-3 bg-emerald-500/10 hover:bg-emerald-500/20 rounded-xl border border-emerald-500/20 flex items-center gap-3 transition">
+                                <span class="text-xl">🛣️</span>
+                                <div class="text-left">
+                                    <p class="text-[11px] font-bold text-white uppercase">Keselamatan Operasi</p>
+                                    <p class="text-[9px] text-slate-400">Etika pemanduan semasa bertugas.</p>
+                                </div>
+                            </button>
+                            <button onclick="showAITip('tamat')" class="p-3 bg-red-500/10 hover:bg-red-500/20 rounded-xl border border-red-500/20 flex items-center gap-3 transition">
+                                <span class="text-xl">🏁</span>
+                                <div class="text-left">
+                                    <p class="text-[11px] font-bold text-white uppercase">Prosedur Penutupan</p>
+                                    <p class="text-[9px] text-slate-400">Tindakan selepas tamat perjalanan.</p>
+                                </div>
+                            </button>
+                        </div>
+                    </div>
+                `,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
             });
+        }
 
+        window.showAITip = (fasa) => {
+            let title = "", content = "", color = "";
+            if(fasa === 'pra') {
+                title = "🛡️ PRA-PERJALANAN"; color = "#3b82f6";
+                content = "• Periksa paras minyak & air radiator.<br>• Pastikan tekanan tayar mencukupi.<br>• Uji lampu utama & isyarat (signal).<br>• Bersihkan cermin depan & sisi.";
+            } else if(fasa === 'semasa') {
+                title = "🛣️ SEMASA TUGAS"; color = "#10b981";
+                content = "• Patuhi had laju jalan raya.<br>• Elakkan guna telefon bimbit.<br>• Amalkan pemanduan berhemah.<br>• Rehat di R&R jika mengantuk.";
+            } else {
+                title = "🏁 TAMAT TUGAS"; color = "#ef4444";
+                content = "• Rekod bacaan odometer akhir.<br>• Pastikan kenderaan dikunci rapi.<br>• Buang sampah & bersihkan kabin.<br>• Lapor jika ada kerosakan teknikal.";
+            }
+
+            Swal.fire({
+                title: `<span style="color:${color}">${title}</span>`,
+                html: `<div class="text-left text-xs leading-relaxed text-slate-300 font-medium">${content}</div>`,
+                confirmButtonText: 'FAHAM', customClass: { popup: 'swal-corp' }
+            });
+        }
+
+        async function deleteEntry(docId) {
+            const result = await Swal.fire({ title: 'Padam Data?', text: "Rekod akan dibuang secara kekal!", icon: 'warning', showCancelButton: true, confirmButtonColor: '#ef4444', confirmButtonText: 'YA, PADAM', customClass: { popup: 'swal-corp' } });
             if (result.isConfirmed) {
-                try {
-                    await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
-                    Swal.fire({ icon:'success', title:'Dihapuskan', timer:800, showConfirmButton:false, customClass:{popup:'swal-corp'} });
-                } catch (e) {
-                    Swal.fire('Ralat', 'Gagal memadam data dari pelayan Cloud.', 'error');
-                }
+                await db.collection("users").doc(currentUser.uid).collection("logs").doc(docId).delete();
+                Swal.fire({ icon:'success', title:'Dihapuskan', timer:800, showConfirmButton:false, customClass:{popup:'swal-corp'} });
             }
         }
 
@@ -359,42 +324,19 @@
 
         async function processOdoImage(input) {
             if (!input.files[0]) return;
-            const file = input.files[0];
-            
-            Swal.fire({ 
-                title: 'AI Scanning Nombor...', 
-                html: '<div class="text-[10px] text-blue-400 font-mono mt-2">Menapis masa & menajamkan digit odometer...</div>',
-                allowOutsideClick: false, didOpen: () => Swal.showLoading() 
-            });
-
-            const processedImage = await enhanceImage(file);
-
+            Swal.fire({ title: 'AI Scanning Nombor...', allowOutsideClick: false, didOpen: () => Swal.showLoading() });
+            const processedImage = await enhanceImage(input.files[0]);
             try {
-                const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', {
-                    tessedit_char_whitelist: '0123456789', 
-                    tessedit_pageseg_mode: '6' 
-                });
-
+                const { data: { text } } = await Tesseract.recognize(processedImage, 'eng', { tessedit_char_whitelist: '0123456789', tessedit_pageseg_mode: '6' });
                 const rawNumbers = text.match(/\d+/g);
                 if (rawNumbers) {
-                    const odometerOnly = rawNumbers
-                        .filter(n => n.length >= 4 && n.length <= 7)
-                        .sort((a, b) => b.length - a.length);
-
-                    if (odometerOnly.length > 0) {
-                        const finalOdo = odometerOnly[0];
-                        document.getElementById('odoEnd').value = finalOdo;
-                        calcPreview();
-                        Swal.fire({ icon: 'success', title: 'Imbasan Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
-                    } else {
-                        Swal.fire('Imbasan Kabur', 'Sila pastikan gambar odometer jelas dan dekat tanpa cahaya silau.', 'warning');
-                    }
-                } else {
-                    Swal.fire('Gagal', 'Tiada nombor dikesan dalam gambar.', 'warning');
+                    const finalOdo = rawNumbers.filter(n => n.length >= 4 && n.length <= 7).sort((a, b) => b.length - a.length)[0];
+                    if (finalOdo) {
+                        document.getElementById('odoEnd').value = finalOdo; calcPreview();
+                        Swal.fire({ icon: 'success', title: 'Berjaya', text: `Odometer: ${finalOdo} KM`, timer: 2000 });
+                    } else Swal.fire('Imbasan Kabur', 'Sila pastikan gambar odometer jelas.', 'warning');
                 }
-            } catch (e) {
-                Swal.fire('Ralat AI', 'Gagal memproses data visual.', 'error');
-            }
+            } catch (e) { Swal.fire('Ralat AI', 'Gagal memproses data visual.', 'error'); }
         }
 
         function enhanceImage(file) {
@@ -407,7 +349,7 @@
                         const ctx = canvas.getContext('2d');
                         const scale = Math.min(1200 / img.width, 1200 / img.height);
                         canvas.width = img.width * scale; canvas.height = img.height * scale;
-                        ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%) blur(0px)';
+                        ctx.filter = 'grayscale(100%) contrast(300%) brightness(110%)';
                         ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                         resolve(canvas.toDataURL('image/jpeg', 0.95));
                     };
@@ -451,170 +393,86 @@
 
         async function saveEntry() {
             const startDate = document.getElementById('startDate').value;
-            const endDate = document.getElementById('endDate').value;
             const startTime = document.getElementById('startTime').value;
-            const endTime = document.getElementById('endTime').value;
-
-            if(!startDate || !startTime) return Swal.fire('Ralat', 'Tarikh & Masa Mula wajib diisi.', 'error');
-            
+            if(!startDate || !startTime) return Swal.fire('Ralat', 'Tarikh & Masa wajib diisi.', 'error');
             const entryId = Date.now();
             const entry = {
-                id: entryId, 
-                type: window.currentType, 
-                date: startDate,
-                endDate: endDate || startDate,
-                day: getDayName(startDate),
-                monthYear: startDate.split('-')[1] + '-' + startDate.split('-')[2],
-                tFrom: startTime,
-                tUntil: endTime || startTime,
-                odoStart: parseFloat(document.getElementById('odoStart').value) || 0,
-                odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
+                id: entryId, type: window.currentType, date: startDate, endDate: document.getElementById('endDate').value || startDate,
+                day: getDayName(startDate), monthYear: startDate.split('-')[1] + '-' + startDate.split('-')[2],
+                tFrom: startTime, tUntil: document.getElementById('endTime').value || startTime,
+                odoStart: parseFloat(document.getElementById('odoStart').value) || 0, odoEnd: parseFloat(document.getElementById('odoEnd').value) || 0,
                 dist: (parseFloat(document.getElementById('odoEnd').value) || 0) - (parseFloat(document.getElementById('odoStart').value) || 0),
                 rmMinyak: (parseFloat(document.getElementById('rmInitial')?.value) || 0) + (parseFloat(document.getElementById('rmOffice')?.value) || 0),
-                location: document.getElementById('locationInput')?.value || '-',
-                note: document.getElementById('taskInput').value || '-'
+                location: document.getElementById('locationInput')?.value || '-', note: document.getElementById('taskInput').value || '-'
             };
-
-            lastAddedId = entryId; // Mark as newly added
-
+            newlyAddedId = entryId;
             await db.collection("users").doc(currentUser.uid).collection("logs").add(entry);
-            Swal.fire({ icon:'success', title:'Data Disync', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
+            Swal.fire({ icon:'success', title:'Sync Berjaya', timer:1000, showConfirmButton:false, customClass:{popup:'swal-corp'} });
             ['odoStart','odoEnd','rmInitial','rmOffice','taskInput','locationInput','endDate','endTime'].forEach(id => { if(document.getElementById(id)) document.getElementById(id).value = ''; });
             calcPreview();
         }
 
         function renderUI() {
             const body = document.getElementById('activeBody'); body.innerHTML = '';
-            const todayStamp = new Date().setHours(0,0,0,0);
-            
+            const now = new Date().setHours(0,0,0,0);
             let sorted = [...tasks].sort((a,b) => parseDate(b.date) - parseDate(a.date) || b.id - a.id);
-            
             sorted.forEach(t => {
                 const tr = document.createElement('tr');
-                const entryStamp = parseDate(t.date);
+                const entryDate = parseDate(t.date);
                 
-                // --- HIGHLIGHT LOGIC ---
-                let highlightClass = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
-                if (t.id === lastAddedId) {
-                    highlightClass += " row-newly-added";
-                } else if (entryStamp > todayStamp) {
-                    highlightClass += " row-future-task";
-                }
-                
-                tr.className = highlightClass;
+                // HIGHLIGHT LOGIC
+                let rowClass = "hover:bg-white/5 cursor-pointer border-b border-white/5 transition-all";
+                if(t.id === newlyAddedId) rowClass += " row-newly-added";
+                else if(entryDate > now) rowClass += " row-future-task";
+
+                tr.className = rowClass;
                 tr.onclick = () => showDetails(t);
                 tr.innerHTML = `
                     <td>
-                        <div class="font-bold text-xs text-white">${t.date} ${t.endDate !== t.date ? '→ ' + t.endDate : ''}</div>
-                        <div class="text-[9px] ${entryStamp > todayStamp ? 'text-amber-500' : 'text-blue-500'} font-bold uppercase">${t.day} | ${t.tFrom} - ${t.tUntil}</div>
+                        <div class="font-bold text-xs text-white">${t.date}</div>
+                        <div class="text-[9px] ${entryDate > now ? 'text-amber-500' : 'text-blue-500'} font-bold uppercase">${t.day} | ${t.tFrom}</div>
                     </td>
                     <td><div class="text-xs font-medium text-slate-200 line-clamp-1">${t.note}</div>
                         <div class="text-[9px] mt-1 text-slate-500 uppercase flex gap-2">
                             ${t.dist > 0 ? `<span class="text-emerald-500 font-bold">${t.dist} KM</span>` : ''}
                             <span class="truncate max-w-[120px]">📍 ${t.location}</span>
                         </div></td>
-                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500 hover:scale-125 transition-transform">🗑️</button></td>`;
+                    <td class="text-right"><button onclick="event.stopPropagation(); deleteEntry('${t.docId}')" class="p-2 text-red-500">🗑️</button></td>`;
                 body.appendChild(tr);
             });
         }
 
         function showExportOptions() {
             Swal.fire({
-                title: 'PUSAT EKSPORT DATA UNIVERSAL',
-                html: `
-                    <div class="p-2 export-btn-grid">
-                        <button onclick="exportPDF()" class="text-red-400">📄<span>Official PDF</span></button>
-                        <button onclick="exportExcel()" class="text-emerald-400">📊<span>MS Excel</span></button>
-                        <button onclick="exportWord()" class="text-blue-400">📝<span>MS Word</span></button>
-                        <button onclick="exportAccessCSV()" class="text-purple-400">🗄️<span>Access DB</span></button>
-                        <button onclick="exportPowerPoint()" class="text-orange-500">📽️<span>PowerPoint</span></button>
-                        <button onclick="exportNotepad()" class="text-slate-400">🗒️<span>Notepad</span></button>
-                        <button onclick="exportNotepadPlusPlus()" class="text-emerald-500">🧪<span>Notepad++</span></button>
-                        <button onclick="exportToNotes('ios')" class="text-orange-400">🍎<span>iOS Notes</span></button>
-                        <button onclick="exportToNotes('android')" class="text-green-400">🤖<span>Android</span></button>
-                    </div>
-                `,
-                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp w-full max-w-lg' }
+                title: 'PUSAT EKSPORT DATA',
+                html: `<div class="p-2 export-btn-grid">
+                    <button onclick="exportPDF()" class="text-red-400">📄<span>PDF</span></button>
+                    <button onclick="exportExcel()" class="text-emerald-400">📊<span>Excel</span></button>
+                    <button onclick="exportWord()" class="text-blue-400">📝<span>Word</span></button>
+                    <button onclick="exportToNotes('ios')" class="text-orange-400">🍎<span>Notes</span></button>
+                </div>`,
+                showConfirmButton: false, showCloseButton: true, customClass: { popup: 'swal-corp' }
             });
         }
 
         async function exportPDF() {
-            try {
-                const { jsPDF } = window.jspdf;
-                const doc = new jsPDF('l', 'mm', 'a4');
-                doc.setFillColor(15, 23, 42);
-                doc.rect(0, 0, 297, 40, 'F');
-                doc.setTextColor(255, 255, 255);
-                doc.setFontSize(18);
-                doc.text("LAPORAN RASMI PILOT CLOUD MASTER v18.8", 15, 18);
-                doc.setFontSize(10);
-                const userName = currentUser ? currentUser.displayName.toUpperCase() : 'PEMANDU';
-                doc.text(`PEMANDU: ${userName} | JABATAN PERKHIDMATAN VETERINAR (JPV)`, 15, 28);
-                const data = tasks
-                    .sort((a, b) => parseDate(a.date) - parseDate(b.date))
-                    .map(t => [
-                        t.date + (t.endDate !== t.date ? '\n'+t.endDate : ''), 
-                        t.day || '-', 
-                        t.tFrom + ' - ' + t.tUntil, 
-                        t.location || '-', 
-                        (t.dist || 0) + " KM", 
-                        "RM " + (t.rmMinyak || 0).toFixed(2), 
-                        t.note || '-'
-                    ]);
-                doc.autoTable({
-                    head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'KOS', 'BUTIRAN']],
-                    body: data,
-                    startY: 45,
-                    theme: 'grid',
-                    styles: { fontSize: 8, cellPadding: 3 },
-                    headStyles: { fillColor: [37, 99, 235], textColor: 255, fontStyle: 'bold' },
-                    alternateRowStyles: { fillColor: [245, 247, 250] },
-                    margin: { left: 15, right: 15 }
-                });
-                doc.save(`PILOT_RASMI_${new Date().getTime()}.pdf`);
-                Swal.fire({ icon: 'success', title: 'PDF Berjaya Dijana', timer: 1500, showConfirmButton: false });
-            } catch (error) {
-                Swal.fire('Ralat PDF', 'Gagal menjana PDF.', 'error');
-            }
+            const { jsPDF } = window.jspdf; const doc = new jsPDF('l', 'mm', 'a4');
+            doc.setFillColor(15, 23, 42); doc.rect(0, 0, 297, 40, 'F'); doc.setTextColor(255, 255, 255);
+            doc.text("LAPORAN RASMI PILOT CLOUD", 15, 20);
+            const data = tasks.sort((a, b) => parseDate(a.date) - parseDate(b.date)).map(t => [t.date, t.day, t.tFrom + '-' + t.tUntil, t.location, t.dist + " KM", t.note]);
+            doc.autoTable({ head: [['TARIKH', 'HARI', 'MASA', 'LOKASI', 'JARAK', 'BUTIRAN']], body: data, startY: 45, theme: 'grid' });
+            doc.save(`PILOT_LOG.pdf`);
         }
 
         function exportExcel() {
-            const rows = tasks.map(t => ({ 
-                "TARIKH MULA": t.date, 
-                "TARIKH AKHIR": t.endDate,
-                "HARI": t.day, 
-                "MASA MULA": t.tFrom, 
-                "MASA AKHIR": t.tUntil,
-                "LOKASI": t.location, 
-                "JARAK (KM)": t.dist, 
-                "KOS (RM)": t.rmMinyak, 
-                "BUTIRAN": t.note 
-            }));
-            const ws = XLSX.utils.json_to_sheet(rows); const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, "Database"); XLSX.writeFile(wb, `PILOT_Database.xlsx`);
+            const ws = XLSX.utils.json_to_sheet(tasks); const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, "Logs"); XLSX.writeFile(wb, `PILOT_Data.xlsx`);
         }
 
-        function exportWord() {
-            let html = `<html><body style="font-family:Arial"><h1>LAPORAN LOG PILOT</h1><table border="1" style="border-collapse:collapse;width:100%"><tr><th>Tarikh Mula</th><th>Tarikh Akhir</th><th>Masa</th><th>Lokasi</th><th>Butiran</th></tr>`;
-            tasks.forEach(t => html += `<tr><td>${t.date}</td><td>${t.endDate}</td><td>${t.tFrom} - ${t.tUntil}</td><td>${t.location}</td><td>${t.note}</td></tr>`);
-            html += "</table></body></html>";
-            const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
-        }
-
-        function exportNotepad() {
-            let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
-            tasks.forEach(t => txt += `[${t.date} - ${t.endDate}] ${t.tFrom}-${t.tUntil} | ${t.location} | ${t.note}\n`);
-            const blob = new Blob([txt], { type: 'text/plain' });
-            const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Log.txt`; link.click();
-        }
-
-        function exportToNotes(p) {
+        function exportToNotes() {
             let txt = `📋 LOG PILOT CLOUD\n`;
-            tasks.sort((a,b)=>parseDate(a.date)-parseDate(b.date)).forEach(t => {
-                txt += `📅 ${t.date} ${t.endDate !== t.date ? '-> ' + t.endDate : ''}\n📍 ${t.location}\n⏰ ${t.tFrom} - ${t.tUntil} | 🛣️ ${t.dist} KM\n📝 ${t.note}\n----------------\n`;
-            });
-            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', `Sila paste ke aplikasi Notes anda.`, 'success'));
+            tasks.forEach(t => txt += `📅 ${t.date} | 📍 ${t.location} | 📝 ${t.note}\n`);
+            navigator.clipboard.writeText(txt).then(() => Swal.fire('Disalin!', 'Sila paste ke Notes.', 'success'));
         }
 
         function getDayName(dateStr) { const p = dateStr.split('-'); return ["AHAD","ISNIN","SELASA","RABU","KHAMIS","JUMAAT","SABTU"][new Date(p[2], p[1]-1, p[0]).getDay()]; }
@@ -633,54 +491,24 @@
                 }
             });
         }
-
         function animateValue(id, val) {
             const obj = document.getElementById(id); let curr = parseInt(obj.innerText) || 0;
             const timer = setInterval(() => { if(curr >= val) { obj.innerText = val; clearInterval(timer); } else { curr += Math.ceil((val-curr)/10); obj.innerText = curr; } }, 50);
         }
-
         function showFullAnalytics() {
-            const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => {
-                const [m1,y1] = a.split('-'), [m2,y2] = b.split('-');
-                return new Date(y2, m2-1) - new Date(y1, m1-1);
-            });
+            const months = [...new Set(tasks.map(t => t.monthYear))].sort((a,b) => { const [m1,y1] = a.split('-'), [m2,y2] = b.split('-'); return new Date(y2, m2-1) - new Date(y1, m1-1); });
             let html = `<div class="space-y-4 max-h-[60vh] overflow-y-auto pr-2 custom-scroll text-left">`;
             months.forEach(my => {
                 const mData = tasks.filter(t => t.monthYear === my).sort((a,b) => parseDate(b.date) - parseDate(a.date));
-                html += `<div class="bg-black/30 border border-white/5 rounded-xl p-3"><div class="flex justify-between items-center mb-3"><h4 class="font-heading font-extrabold text-blue-400 uppercase text-sm">${my}</h4></div><div class="space-y-2">`;
-                mData.forEach(item => {
-                    html += `<div onclick="window.showDetailsById('${item.id}')" class="flex items-center justify-between p-2 bg-white/5 rounded-lg border-l-4 border-blue-600 cursor-pointer hover:bg-white/10 transition">
-                        <div><p class="text-[8px] font-bold text-slate-500 uppercase">${item.date} ${item.endDate !== item.date ? '→ ' + item.endDate : ''}</p><p class="text-[10px] text-slate-200 line-clamp-1">${item.note}</p></div>
-                        <div class="text-right text-[9px] font-mono-corp text-white">${item.dist > 0 ? item.dist+' KM' : ''}</div>
-                    </div>`;
-                });
-                html += `</div></div>`;
+                html += `<div class="bg-black/30 p-3 rounded-xl border border-white/5 mb-3"><h4 class="text-blue-400 text-xs font-bold mb-2">${my}</h4>`;
+                mData.forEach(item => { html += `<div onclick="window.showDetailsById('${item.id}')" class="p-2 bg-white/5 rounded border-l-2 border-blue-500 mb-1 text-[10px] cursor-pointer">${item.date}: ${item.note}</div>`; });
+                html += `</div>`;
             });
-            html += `</div>`;
-            Swal.fire({ title:'SEJARAH ANALITIK', html, width:'500px', showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
+            Swal.fire({ title:'SEJARAH', html, showConfirmButton:false, showCloseButton:true, customClass:{popup:'swal-corp'} });
         }
-
         window.showDetailsById = (id) => { const t = tasks.find(x => x.id == id); if(t) showDetails(t); };
-        
         function showDetails(t) {
-            Swal.fire({
-                title: `<span class="text-md font-bold text-blue-500 uppercase">${t.day} | ${t.date}</span>`,
-                html: `<div class="text-left space-y-3 py-2">
-                    <div class="p-3 bg-white/5 rounded-xl border border-white/5">
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📅 Tempoh Masa</p>
-                        <p class="text-[10px] text-white mb-2">${t.date} (${t.tFrom}) sehingga ${t.endDate} (${t.tUntil})</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">📍 Lokasi GPS</p>
-                        <p class="text-[10px] text-blue-400 mb-2">${t.location}</p>
-                        <p class="text-[8px] text-slate-500 font-bold uppercase mb-1">Butiran Perincian</p>
-                        <p class="text-xs text-slate-200 leading-relaxed">${t.note}</p>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2 text-center">
-                        <div class="p-2 bg-emerald-500/10 rounded-xl border border-emerald-500/20"><p class="text-[8px] text-emerald-500 font-bold uppercase">Odometer</p><p class="font-bold text-white text-sm">${t.dist} KM</p></div>
-                        <div class="p-2 bg-red-500/10 rounded-xl border border-red-500/20"><p class="text-[8px] text-red-500 font-bold uppercase">Minyak</p><p class="font-bold text-white text-sm">RM ${t.rmMinyak.toFixed(2)}</p></div>
-                    </div>
-                </div>`,
-                confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'}
-            });
+            Swal.fire({ title: `${t.day} | ${t.date}`, html: `<div class="text-left text-xs p-3 bg-white/5 rounded-xl border border-white/5"><p class="text-blue-400 font-bold mb-1">LOKASI:</p><p class="mb-2">${t.location}</p><p class="text-blue-400 font-bold mb-1">BUTIRAN:</p><p class="leading-relaxed">${t.note}</p><div class="grid grid-cols-2 gap-2 mt-4"><div class="p-2 bg-emerald-500/10 rounded">ODO: ${t.dist}KM</div><div class="p-2 bg-red-500/10 rounded">KOS: RM${t.rmMinyak.toFixed(2)}</div></div></div>`, confirmButtonText: 'TUTUP', customClass:{popup:'swal-corp'} });
         }
 
         setInterval(() => {
