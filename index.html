@@ -5,7 +5,7 @@
     <meta name="google-adsense-account" content="ca-pub-5395525176253885">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Intelligent Pilot v23.0</title>
+    <title>Intelligent Pilot v24.0</title>
     
     <link rel="icon" type="image/png" href="https://github.com/ttv4u1/KP/raw/main/DVS.svg">
 
@@ -67,7 +67,7 @@
         <div class="relative w-64 h-64 border-2 border-blue-500 rounded-lg overflow-hidden">
             <div class="scanner-line"></div>
         </div>
-        <p class="mt-4 font-mono-corp text-blue-400 animate-pulse text-center px-4">AI SEDANG MENGANALISIS ODOMETER...<br><span class="text-[10px] text-slate-400">Pastikan gambar jelas & tiada silauan cahaya</span></p>
+        <p class="mt-4 font-mono-corp text-blue-400 animate-pulse text-center px-4">AI ODOMETER PRO SEDANG ANALISIS...<br><span class="text-[10px] text-slate-400">Mencari nombor di kedudukan paling bawah...</span></p>
     </div>
 
     <!-- LOGIN SCREEN -->
@@ -78,7 +78,7 @@
                 <img src="https://github.com/ttv4u1/KP/raw/main/DVS.svg" class="h-16">
             </div>
             <h2 class="text-3xl font-heading font-extrabold mb-2 text-white">PILOT Intelligent</h2>
-            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v22.0</p>
+            <p class="text-slate-400 mb-8 font-medium text-xs uppercase tracking-[0.3em]">Master Protocol v24.0</p>
             <button onclick="login()" class="flex items-center justify-center gap-4 w-full py-4 px-6 rounded-xl font-bold border border-white/10 bg-white/5 hover:bg-white/10 transition text-white">
                 <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" class="h-6">
                 <span>PENGESAHAN GOOGLE</span>
@@ -150,8 +150,7 @@
 
                         <div id="odoFields" class="hidden space-y-3 p-4 bg-blue-500/10 rounded-xl border border-blue-500/20">
                             <div class="flex justify-between items-center">
-                                <label class="label-corp text-blue-400">Advanced Odo AI</label>
-                                <!-- Butang yang akan buka Camera/Album -->
+                                <label class="label-corp text-blue-400">Odo AI Pro (Auto Bottom)</label>
                                 <button onclick="triggerCamera()" class="px-3 py-1 bg-blue-600 hover:bg-blue-500 rounded-lg text-[10px] font-bold transition-all flex items-center gap-2">
                                     <span>📸 SCAN ODO</span>
                                 </button>
@@ -281,9 +280,10 @@
             const endDateCont = document.getElementById('endDateContainer');
             const timeToCont = document.getElementById('timeToContainer');
 
+            // PERUBAHAN: Tab Minyak kini tunjuk semua tarikh & masa
             if(type === 'minyak') {
-                endDateCont.classList.add('invisible');
-                timeToCont.classList.add('invisible');
+                endDateCont.classList.remove('invisible');
+                timeToCont.classList.remove('invisible');
                 document.getElementById('odoFields').classList.remove('hidden'); 
                 document.getElementById('fuelFields').classList.remove('hidden'); 
             } else {
@@ -302,7 +302,7 @@
         }
 
         /**
-         * FUNGSI SCANNER ODOMETER DIPERTINGKATKAN
+         * FUNGSI SCANNER ODOMETER PRO (AUTO DETECT BOTTOM NUMBER)
          */
         async function processOdoImage(input) {
             if (!input.files || !input.files[0]) return;
@@ -316,48 +316,54 @@
                 const canvas = document.getElementById('procCanvas');
                 const ctx = canvas.getContext('2d');
                 
-                // Pra-pemprosesan: Tingkatkan Kontras & Grayscale
+                // Pra-pemprosesan optimum untuk OCR
                 canvas.width = imageBitmap.width;
                 canvas.height = imageBitmap.height;
-                ctx.filter = 'grayscale(100%) contrast(150%) brightness(110%)';
+                ctx.filter = 'grayscale(100%) contrast(160%) brightness(110%)';
                 ctx.drawImage(imageBitmap, 0, 0);
                 
-                // Konfigurasi Tesseract yang lebih spesifik
                 const worker = await Tesseract.createWorker('eng');
                 await worker.setParameters({
-                    tessedit_char_whitelist: '0123456789', // Hanya ambil nombor
-                    tessjs_create_hocr: '0',
-                    tessjs_create_tsv: '0',
+                    tessedit_char_whitelist: '0123456789:', // Benarkan ":" untuk penapisan masa
                 });
 
                 const { data } = await worker.recognize(canvas);
                 await worker.terminate();
 
-                const text = data.text;
-                console.log("Raw OCR Result:", text);
+                const words = data.words;
+                console.log("AI Detected Words:", words);
 
-                // LOGIK PENAPISAN ODOMETER:
-                // 1. Odometer kereta biasanya 5 hingga 7 digit.
-                // 2. Kami abaikan nombor yang ada tanda ':' (masa/jam).
-                // 3. Kami ambil nombor paling panjang yang ditemui (kerana jam biasanya 4 digit).
-                
-                // Pecahkan teks mengikut baris/ruang dan tapis
-                const rawNumbers = text.split(/\s+/);
-                const candidates = rawNumbers
-                    .map(s => s.replace(/[^0-9]/g, '')) // Ambil digit sahaja
-                    .filter(s => s.length >= 5 && s.length <= 7); // Odo biasanya 5-7 digit (e.g 125000)
+                let odoCandidate = null;
+                let maxY = -1;
 
-                if (candidates.length > 0) {
-                    // Ambil yang paling tinggi nilainya atau paling panjang untuk elakkan "noise"
-                    const bestMatch = candidates.sort((a, b) => b.length - a.length || b - a)[0];
+                /**
+                 * LOGIK PRO:
+                 * 1. Abaikan nombor yang ada ":" (itu adalah JAM).
+                 * 2. Cari nombor 4-7 digit (biasanya odometer).
+                 * 3. Ambil nombor yang berada di posisi paling bawah (Y-coordinate tertinggi).
+                 */
+                words.forEach(w => {
+                    const text = w.text.trim();
+                    const cleanNum = text.replace(/[^0-9]/g, '');
                     
-                    document.getElementById('odoEnd').value = bestMatch;
+                    // Tapisan: Bukan masa (tiada :), panjang digit 4-7
+                    if (!text.includes(':') && cleanNum.length >= 4 && cleanNum.length <= 7) {
+                        // Cari yang paling bawah dalam gambar (Y0 koordinat paling besar)
+                        if (w.bbox.y0 > maxY) {
+                            maxY = w.bbox.y0;
+                            odoCandidate = cleanNum;
+                        }
+                    }
+                });
+
+                if (odoCandidate) {
+                    document.getElementById('odoEnd').value = odoCandidate;
                     calcPreview();
                     
                     Swal.fire({ 
                         icon:'success', 
-                        title:'Odo Dikesan', 
-                        text: `Nilai: ${bestMatch} KM`, 
+                        title:'Odo Pro Dikesan', 
+                        text: `Nilai Terbawah: ${odoCandidate} KM`, 
                         timer:2500, 
                         showConfirmButton:false, 
                         customClass:{popup:'swal-corp'} 
@@ -366,7 +372,7 @@
                     Swal.fire({ 
                         icon:'warning', 
                         title:'Gagal Mengecam', 
-                        text:'AI tidak menjumpai nombor odometer yang sah (5-7 digit). Sila masukkan secara manual atau cuba gambar lebih dekat.', 
+                        text:'AI tidak menemui odometer yang sah. Sila pastikan gambar tegak dan nombor tidak terlindung.', 
                         customClass:{popup:'swal-corp'} 
                     });
                 }
