@@ -500,6 +500,55 @@
             const blob = new Blob(['\ufeff', html], { type: 'application/msword' });
             const link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = `PILOT_Word_Report.doc`; link.click();
         }
+        // --- FUNGSI EKSPORT KE ACCESS (VIA OPTIMIZED CSV) ---
+function exportAccessCSV() {
+    if (tasks.length === 0) {
+        Swal.fire('Tiada Data', 'Tiada data untuk dieksport ke Access.', 'warning');
+        return;
+    }
+
+    // Header yang bersih (tanpa simbol pelik) supaya Microsoft Access mudah cam jenis field
+    const headers = ["ID", "Tarikh", "Hari", "Masa", "Jenis_Log", "Lokasi", "Jarak_KM", "Kos_RM", "Butiran"];
+    
+    // Tukar data kepada baris CSV
+    const csvRows = tasks.map(t => {
+        return [
+            t.id,
+            `"${t.date}"`, // Gunakan quotes untuk kekalkan format tarikh
+            `"${t.day}"`,
+            `"${t.tFrom}"`,
+            `"${t.type.toUpperCase()}"`,
+            `"${t.location.replace(/"/g, '""')}"`, // Escape double quotes
+            t.dist || 0,
+            t.rmMinyak || 0,
+            `"${t.note.replace(/"/g, '""')}"`
+        ].join(",");
+    });
+
+    // Gabungkan Header dan Baris
+    const csvContent = headers.join(",") + "\n" + csvRows.join("\n");
+    
+    // Cipta fail Blob
+    const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+    const link = document.createElement("a");
+    
+    if (link.download !== undefined) {
+        const url = URL.createObjectURL(blob);
+        link.setAttribute("href", url);
+        link.setAttribute("download", `PILOT_TO_ACCESS_${Date.now()}.csv`);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        
+        Swal.fire({
+            icon: 'success',
+            title: 'Sedia Untuk Access',
+            html: 'Fail .CSV telah dijana.<br><br><small>Di Microsoft Access: Pilih <b>External Data</b> > <b>New Data Source</b> > <b>From File</b> > <b>Text File</b>.</small>',
+            confirmButtonColor: '#2563eb'
+        });
+    }
+}
 
         function exportNotepad() {
             let txt = `LOG PILOT CLOUD - ${currentUser.displayName}\n\n`;
